@@ -1,4 +1,4 @@
-package com.sunbeam.entities;
+package com.aahar.entities;
 
 public class BaseEntity {
 	Long id;
