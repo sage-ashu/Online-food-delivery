@@ -1,5 +1,12 @@
 package com.aahar.entities;
 
+
+import java.time.LocalDateTime;
+
 public class BaseEntity {
-	Long id;
+	private Long id;
+	private LocalDateTime isCreatedAt;
+	private LocalDateTime isUpdatedAt;
+	private boolean isDeleted;
 }
+
