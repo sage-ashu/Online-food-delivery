@@ -2,6 +2,17 @@ package com.aahar.entities;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.Entity;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+@Entity
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString(callSuper = true)
 public class Restaurant extends BaseEntity{
 		
 	private String restaurantName;
