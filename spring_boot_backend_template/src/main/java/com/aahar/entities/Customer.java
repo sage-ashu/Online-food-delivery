@@ -4,8 +4,19 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
-
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@Table(name="customers")
 public class Customer extends BaseEntity
 {
 	@Column(length=50, name="first_name")
@@ -15,10 +26,19 @@ public class Customer extends BaseEntity
 	@Column(length=100, unique=true)
 	private String email;
 	private String password;
-	private List<Order> order=new ArrayList<>();
+	
+	/*
+	 * one customer can place multiple orders,
+	therefore this is one to many relationship
+	*/
+	@OneToMany(mappedBy = "customer", cascade=CascadeType.ALL,orphanRemoval = true)
+	private List<Orders> order=new ArrayList<>();
+	
+	
+	
 	
 	public Customer(String firstName,
-			String lastName, String email, String password, List<Order> order) {
+			String lastName, String email, String password, List<Orders> order) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
