@@ -11,8 +11,8 @@ public class Restaurant extends BaseEntity{
 	private double ratingSum;
 	private double totalRating;
 	private boolean isOnline;
-	
 
+	
 	public Restaurant(String restaurantName, String restauratDescription, boolean isVeg, double avgCost, double ratingSum,
 			double totalRating, boolean isOnline) {
 		super();
