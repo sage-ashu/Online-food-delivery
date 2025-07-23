@@ -1,6 +1,6 @@
 package com.aahar.entities;
 
-public class RestaurantOwner {
+public class RestaurantOwner extends BaseEntity{
 	String name;
 	String phoneNumber;
 	String email;
