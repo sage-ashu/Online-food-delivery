@@ -12,6 +12,7 @@ public class Customer extends BaseEntity
 	private String firstName;
 	@Column(length=50, name="last_name")
 	private String lastName;
+	@Column(length=100, unique=true)
 	private String email;
 	private String password;
 	private List<Order> order=new ArrayList<>();
