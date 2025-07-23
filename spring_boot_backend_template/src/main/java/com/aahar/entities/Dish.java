@@ -2,6 +2,11 @@ package com.aahar.entities;
 
 import java.time.LocalDateTime;
 
+import lombok.Getter;
+import lombok.Setter;
+@Setter
+@Getter
+
 public class Dish extends BaseEntity{
 	String dishName;
 	double dishPrice;
