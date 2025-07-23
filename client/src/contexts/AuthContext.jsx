@@ -8,15 +8,24 @@ export const AuthProvider = ({ children }) => {
 
   const login = (email, password) => {
 
-// In this case the backend is hit with user login credentials 
+// You need to make a backend call 
 
-//Temporarily hardcoded values
     if (email === 'test@gmail.com' && password === 'test') {
-      setUser({ name: 'Test User', email });
-      return true;
+      const loggedInUser = { name: 'Test User', email, role: 'customer' };
+      setUser(loggedInUser);
+      return loggedInUser;
+    } else if (email === 'rest@gmail.com' && password === 'rest') {
+      const loggedInUser = { name: 'Rest User', email, role: 'restaurant' };
+      setUser(loggedInUser);
+      return loggedInUser;
+    } else if (email === 'del@gmail.com' && password === 'del') {
+      const loggedInUser = { name: 'Delivery Guy', email, role: 'delivery' };
+      setUser(loggedInUser);
+      return loggedInUser;
     }
-    return false;
+    return null;
   };
+  
 
   const logout = () => {
     setUser(null);
