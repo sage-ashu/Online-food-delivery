@@ -9,23 +9,24 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.aahar.services.UserService;
+import com.aahar.dto.AddressDTO;
+import com.aahar.services.CustomerService;
 
 import lombok.AllArgsConstructor;
 
 @RequestMapping("/users")
 @RestController
 @AllArgsConstructor
-public class UserController {
-	public final UserService userService;
+public class CustomerController {
+	public final CustomerService customerService;
 
 	//get all orders of user
 	//get saved address
 	//Add Address
-	@PostMapping("/{userId}/address")
-	public ResponseEntity<?> addAddress(@PathVariable Long userId,@RequestBody AddressDTO dto){
+	@PostMapping("/address")
+	public ResponseEntity<?> addAddress(@RequestBody AddressDTO dto){
 		return ResponseEntity.status(HttpStatus.CREATED)
-				.body(userService.addAddress(userId,dto));
+				.body(customerService.addAddress(dto));
 	}
 	//Update Address
 	//Delete Address
