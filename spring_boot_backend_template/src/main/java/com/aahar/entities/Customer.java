@@ -4,8 +4,13 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Customer extends BaseEntity {
+import jakarta.persistence.Column;
+
+public class Customer extends BaseEntity
+{
+	@Column(length=50, name="first_name")
 	private String firstName;
+	@Column(length=50, name="last_name")
 	private String lastName;
 	private String email;
 	private String password;
