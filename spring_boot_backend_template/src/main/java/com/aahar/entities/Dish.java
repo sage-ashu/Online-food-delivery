@@ -14,10 +14,11 @@ public class Dish extends BaseEntity{
 	boolean isAvailable;
 	
 	
-	public Dish(Long id, LocalDateTime isCreatedAt, LocalDateTime isUpdatedAt, boolean isDeleted, String dishName,
+	public Dish(String dishName,
 			double dishPrice, String description, boolean isVeg, int preperationTime, int noOfServings,
-			int orderedTimes, int ratingSum, boolean isAvailable) {
-		super(id, isCreatedAt, isUpdatedAt, isDeleted);
+			int orderedTimes, int ratingSum, boolean isAvailable) 
+	{
+		super();
 		this.dishName = dishName;
 		this.dishPrice = dishPrice;
 		this.description = description;

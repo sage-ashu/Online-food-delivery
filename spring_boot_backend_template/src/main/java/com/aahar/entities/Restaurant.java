@@ -13,10 +13,9 @@ public class Restaurant extends BaseEntity{
 	private boolean isOnline;
 	
 	
-	public Restaurant(Long id, LocalDateTime isCreatedAt, LocalDateTime isUpdatedAt, boolean isDeleted,
-			String restaurantName, String restauratDescription, boolean isVeg, double avgCost, double ratingSum,
+	public Restaurant(String restaurantName, String restauratDescription, boolean isVeg, double avgCost, double ratingSum,
 			double totalRating, boolean isOnline) {
-		super(id, isCreatedAt, isUpdatedAt, isDeleted);
+		super();
 		this.restaurantName = restaurantName;
 		this.restauratDescription = restauratDescription;
 		this.isVeg = isVeg;
