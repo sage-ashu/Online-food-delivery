@@ -5,14 +5,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Customer extends BaseEntity {
-	public Customer(Long id, LocalDateTime isCreatedAt, LocalDateTime isUpdatedAt, boolean isDeleted) {
-		super(id, isCreatedAt, isUpdatedAt, isDeleted);
-		// TODO Auto-generated constructor stub
-	}
 	private String firstName;
 	private String lastName;
 	private String email;
 	private String password;
 	private List<Order> order=new ArrayList<>();
+	
+	public Customer(String firstName,
+			String lastName, String email, String password, List<Order> order) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.password = password;
+		this.order = order;
+	}
+	
+	
 
 }
