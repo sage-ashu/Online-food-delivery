@@ -1,14 +1,30 @@
 package com.aahar.entities;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@Entity
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString(callSuper = true)
 public class RestaurantOwner extends BaseEntity{
 	
-	
-	String name;
-	String phoneNumber;
-	String email;
-	String password;
+	@Column(length=20)
+	private String name;
+	@Column(length=10)
+	private String phoneNumber;
+	@Column(length=10)
+	private String email;
+	@Column(length=10)
+	private String password;
 	public RestaurantOwner(String name, String phoneNumber, String email, String password) {
 		super();
 		this.name = name;
