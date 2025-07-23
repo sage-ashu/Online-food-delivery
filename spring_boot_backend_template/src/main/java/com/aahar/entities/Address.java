@@ -1,6 +1,6 @@
 package com.aahar.entities;
 
-public class Address {
+public class Address extends BaseEntity{
 	private String phoneNo ;
 	private String address1;
 	private String address2;

@@ -1,6 +1,6 @@
 package com.aahar.entities;
 
-public class Restaurant {
+public class Restaurant extends BaseEntity{
 	private String restaurantName;
 	private String restauratDescription;
 	private boolean isVeg;
