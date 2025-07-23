@@ -1,5 +1,5 @@
 package com.aahar.services;
 
-public class RestaurantService {
+public interface RestaurantService {
 
 }
