@@ -28,10 +28,15 @@ export const AuthProvider = ({ children }) => {
   
 
   const logout = () => {
+    const name = user?.name;
     setUser(null);
-    toast.success(`${user.name} logged out successfully`);
-
-  }
+    if (name) {
+      toast.success(`${name} logged out successfully`);
+    } else {
+      toast.success(`Logged out successfully`);
+    }
+  };
+  
 
   return (
     <AuthContext.Provider value={{ user, login, logout }}>

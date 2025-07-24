@@ -32,7 +32,7 @@ function Login() {
           navigate('/');
       }
     } else {
-      toast.error("Invalid credentials. Try test@gmail.com / test 😅");
+      toast.error("Invalid credentials.😅");
     }
   };
 
