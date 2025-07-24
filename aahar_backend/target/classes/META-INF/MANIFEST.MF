@@ -1,6 +1,15 @@
+<<<<<<< HEAD
 Manifest-Version: 1.0
 Build-Jdk-Spec: 21
 Implementation-Title: aahar_backend
 Implementation-Version: 0.0.1
 Created-By: Maven Integration for Eclipse
 
+=======
+Manifest-Version: 1.0
+Build-Jdk-Spec: 21
+Implementation-Title: aahar_backend
+Implementation-Version: 0.0.1
+Created-By: Maven Integration for Eclipse
+
+>>>>>>> 9c7599f51150ef846ed22310bcc678e0bf39dea2

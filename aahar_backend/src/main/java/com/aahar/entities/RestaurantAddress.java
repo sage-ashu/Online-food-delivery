@@ -1,8 +1,13 @@
 package com.aahar.entities;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
-
+import lombok.Getter;
+import lombok.Setter;
+@Entity
+@Setter
+@Getter
 public class RestaurantAddress extends Address{
 	@OneToOne
 	@JoinColumn(name="restaurant_id")

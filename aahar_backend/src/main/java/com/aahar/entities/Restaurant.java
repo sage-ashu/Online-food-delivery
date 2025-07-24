@@ -41,8 +41,8 @@ public class Restaurant extends BaseEntity{
 	@JoinColumn(name="ResaturantAddress_id")
 	private RestaurantAddress restaurantAddress;
 	@ManyToOne
-	@JoinColumn(name="restaurantowner_id")
-	private RestaurantOwner restaurantowner;
+	@JoinColumn(name="restaurantOwner_id")
+	private RestaurantOwner restaurantOwner;
 	public Restaurant(String restaurantName, String restauratDescription, boolean isVeg, double avgCost, boolean isOnline) {
 		super();
 		this.restaurantName = restaurantName;
