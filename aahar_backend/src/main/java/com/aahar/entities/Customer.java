@@ -38,11 +38,11 @@ public class Customer extends BaseEntity
 	private List<Orders> orders=new ArrayList<>();
 	
 	@OneToMany(mappedBy = "customer", cascade=CascadeType.ALL,orphanRemoval = true, fetch = FetchType.EAGER)
-	private List< CustomerAddrs> addresses=new ArrayList<>();
+	private List< CustomerAddress> addresses=new ArrayList<>();
 	
 	
 	//helper class to add address
-	public void addAddress( CustomerAddrs AddressEntity) {
+	public void addAddress( CustomerAddress AddressEntity) {
 		this.addresses.add(AddressEntity);
 		AddressEntity.setCustomer(this);
 	}

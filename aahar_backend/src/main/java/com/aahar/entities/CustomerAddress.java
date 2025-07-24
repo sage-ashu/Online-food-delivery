@@ -12,12 +12,12 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString(callSuper = true)
-public class CustomerAddrs extends Address{
+public class CustomerAddress extends Address{
 	@ManyToOne
 	@JoinColumn(name="customer_id")
 	private Customer customer;
 
-	public CustomerAddrs(String phoneNo, String address1, String address2, String address3, String city, String pinCode,
+	public CustomerAddress(String phoneNo, String address1, String address2, String address3, String city, String pinCode,
 			double latitude, double longitude, boolean isRestaurant, Customer customer) {
 		super(phoneNo, address1, address2, address3, city, pinCode, latitude, longitude, isRestaurant);
 		this.customer = customer;
