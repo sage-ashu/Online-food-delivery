@@ -3,10 +3,17 @@ package com.aahar.entities;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.hibernate.annotations.ManyToAny;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,15 +37,20 @@ public class Restaurant extends BaseEntity{
 	@OneToMany(mappedBy = "myRestaurant",cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Dish> dish=new ArrayList<>();
 	
-	public Restaurant(String restaurantName, String restauratDescription, boolean isVeg, double avgCost, double ratingSum,
-			double totalRating, boolean isOnline) {
+	@OneToOne( cascade=CascadeType.ALL)
+	@JoinColumn(name="ResaturantAddress_id")
+	private RestaurantAddress restaurantAddress;
+	@ManyToOne
+	@JoinColumn(name="restaurantowner_id")
+	private RestaurantOwner restaurantowner;
+	public Restaurant(String restaurantName, String restauratDescription, boolean isVeg, double avgCost, boolean isOnline) {
 		super();
 		this.restaurantName = restaurantName;
 		this.restauratDescription = restauratDescription;
 		this.isVeg = isVeg;
 		AvgCost = avgCost;
-		this.ratingSum = ratingSum;
-		this.totalRating = totalRating;
+		this.ratingSum = 0;
+		this.totalRating =0;
 		this.isOnline = isOnline;
 	}
 	
