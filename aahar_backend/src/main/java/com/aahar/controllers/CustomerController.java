@@ -23,10 +23,10 @@ public class CustomerController {
 	//get all orders of user
 	//get saved address
 	//Add Address
-	@PostMapping("/address")
-	public ResponseEntity<?> addAddress(@RequestBody AddressDTO dto){
+	@PostMapping("/{customerId}/address")
+	public ResponseEntity<?> addAddress(@PathVariable Long customerId,@RequestBody AddressDTO dto){
 		return ResponseEntity.status(HttpStatus.CREATED)
-				.body(customerService.addAddress(dto));
+				.body(customerService.addAddress(customerId,dto));
 	}
 	//Update Address
 	//Delete Address
