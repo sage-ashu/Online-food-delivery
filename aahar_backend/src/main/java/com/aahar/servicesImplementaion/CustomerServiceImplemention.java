@@ -9,8 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.aahar.dao.CustomerDao;
 import com.aahar.dto.AddressDTO;
 import com.aahar.dto.ApiResponse;
-import com.aahar.entities.Address;
 import com.aahar.entities.Customer;
+import com.aahar.entities.CustomerAddress;
 import com.aahar.services.CustomerService;
 
 import lombok.AllArgsConstructor;
@@ -27,7 +27,7 @@ public class CustomerServiceImplemention implements CustomerService {
 		Optional<Customer> customer=customerDao.findById(Id);
 		if(customer.isPresent()) {
 			Customer cus = customer.get();
-			Address AddressEntity = map.map(dto, Address.class);
+			CustomerAddress AddressEntity = map.map(dto, CustomerAddress.class);
 			cus.addAddress(AddressEntity);
 			return new ApiResponse("Address add successfully.");
 		}
