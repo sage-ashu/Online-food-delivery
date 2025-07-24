@@ -7,7 +7,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   const login = (email, password) => {
-    // Replace this mock login with backend call if needed
+    // Replace this mock login with backend call 
     if (email === 'test@gmail.com' && password === 'test') {
       const loggedInUser = { name: 'Test User', email, role: 'customer' };
       setUser(loggedInUser);

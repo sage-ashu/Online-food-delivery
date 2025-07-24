@@ -1,92 +1,159 @@
 import React, { useState } from "react";
-import Navbar from "../components/Navbar"; // Adjust path based on your folder structure
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { registerUser } from "../services/userService";
+import { registerRestaurant } from "../services/restaurantService";
+import { registerDeliveryAgent } from "../services/deliveryService";
+import { toast } from "react-toastify";
 
-function R_Restaurant_Account() {
+const Register = () => {
   const navigate = useNavigate();
 
-  // Sample user data, ideally fetched from context or API
+  const [accountType, setAccountType] = useState("user");
   const [formData, setFormData] = useState({
-    name: "Aahar Restaurant",
-    email: "aahar@example.com",
-    address: "",
+    name: "",
+    email: "",
+    phone: "",
+    password: "",
   });
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("user");
-    navigate("/login");
+  const handleTypeChange = (e) => {
+    setAccountType(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Data:", formData);
-  };
 
-  const links = [
-    { name: "Manage Orders", path: "/restaurant/orders" },
-    { name: "Account", path: "/restaurant/account" },
-    { name: "Logout", onClick: handleLogout },
-  ];
+    try {
+      if (accountType === "user") {
+        await registerUser(formData);
+      } else if (accountType === "restaurant") {
+        await registerRestaurant(formData);
+      } else if (accountType === "delivery") {
+        await registerDeliveryAgent(formData);
+      }
+
+      toast.success(`${accountType} registered successfully`);
+      navigate("/login");
+    } catch (err) {
+      console.error(err);
+      toast.error(err.message || "Registration failed");
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-red-50">
-      <Navbar links={links} />
-
-      <div className="max-w-md mx-auto mt-10 p-6 bg-white shadow-lg rounded-xl border border-red-200">
-        <h2 className="text-2xl font-semibold text-red-900 mb-4">Restaurant Account</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-red-800 mb-1">Name</label>
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              readOnly
-              className="w-full px-4 py-2 border border-red-300 rounded-md bg-red-100 cursor-not-allowed"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-red-800 mb-1">Email</label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              readOnly
-              className="w-full px-4 py-2 border border-red-300 rounded-md bg-red-100 cursor-not-allowed"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-red-800 mb-1">Address</label>
-            <textarea
-              name="address"
-              rows="3"
-              value={formData.address}
-              onChange={handleChange}
-              placeholder="Enter your restaurant address"
-              className="w-full px-4 py-2 border border-red-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-400"
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="w-full py-2 px-4 bg-red-800 text-white rounded-md hover:bg-red-700 transition duration-200"
-          >
-            Save
-          </button>
-        </form>
+    <>
+      {/* Back to Home Button */}
+      <div className="absolute top-4 left-4">
+        <Link
+          to="/"
+          className="bg-amber-900 text-white px-4 py-2 rounded-full shadow hover:bg-amber-800 transition duration-200"
+        >
+          ⬅ Back to Home
+        </Link>
       </div>
-    </div>
-  );
-}
 
-export default R_Restaurant_Account;
+      <div className="min-h-screen bg-amber-50 flex items-center justify-center p-6">
+        <div className="bg-white shadow-2xl rounded-2xl p-8 max-w-md w-full">
+          <h2 className="text-3xl font-bold text-center text-amber-900 mb-6">
+            Create your Aahar Account 🍽️
+          </h2>
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Role Selector */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">
+                Register as:
+              </label>
+              <select
+                value={accountType}
+                onChange={handleTypeChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-amber-600"
+              >
+                <option value="user">Customer</option>
+                <option value="restaurant">Restaurant</option>
+                <option value="delivery">Delivery Agent</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">
+                Name
+              </label>
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-amber-600"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">
+                Email
+              </label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-amber-600"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">
+                Phone
+              </label>
+              <input
+                type="text"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-amber-600"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">
+                Password
+              </label>
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-amber-600"
+                required
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-amber-900 hover:bg-amber-800 text-white py-2 rounded-lg transition duration-200"
+            >
+              Register
+            </button>
+          </form>
+
+          {/* Already have an account link */}
+          <p className="mt-4 text-center text-sm text-gray-700">
+            Already have an account?{" "}
+            <Link to="/login" className="text-amber-900 font-semibold hover:underline">
+              Login here
+            </Link>
+          </p>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default Register;
