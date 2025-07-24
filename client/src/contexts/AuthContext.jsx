@@ -7,9 +7,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   const login = (email, password) => {
-
-// You need to make a backend call 
-
+    // Replace this mock login with backend call if needed
     if (email === 'test@gmail.com' && password === 'test') {
       const loggedInUser = { name: 'Test User', email, role: 'customer' };
       setUser(loggedInUser);
@@ -25,9 +23,9 @@ export const AuthProvider = ({ children }) => {
     }
     return null;
   };
-  
 
   const logout = () => {
+<<<<<<< HEAD
     const name = user?.name;
     setUser(null);
     if (name) {
@@ -37,6 +35,11 @@ export const AuthProvider = ({ children }) => {
     }
   };
   
+=======
+    toast.success(`${user?.name} logged out successfully`);
+    setUser(null);
+  };
+>>>>>>> d08a495ec1e2719a6bcf9098f70779abfd8613ec
 
   return (
     <AuthContext.Provider value={{ user, login, logout }}>

@@ -1,1 +1,20 @@
-/.metadata/
+# macOS
+.DS_Store
+
+# Eclipse / STS
+.metadata/
+*.class
+*.log
+bin/
+target/
+
+# Maven
+.mvn/
+!/.mvn/wrapper/maven-wrapper.jar
+mvnw
+mvnw.cmd
+
+# IntelliJ
+.idea/
+*.iml
+out/

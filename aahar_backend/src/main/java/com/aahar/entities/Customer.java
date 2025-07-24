@@ -7,8 +7,10 @@ import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,6 +18,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name="customers")
 public class Customer extends BaseEntity
 {
@@ -32,21 +35,16 @@ public class Customer extends BaseEntity
 	therefore this is one to many relationship
 	*/
 	@OneToMany(mappedBy = "customer", cascade=CascadeType.ALL,orphanRemoval = true)
-	private List<Orders> order=new ArrayList<>();
+	private List<Orders> orders=new ArrayList<>();
+	
+	@OneToMany(mappedBy = "customer", cascade=CascadeType.ALL,orphanRemoval = true, fetch = FetchType.EAGER)
+	private List< CustomerAddress> addresses=new ArrayList<>();
 	
 	
-	
-	
-	public Customer(String firstName,
-			String lastName, String email, String password, List<Orders> order) {
-		super();
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.email = email;
-		this.password = password;
-		this.order = order;
+	//helper class to add address
+	public void addAddress( CustomerAddress AddressEntity) {
+		this.addresses.add(AddressEntity);
+		AddressEntity.setCustomer(this);
 	}
-	
-	
 
 }

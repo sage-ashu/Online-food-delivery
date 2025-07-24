@@ -4,18 +4,21 @@ import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-@Entity
+@MappedSuperclass
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString(callSuper = true)
 public class Address extends BaseEntity
 {
-	@Column(length=15)
+	@Column(length=10)
 	private String phoneNo ;
 	@Column(length=20)
 	private String address1;
@@ -25,11 +28,12 @@ public class Address extends BaseEntity
 	private String address3;
 	@Column(length=10)
 	private String city;
-	@Column(length=10)
+	@Column(length=6)
 	private String pinCode;
 	private double latitude;
 	private double longitude;
 	private boolean isRestaurant;
+	
 	
 	public Address(String phoneNo,
 			String address1, String address2, String address3, String city, String pinCode, double latitude,
@@ -46,6 +50,7 @@ public class Address extends BaseEntity
 		this.longitude = longitude;
 		this.isRestaurant = isRestaurant;
 	}
+	
 	
 	
 
