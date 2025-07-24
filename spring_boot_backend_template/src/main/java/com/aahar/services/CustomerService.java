@@ -1,9 +1,10 @@
 package com.aahar.services;
 
 import com.aahar.dto.AddressDTO;
+import com.aahar.dto.ApiResponse;
 
 public interface CustomerService {
 
-	AddressDTO addAddress(AddressDTO dto);
+	ApiResponse addAddress(Long Id, AddressDTO dto);
 
 }
