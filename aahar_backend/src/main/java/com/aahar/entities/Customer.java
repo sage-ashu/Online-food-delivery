@@ -34,7 +34,7 @@ public class Customer extends BaseEntity
 	 * one customer can place multiple orders,
 	therefore this is one to many relationship
 	*/
-	@OneToMany(mappedBy = "customer", cascade=CascadeType.ALL,orphanRemoval = true, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "customer", cascade=CascadeType.ALL,orphanRemoval = true)
 	private List<Orders> orders=new ArrayList<>();
 	
 	@OneToMany(mappedBy = "customer", cascade=CascadeType.ALL,orphanRemoval = true, fetch = FetchType.EAGER)

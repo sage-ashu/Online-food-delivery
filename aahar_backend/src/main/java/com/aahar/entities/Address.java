@@ -6,11 +6,12 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-@Entity
+@MappedSuperclass
 @NoArgsConstructor
 @Getter
 @Setter
@@ -49,6 +50,7 @@ public class Address extends BaseEntity
 		this.longitude = longitude;
 		this.isRestaurant = isRestaurant;
 	}
+	
 	
 	
 
