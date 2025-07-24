@@ -1,13 +1,11 @@
 package com.aahar.entities;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,6 +34,6 @@ public class RestaurantOwner extends BaseEntity{
 		this.email = email;
 		this.password = password;
 	}
-	@OneToMany(mappedBy = " restaurantowner" , cascade=CascadeType.ALL,orphanRemoval = true)
+	@OneToMany(mappedBy = "restaurantOwner" , cascade=CascadeType.ALL,orphanRemoval = true)
 	private List<Restaurant> restaurant = new ArrayList<>();
 }
