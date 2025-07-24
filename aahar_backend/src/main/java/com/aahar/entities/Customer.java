@@ -42,9 +42,22 @@ public class Customer extends BaseEntity
 	
 	
 	//helper class to add address
-	public void addAddress( CustomerAddress AddressEntity) {
-		this.addresses.add(AddressEntity);
-		AddressEntity.setCustomer(this);
+	public void addAddress( CustomerAddress address) 
+	{
+		this.addresses.add(address);
+		address.setCustomer(this);
 	}
+	public void addOrders( Orders order) 
+	{
+		this.orders.add(order);
+		order.setCustomer(this);
+	}
+	
+	public void removeAddress(CustomerAddress address)
+	{
+		this.addresses.remove(address);
+		address.setCustomer(null);
+	}
+	
 
 }

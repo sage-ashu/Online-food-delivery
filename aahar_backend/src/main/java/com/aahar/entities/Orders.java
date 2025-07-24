@@ -1,12 +1,15 @@
 package com.aahar.entities;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,13 +30,17 @@ public class Orders extends BaseEntity {
 	@ManyToOne
 	@JoinColumn(name="customer_id")
 	private Customer customer;
+	@ManyToOne
+	@JoinColumn(name="restaurant_id")
+	private Restaurant restaurant;
+	@OneToMany(mappedBy = "orders", cascade=CascadeType.ALL,orphanRemoval = true)
+	private List<OrderDetails> orderdetails=new ArrayList<>();
 	
-	
-	public Orders(LocalDateTime orderDateTime, double orderAmount, double deliveryDistance, double deliveryCharge,
+	public Orders(double orderAmount, double deliveryDistance, double deliveryCharge,
 			double orderTotal) 
 	{
 		super();
-		this.orderDateTime = orderDateTime;
+		this.orderDateTime = LocalDateTime.now();
 		this.orderAmount = orderAmount;
 		this.deliveryDistance = deliveryDistance;
 		this.deliveryCharge = deliveryCharge;
