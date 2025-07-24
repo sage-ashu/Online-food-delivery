@@ -25,7 +25,6 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-<<<<<<< HEAD
     const name = user?.name;
     setUser(null);
     if (name) {
@@ -35,11 +34,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
   
-=======
-    toast.success(`${user?.name} logged out successfully`);
-    setUser(null);
-  };
->>>>>>> d08a495ec1e2719a6bcf9098f70779abfd8613ec
 
   return (
     <AuthContext.Provider value={{ user, login, logout }}>

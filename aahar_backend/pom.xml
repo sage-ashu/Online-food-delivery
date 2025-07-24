@@ -9,8 +9,8 @@
 		<version>3.5.0</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.example</groupId>
-	<artifactId>spring_boot_backend_template</artifactId>
+	<groupId>com.aahar</groupId>
+	<artifactId>aahar_backend</artifactId>
 	<version>0.0.1</version>
 	<name>aahar_backend</name>
 	<description>Spring Boot Template project for developing REST APIs in a Full
