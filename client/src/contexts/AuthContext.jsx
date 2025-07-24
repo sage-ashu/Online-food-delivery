@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
 import { toast } from 'react-toastify';
-import axios from 'axios';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
