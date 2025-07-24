@@ -33,7 +33,7 @@ public class Dish extends BaseEntity{
 	private Restaurant myRestaurant;
 	public Dish(String dishName,
 			double dishPrice, String description, boolean isVeg, int preperationTime, int noOfServings,
-			int orderedTimes, int ratingSum, boolean isAvailable) 
+			 boolean isAvailable) 
 	{
 		super();
 		this.dishName = dishName;
@@ -42,8 +42,8 @@ public class Dish extends BaseEntity{
 		this.isVeg = isVeg;
 		this.preperationTime = preperationTime;
 		this.noOfServings = noOfServings;
-		this.orderedTimes = orderedTimes;
-		this.ratingSum = ratingSum;
+		this.orderedTimes = 0;
+		this.ratingSum = 0;
 		this.isAvailable = isAvailable;
 	}
 	

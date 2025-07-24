@@ -32,9 +32,7 @@ public class Address extends BaseEntity
 	private double latitude;
 	private double longitude;
 	private boolean isRestaurant;
-	@ManyToOne
-	@JoinColumn(name="customer_id")
-	private Customer customer;
+	
 	
 	public Address(String phoneNo,
 			String address1, String address2, String address3, String city, String pinCode, double latitude,
