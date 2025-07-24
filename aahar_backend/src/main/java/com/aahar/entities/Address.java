@@ -2,6 +2,7 @@ package com.aahar.entities;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -16,12 +17,17 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class Address extends BaseEntity
 {
-	
+	@Column(length=15)
 	private String phoneNo ;
+	@Column(length=20)
 	private String address1;
+	@Column(length=20)
 	private String address2;
+	@Column(length=20)
 	private String address3;
+	@Column(length=10)
 	private String city;
+	@Column(length=10)
 	private String pinCode;
 	private double latitude;
 	private double longitude;

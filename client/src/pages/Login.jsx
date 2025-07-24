@@ -4,27 +4,37 @@ import { useAuth } from '../contexts/AuthContext';
 import { toast } from 'react-toastify';
 
 function Login() {
-  const [role, setRole] = useState("customer");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login, user } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const success = login(email, password ); // optionally pass role if needed
+    const loggedInUser = login(email, password);
 
-    if (success) {
-      toast.success(`${user.name} logged in successfully`);
-      console.log(user.name)
-      navigate('/');
+    if (loggedInUser) {
+      toast.success(`${loggedInUser.name} logged in successfully`);
+
+      // Navigate based on role
+      switch (loggedInUser.role) {
+        case 'customer':
+          navigate('/');
+          break;
+        case 'restaurant':
+          navigate('/restaurant');
+          break;
+        case 'delivery':
+          navigate('/delivery');
+          break;
+        default:
+          navigate('/');
+      }
     } else {
       toast.error("Invalid credentials. Try test@gmail.com / test 😅");
     }
   };
-
-  const roles = ["customer", "restaurant", "delivery"];
 
   return (
     <>
@@ -43,21 +53,6 @@ function Login() {
           <h2 className="text-3xl font-bold text-center text-amber-900 mb-6">
             Welcome back to Aahar 🍽️
           </h2>
-
-          {/* Role Toggle */}
-          <div className="flex justify-center mb-6 space-x-2">
-            {roles.map((r) => (
-              <button
-                key={r}
-                className={`px-4 py-2 rounded-full border border-amber-900 ${
-                  role === r ? "bg-amber-900 text-white" : "bg-white text-amber-900"
-                }`}
-                onClick={() => setRole(r)}
-              >
-                {r.charAt(0).toUpperCase() + r.slice(1)}
-              </button>
-            ))}
-          </div>
 
           {/* Form */}
           <form onSubmit={handleSubmit}>
@@ -88,7 +83,7 @@ function Login() {
               type="submit"
               className="w-full bg-amber-900 hover:bg-amber-800 text-white py-2 rounded-lg transition duration-200"
             >
-              Login as {role.charAt(0).toUpperCase() + role.slice(1)}
+              Login
             </button>
           </form>
 

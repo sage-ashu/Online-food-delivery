@@ -8,6 +8,9 @@ import { ToastContainer} from 'react-toastify';
 import Cart from './pages/Cart';
 import Account from './pages/Account';
 import Checkout from './pages/Checkout';
+import Restaurant_Dashboard from './pages/Restaurant_Dashboard';
+import Delivery_Dashboard from './pages/Delivery_Dashboard';
+
 
 function App() {
   return (
@@ -21,6 +24,9 @@ function App() {
         <Route path='/contact' element={<Contact></Contact>}/>
         <Route path='/account' element={<Account></Account>}/>
         <Route path="/checkout" element={<Checkout/>} />
+        <Route path="/restaurant" element={<Restaurant_Dashboard/>} />
+        <Route path="/delivery" element={<Delivery_Dashboard/>} />
+
 
         </Routes>
     </BrowserRouter>
