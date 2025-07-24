@@ -1,14 +1,13 @@
 import React, { createContext, useContext, useState } from 'react';
 import { toast } from 'react-toastify';
+
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   const login = (email, password) => {
-
-// You need to make a backend call 
-
+    // Replace this mock login with backend call if needed
     if (email === 'test@gmail.com' && password === 'test') {
       const loggedInUser = { name: 'Test User', email, role: 'customer' };
       setUser(loggedInUser);
@@ -24,13 +23,11 @@ export const AuthProvider = ({ children }) => {
     }
     return null;
   };
-  
 
   const logout = () => {
+    toast.success(`${user?.name} logged out successfully`);
     setUser(null);
-    toast.success(`${user.name} logged out successfully`);
-
-  }
+  };
 
   return (
     <AuthContext.Provider value={{ user, login, logout }}>
