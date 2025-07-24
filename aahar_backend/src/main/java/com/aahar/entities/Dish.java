@@ -17,10 +17,10 @@ import lombok.ToString;
 @Setter
 @ToString(callSuper = true)
 public class Dish extends BaseEntity{
-	@Column(length=10)	
+	@Column(length=40)	
 	private String dishName;
 	private double dishPrice;
-	@Column(length=30)	
+	@Column(length=150)	
 	private String description;
 	private boolean isVeg;
 	private int preperationTime;
