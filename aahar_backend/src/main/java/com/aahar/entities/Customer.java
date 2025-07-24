@@ -34,15 +34,15 @@ public class Customer extends BaseEntity
 	 * one customer can place multiple orders,
 	therefore this is one to many relationship
 	*/
-	@OneToMany(mappedBy = "customer", cascade=CascadeType.ALL,orphanRemoval = true, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "customer", cascade=CascadeType.ALL,orphanRemoval = true)
 	private List<Orders> orders=new ArrayList<>();
 	
 	@OneToMany(mappedBy = "customer", cascade=CascadeType.ALL,orphanRemoval = true, fetch = FetchType.EAGER)
-	private List<Address> addresses=new ArrayList<>();
+	private List< CustomerAddress> addresses=new ArrayList<>();
 	
 	
 	//helper class to add address
-	public void addAddress(Address AddressEntity) {
+	public void addAddress( CustomerAddress AddressEntity) {
 		this.addresses.add(AddressEntity);
 		AddressEntity.setCustomer(this);
 	}
