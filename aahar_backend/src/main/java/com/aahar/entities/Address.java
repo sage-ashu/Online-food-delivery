@@ -18,7 +18,7 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class Address extends BaseEntity
 {
-	@Column(length=15)
+	@Column(length=10)
 	private String phoneNo ;
 	@Column(length=20)
 	private String address1;
@@ -28,7 +28,7 @@ public class Address extends BaseEntity
 	private String address3;
 	@Column(length=10)
 	private String city;
-	@Column(length=10)
+	@Column(length=6)
 	private String pinCode;
 	private double latitude;
 	private double longitude;
