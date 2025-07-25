@@ -19,7 +19,7 @@ public class CustomerAddress extends Address{
 
 	public CustomerAddress(String phoneNo, String address1, String address2, String address3, String city, String pinCode,
 			double latitude, double longitude, boolean isRestaurant, Customer customer) {
-		super(phoneNo, address1, address2, address3, city, pinCode, latitude, longitude, isRestaurant);
+		super(phoneNo, address1, address2, address3, city, pinCode, latitude, longitude);
 		this.customer = customer;
 	}
 	

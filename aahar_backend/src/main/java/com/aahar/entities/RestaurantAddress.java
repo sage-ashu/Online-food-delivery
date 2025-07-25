@@ -14,8 +14,8 @@ public class RestaurantAddress extends Address{
 	private Restaurant restaurant;
 
 	public RestaurantAddress(String phoneNo, String address1, String address2, String address3, String city,
-			String pinCode, double latitude, double longitude, boolean isRestaurant, Restaurant restaurant) {
-		super(phoneNo, address1, address2, address3, city, pinCode, latitude, longitude, isRestaurant);
+			String pinCode, double latitude, double longitude, Restaurant restaurant) {
+		super(phoneNo, address1, address2, address3, city, pinCode, latitude, longitude);
 		this.restaurant = restaurant;
 	}
 	

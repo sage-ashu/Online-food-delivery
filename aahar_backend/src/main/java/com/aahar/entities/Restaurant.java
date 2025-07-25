@@ -40,9 +40,11 @@ public class Restaurant extends BaseEntity{
 	@OneToOne( cascade=CascadeType.ALL)
 	@JoinColumn(name="ResaturantAddress_id")
 	private RestaurantAddress restaurantAddress;
+	
 	@ManyToOne
 	@JoinColumn(name="restaurantOwner_id")
 	private RestaurantOwner restaurantOwner;
+	
 	public Restaurant(String restaurantName, String restauratDescription, boolean isVeg, double avgCost, boolean isOnline) {
 		super();
 		this.restaurantName = restaurantName;

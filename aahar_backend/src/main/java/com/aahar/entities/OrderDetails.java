@@ -14,11 +14,13 @@ import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString(callSuper = true)
 
 public class OrderDetails extends BaseEntity {
 	int quantity;
@@ -29,7 +31,7 @@ public class OrderDetails extends BaseEntity {
 	@JoinColumn(name="order_id")
 	private Orders orders;
 	@ManyToOne
-	//@JoinColumn(name=)
+	@JoinColumn(name="orderdetails")
 	private Dish dish;
 	
 	
