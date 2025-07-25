@@ -36,9 +36,6 @@ function App() {
         <Route path="/restaurant/history" element={<R_Restaurant_History/>} />
         <Route path="/restaurant/contact" element={<R_Contact_us/>} />
         <Route path="/delivery" element={<D_Delivery_Dashboard/>} />
-
-
-
         </Routes>
     </BrowserRouter>
     <ToastContainer></ToastContainer>
