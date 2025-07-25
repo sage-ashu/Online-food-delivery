@@ -1,6 +1,8 @@
 package com.aahar.entities;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -35,6 +37,8 @@ public class Dish extends BaseEntity{
 	private int ratingSum;
 	//We are humans too
 	private boolean isAvailable;
+	@OneToMany
+	private List<OrderDetails> orderdetails=new ArrayList<>();
 	@ManyToOne
 	@JoinColumn(name="restaurant",nullable = false)
 	private Restaurant myRestaurant;
