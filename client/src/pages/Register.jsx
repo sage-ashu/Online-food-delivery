@@ -1,41 +1,46 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { registerUser } from "../services/userService";
+import { registerRestaurant } from "../services/restaurantOwnerService";
+import { registerDeliveryAgent } from "../services/deliveryService";
+import { toast } from "react-toastify";
 
-function Register() {
-  const [role, setRole] = useState('customer');
-  const [restaurantType, setRestaurantType] = useState('pure_veg');
-  const [name, setName] = useState('');
-  const [area, setArea] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [vehicle, setVehicle] = useState('bike'); // For delivery partner
-
+const Register = () => {
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const [accountType, setAccountType] = useState("user");
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    password: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleTypeChange = (e) => {
+    setAccountType(e.target.value);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!email || !password || !name || (role === 'restaurant' && !area)) {
-      toast.error('⚠️ Please fill all required fields.');
-      return;
-    }
-
-    const data = {
-      role,
-      name,
-      email,
-      password,
-      ...(role === 'restaurant' && { area, restaurantType }),
-      ...(role === 'delivery' && { area, vehicle }),
-    };
-
-    // Simulated registration
     try {
-      console.log('Registered user:', data);
-      navigate('/login');
+      if (accountType === "user") {
+        await registerUser(formData);
+      } else if (accountType === "restaurant") {
+        await registerRestaurant(formData);
+      } else if (accountType === "delivery") {
+        await registerDeliveryAgent(formData);
+      }
+
+      toast.success(`${accountType} registered successfully`);
+      navigate("/login");
     } catch (err) {
-      toast.error('❌ Something went wrong during registration');
+      console.error(err);
+      toast.error(err.message || "Registration failed");
     }
   };
 
@@ -54,100 +59,77 @@ function Register() {
       <div className="min-h-screen bg-amber-50 flex items-center justify-center p-6">
         <div className="bg-white shadow-2xl rounded-2xl p-8 max-w-md w-full">
           <h2 className="text-3xl font-bold text-center text-amber-900 mb-6">
-            Join Aahar 🍲
+            Create your Aahar Account 🍽️
           </h2>
 
-          {/* Role Toggle */}
-          <div className="flex justify-center mb-6 space-x-2">
-            {['customer', 'restaurant', 'delivery'].map((r) => (
-              <button
-                key={r}
-                className={`px-4 py-2 rounded-full border border-amber-900 ${
-                  role === r ? 'bg-amber-900 text-white' : 'bg-white text-amber-900'
-                }`}
-                onClick={() => setRole(r)}
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Role Selector */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">
+                Register as:
+              </label>
+              <select
+                value={accountType}
+                onChange={handleTypeChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-amber-600"
               >
-                {r.charAt(0).toUpperCase() + r.slice(1)}
-              </button>
-            ))}
-          </div>
+                <option value="user">Customer</option>
+                <option value="restaurant">Restaurant</option>
+                <option value="delivery">Delivery Agent</option>
+              </select>
+            </div>
 
-          {/* Form */}
-          <form onSubmit={handleSubmit}>
-            <div className="mb-4">
-              <label className="block mb-1 text-sm font-semibold text-gray-700">Name</label>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">
+                Name
+              </label>
               <input
                 type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Enter your name"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-amber-600"
                 required
               />
             </div>
 
-            {(role === 'restaurant' || role === 'delivery') && (
-              <div className="mb-4">
-                <label className="block mb-1 text-sm font-semibold text-gray-700">Area</label>
-                <input
-                  type="text"
-                  value={area}
-                  onChange={(e) => setArea(e.target.value)}
-                  placeholder="Location / Area"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-amber-600"
-                  required
-                />
-              </div>
-            )}
-
-            {role === 'restaurant' && (
-              <div className="mb-4">
-                <label className="block mb-1 text-sm font-semibold text-gray-700">Veg Type</label>
-                <select
-                  value={restaurantType}
-                  onChange={(e) => setRestaurantType(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-amber-600"
-                >
-                  <option value="pure_veg">Pure Veg</option>
-                  <option value="hybrid">Hybrid</option>
-                </select>
-              </div>
-            )}
-
-            {role === 'delivery' && (
-              <div className="mb-4">
-                <label className="block mb-1 text-sm font-semibold text-gray-700">Vehicle</label>
-                <select
-                  value={vehicle}
-                  onChange={(e) => setVehicle(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-amber-600"
-                >
-                  <option value="bike">Bike</option>
-                  <option value="scooter">Scooter</option>
-                  <option value="bicycle">Bicycle</option>
-                </select>
-              </div>
-            )}
-
-            <div className="mb-4">
-              <label className="block mb-1 text-sm font-semibold text-gray-700">Email</label>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">
+                Email
+              </label>
               <input
                 type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@example.com"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-amber-600"
                 required
               />
             </div>
 
-            <div className="mb-6">
-              <label className="block mb-1 text-sm font-semibold text-gray-700">Password</label>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">
+                Phone
+              </label>
+              <input
+                type="text"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-amber-600"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">
+                Password
+              </label>
               <input
                 type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-amber-600"
                 required
               />
@@ -157,12 +139,13 @@ function Register() {
               type="submit"
               className="w-full bg-amber-900 hover:bg-amber-800 text-white py-2 rounded-lg transition duration-200"
             >
-              Register as {role.charAt(0).toUpperCase() + role.slice(1)}
+              Register
             </button>
           </form>
 
+          {/* Already have an account link */}
           <p className="mt-4 text-center text-sm text-gray-700">
-            Already have an account?{' '}
+            Already have an account?{" "}
             <Link to="/login" className="text-amber-900 font-semibold hover:underline">
               Login here
             </Link>
@@ -171,6 +154,6 @@ function Register() {
       </div>
     </>
   );
-}
+};
 
 export default Register;

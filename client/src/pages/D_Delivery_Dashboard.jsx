@@ -4,7 +4,7 @@ import { useAuth } from '../contexts/AuthContext'; // adjust the path if needed
 import Navbar from '../components/Navbar';
 import { toast } from 'react-toastify';
 
-function Delivery_Dashboard() {
+function D_Delivery_Dashboard() {
   const { logout, user } = useAuth();
   const navigate = useNavigate();
 
@@ -56,4 +56,4 @@ function Delivery_Dashboard() {
   );
 }
 
-export default Delivery_Dashboard;
+export default D_Delivery_Dashboard;
