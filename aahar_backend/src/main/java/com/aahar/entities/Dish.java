@@ -1,7 +1,10 @@
 package com.aahar.entities;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -24,17 +27,12 @@ public class Dish extends BaseEntity{
 	private String description;
 	private boolean isVeg;
 	private int preperationTime;
-	
-	//Doubt not to be included 
 	private int noOfServings;
-	
-	//Please have mercy on developer
 	private int orderedTimes;
-	
-	//I am dying
 	private int ratingSum;
-	//We are humans too
 	private boolean isAvailable;
+	@OneToMany(mappedBy = "dish", cascade=CascadeType.ALL,orphanRemoval = true)
+	private List<OrderDetails> orderdetails=new ArrayList<>();
 	@ManyToOne
 	@JoinColumn(name="restaurant",nullable = false)
 	private Restaurant myRestaurant;

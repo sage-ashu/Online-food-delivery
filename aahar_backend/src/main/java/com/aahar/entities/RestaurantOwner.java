@@ -19,13 +19,13 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class RestaurantOwner extends BaseEntity{
 	
-	@Column(length=20)
+	@Column(length=40)
 	private String name;
-	@Column(length=10)
+	@Column(length=40)
 	private String phoneNumber;
-	@Column(length=10)
+	@Column(length=40)
 	private String email;
-	@Column(length=10)
+	@Column(length=40)
 	private String password;
 	public RestaurantOwner(String name, String phoneNumber, String email, String password) {
 		super();

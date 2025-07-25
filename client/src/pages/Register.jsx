@@ -12,7 +12,7 @@ const Register = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    phone: "",
+    phoneNumber: "",
     password: "",
   });
 
@@ -113,8 +113,8 @@ const Register = () => {
               </label>
               <input
                 type="text"
-                name="phone"
-                value={formData.phone}
+                name="phoneNumber"
+                value={formData.phoneNumber}
                 onChange={handleChange}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-amber-600"
                 required

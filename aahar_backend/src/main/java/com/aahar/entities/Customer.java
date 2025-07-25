@@ -14,12 +14,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
+
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name="customers")
+@ToString(callSuper = true)
 public class Customer extends BaseEntity
 {
 	@Column(length=50, name="first_name")
@@ -41,10 +43,42 @@ public class Customer extends BaseEntity
 	private List< CustomerAddress> addresses=new ArrayList<>();
 	
 	
-	//helper class to add address
-	public void addAddress( CustomerAddress AddressEntity) {
-		this.addresses.add(AddressEntity);
-		AddressEntity.setCustomer(this);
-	}
+
+	     //helper class to add address
+	
+		public void addAddress( CustomerAddress address) 
+		{
+			this.addresses.add(address);
+			address.setCustomer(this);
+		}
+		
+		//helper class to add orders
+		public void addOrders( Orders order) 
+		{
+			this.orders.add(order);
+			order.setCustomer(this);
+		}
+		
+		
+		//helper class to remove address
+		public void removeAddress(CustomerAddress address)
+		{
+			this.addresses.remove(address);
+			address.setCustomer(null);
+		}
+
+		public Customer(String firstName, String lastName, String email, String password) 
+		{
+			super();
+			this.firstName = firstName;
+			this.lastName = lastName;
+			this.email = email;
+			this.password = password;
+			
+		}
+	
+	
 
 }
+
+
