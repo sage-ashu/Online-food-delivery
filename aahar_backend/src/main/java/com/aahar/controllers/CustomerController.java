@@ -17,7 +17,7 @@ import lombok.AllArgsConstructor;
 @RequestMapping("/users")
 @RestController
 @AllArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:5173")
 public class CustomerController {
 	public final CustomerService customerService;
 	//add customer
