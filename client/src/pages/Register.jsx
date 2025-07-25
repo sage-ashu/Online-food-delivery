@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { registerUser } from "../services/userService";
-import { registerRestaurant } from "../services/restaurantService";
+import { registerRestaurant } from "../services/restaurantOwnerService";
 import { registerDeliveryAgent } from "../services/deliveryService";
 import { toast } from "react-toastify";
 
