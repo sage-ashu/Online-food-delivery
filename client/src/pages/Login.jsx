@@ -6,18 +6,18 @@ import { toast } from 'react-toastify';
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("customer"); // NEW: role state
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const loggedInUser = login(email, password);
-
+  
+    const loggedInUser = await login(email, password, role); // 🔁 Made async
+  
     if (loggedInUser) {
       toast.success(`${loggedInUser.name} logged in successfully`);
-
-      // Navigate based on role
+  
       switch (loggedInUser.role) {
         case 'customer':
           navigate('/');
@@ -35,10 +35,10 @@ function Login() {
       toast.error("Invalid credentials.😅");
     }
   };
+  
 
   return (
     <>
-      {/* Back to Home Button */}
       <div className="absolute top-4 left-4">
         <Link
           to="/"
@@ -56,6 +56,28 @@ function Login() {
 
           {/* Form */}
           <form onSubmit={handleSubmit}>
+            {/* Role Toggle */}
+            <div className="mb-4">
+              <label className="block mb-1 text-sm font-semibold text-gray-700">
+                Select Role
+              </label>
+              <div className="flex space-x-4 text-sm text-gray-700">
+                {['customer', 'restaurant', 'owner'].map((r) => (
+                  <label key={r} className="flex items-center space-x-1">
+                    <input
+                      type="radio"
+                      value={r}
+                      checked={role === r}
+                      onChange={() => setRole(r)}
+                      className="accent-amber-900"
+                    />
+                    <span className="capitalize">{r}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            {/* Email */}
             <div className="mb-4">
               <label className="block mb-1 text-sm font-semibold text-gray-700">Email</label>
               <input
@@ -67,6 +89,8 @@ function Login() {
                 required
               />
             </div>
+
+            {/* Password */}
             <div className="mb-6">
               <label className="block mb-1 text-sm font-semibold text-gray-700">Password</label>
               <input
@@ -79,6 +103,7 @@ function Login() {
               />
             </div>
 
+            {/* Submit */}
             <button
               type="submit"
               className="w-full bg-amber-900 hover:bg-amber-800 text-white py-2 rounded-lg transition duration-200"
@@ -87,7 +112,7 @@ function Login() {
             </button>
           </form>
 
-          {/* Register Link */}
+          {/* Register */}
           <p className="mt-4 text-center text-sm text-gray-700">
             New to Aahar?{' '}
             <Link to="/register" className="text-amber-900 font-semibold hover:underline">
