@@ -32,12 +32,11 @@ public class Address extends BaseEntity
 	private String pinCode;
 	private double latitude;
 	private double longitude;
-	private boolean isRestaurant;
 	
 	
 	public Address(String phoneNo,
 			String address1, String address2, String address3, String city, String pinCode, double latitude,
-			double longitude, boolean isRestaurant) 
+			double longitude) 
 	{
 		super();
 		this.phoneNo = phoneNo;
@@ -48,7 +47,6 @@ public class Address extends BaseEntity
 		this.pinCode = pinCode;
 		this.latitude = latitude;
 		this.longitude = longitude;
-		this.isRestaurant = isRestaurant;
 	}
 	
 	

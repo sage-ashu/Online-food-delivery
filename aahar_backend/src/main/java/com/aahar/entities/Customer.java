@@ -14,12 +14,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
+
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name="customers")
+@ToString(callSuper = true)
 public class Customer extends BaseEntity
 {
 	@Column(length=50, name="first_name")
@@ -63,6 +65,16 @@ public class Customer extends BaseEntity
 		{
 			this.addresses.remove(address);
 			address.setCustomer(null);
+		}
+
+		public Customer(String firstName, String lastName, String email, String password) 
+		{
+			super();
+			this.firstName = firstName;
+			this.lastName = lastName;
+			this.email = email;
+			this.password = password;
+			
 		}
 	
 	

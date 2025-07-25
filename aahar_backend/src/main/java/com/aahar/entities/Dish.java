@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -30,7 +31,7 @@ public class Dish extends BaseEntity{
 	private int orderedTimes;
 	private int ratingSum;
 	private boolean isAvailable;
-	@OneToMany
+	@OneToMany(mappedBy = "dish", cascade=CascadeType.ALL,orphanRemoval = true)
 	private List<OrderDetails> orderdetails=new ArrayList<>();
 	@ManyToOne
 	@JoinColumn(name="restaurant",nullable = false)
