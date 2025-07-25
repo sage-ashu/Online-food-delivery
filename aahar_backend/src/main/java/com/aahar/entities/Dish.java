@@ -24,16 +24,9 @@ public class Dish extends BaseEntity{
 	private String description;
 	private boolean isVeg;
 	private int preperationTime;
-	
-	//Doubt not to be included 
 	private int noOfServings;
-	
-	//Please have mercy on developer
 	private int orderedTimes;
-	
-	//I am dying
 	private int ratingSum;
-	//We are humans too
 	private boolean isAvailable;
 	@ManyToOne
 	@JoinColumn(name="restaurant",nullable = false)
