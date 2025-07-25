@@ -41,25 +41,32 @@ public class Customer extends BaseEntity
 	private List< CustomerAddress> addresses=new ArrayList<>();
 	
 	
-	//helper class to add address
-	public void addAddress( CustomerAddress addressEntity) {
-		this.addresses.add(addressEntity);
-		addressEntity.setCustomer(this);
-	}
+
+	     //helper class to add address
 	
-	public void addOrder( Orders orderEntity) {
-		this.orders.add(orderEntity);
-		orderEntity.setCustomer(this);
-	}
-	public void removeAddress(CustomerAddress addressEntity) {
-		this.addresses.remove(addressEntity);
-		addressEntity.setCustomer(null);
-	}
+		public void addAddress( CustomerAddress address) 
+		{
+			this.addresses.add(address);
+			address.setCustomer(this);
+		}
+		
+		//helper class to add orders
+		public void addOrders( Orders order) 
+		{
+			this.orders.add(order);
+			order.setCustomer(this);
+		}
+		
+		
+		//helper class to remove address
+		public void removeAddress(CustomerAddress address)
+		{
+			this.addresses.remove(address);
+			address.setCustomer(null);
+		}
 	
-	public void removeOrder(Orders orderEntity) {
-		this.orders.remove(orderEntity);
-		orderEntity.setCustomer(null);
-	}
 	
 
 }
+
+
