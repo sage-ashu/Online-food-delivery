@@ -51,5 +51,15 @@ public class Customer extends BaseEntity
 		this.orders.add(orderEntity);
 		orderEntity.setCustomer(this);
 	}
+	public void removeAddress(CustomerAddress addressEntity) {
+		this.addresses.remove(addressEntity);
+		addressEntity.setCustomer(null);
+	}
+	
+	public void removeOrder(Orders orderEntity) {
+		this.orders.remove(orderEntity);
+		orderEntity.setCustomer(null);
+	}
+	
 
 }
