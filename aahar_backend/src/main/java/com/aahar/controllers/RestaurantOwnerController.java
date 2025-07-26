@@ -41,4 +41,9 @@ public class RestaurantOwnerController {
 	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ApiResponse(e.getMessage()));
 	    }
 	}
+	
+	//1.update owner details
+	//2. update password
+	//3. get all details
+	
 }
