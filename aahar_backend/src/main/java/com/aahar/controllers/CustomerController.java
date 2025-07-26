@@ -29,7 +29,7 @@ public class CustomerController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(customerService.addCustomer(dto));
 	}
 	
-	//get all orders of user
+	//get all orders of user->move to orders controller
 	@GetMapping("/{customerId}/orders")
 	public ResponseEntity<?> allOrders(@PathVariable Long id){
 		return ResponseEntity.status(HttpStatus.OK).body(customerService.allOrders(id));
@@ -37,7 +37,7 @@ public class CustomerController {
 	//get saved address
 	
 	
-	//Add Address
+	//Add Address->move to address controller
 	@PostMapping("/{customerId}/address")
 	public ResponseEntity<?> addAddress(@PathVariable Long customerId,@RequestBody AddressDTO dto){
 		return ResponseEntity.status(HttpStatus.CREATED)
@@ -46,7 +46,10 @@ public class CustomerController {
 	//Update Address
 	
 	//Delete Address
-	//update Password
+	//1.update Password
+	//2. update details
+	//3. get all details
+	
 	
 	
 }

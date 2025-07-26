@@ -13,5 +13,9 @@ import lombok.AllArgsConstructor;
 public class OrdersController {
 	public final OrdersService ordersService;
 	
-	//add Orders
+	//1. add Orders by customer id and restaurant id
+	//2. get order by customer id
+	//3. get order by restaurant id
+	//4. update order status by order id
+	
 }
