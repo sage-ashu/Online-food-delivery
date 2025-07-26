@@ -23,24 +23,9 @@ import lombok.AllArgsConstructor;
 public class RestaurantOwnerController {
 	public final RestaurantOwnerService restaurantOwnerService;
 	
-	//register the owner of the restaurant
-	@PostMapping("/register")
-	public ResponseEntity<?> addOwner(@RequestBody RestaurantOwnerDTO dto){
-		return ResponseEntity.status(HttpStatus.CREATED).body(restaurantOwnerService.addOwner(dto));
-	}
 	
-	
-	@PostMapping("/login")
-	public ResponseEntity<?> loginOwner(@RequestBody RestaurantOwnerLoginRequestDTO requestDto) {
-	    try {
-	    	System.out.println(requestDto);
-	        RestaurantOwnerLoginResponseDTO responseDTO = restaurantOwnerService.loginOwner(requestDto);
-	        System.out.println(responseDTO);
-	        return ResponseEntity.ok(responseDTO);
-	    } catch (RuntimeException e) {
-	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ApiResponse(e.getMessage()));
-	    }
-	}
+	//-1 Register owner
+	// 0 Login owner
 	
 	//1.update owner details
 	//2. update password
