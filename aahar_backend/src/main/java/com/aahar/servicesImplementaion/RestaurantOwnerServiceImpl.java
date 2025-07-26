@@ -17,39 +17,18 @@ import lombok.AllArgsConstructor;
 @Service
 @Transactional
 @AllArgsConstructor
-public class RestaurantOwnerServiceImpl implements RestaurantOwnerService {
-//ctor based DI
-	public final RestaurantOwnerDao restaurantOwnerDao;
-	public final ModelMapper map;
-	@Override
+public class RestaurantOwnerServiceImpl implements RestaurantOwnerService {@Override
 	public ApiResponse addOwner(RestaurantOwnerDTO dto) {
 		// TODO Auto-generated method stub
-		System.out.println(dto);
-		RestaurantOwner entity = map.map(dto, RestaurantOwner.class);
-		System.out.println(entity);
-		restaurantOwnerDao.save(entity);
-		
-		return new ApiResponse("Owner successfully registered");
+		return null;
 	}
-	
-	//Api for login of restaurant 
+
 	@Override
 	public RestaurantOwnerLoginResponseDTO loginOwner(RestaurantOwnerLoginRequestDTO dto) {
-	    // Find owner by email
-	    RestaurantOwner owner = restaurantOwnerDao.findByEmail(dto.getEmail())
-	        .orElseThrow(() -> new RuntimeException("Invalid email or password"));
-	    
-	    System.out.println(owner);
-	    
-	    // Match password (You should hash and check in real apps)
-	    if (!owner.getPassword().equals(dto.getPassword())) {
-	        throw new RuntimeException("Invalid email or password");
-	    }
-	    System.out.println(owner);
-	    
-	    // Map entity to response DTO
-	    return map.map(owner, RestaurantOwnerLoginResponseDTO.class);
+		// TODO Auto-generated method stub
+		return null;
 	}
+
 
 	
 
