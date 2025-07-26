@@ -21,6 +21,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @CrossOrigin(origins = "http://localhost:5173")
 public class CustomerController {
+	
 	public final CustomerService customerService;
 	
 	//add customer
@@ -43,10 +44,7 @@ public class CustomerController {
 		return ResponseEntity.status(HttpStatus.CREATED)
 				.body(customerService.addAddress(customerId,dto));
 	}
-	
-	//1.update Password
-	//2. update details
-	//3. get all details
+
 	
 	
 	
