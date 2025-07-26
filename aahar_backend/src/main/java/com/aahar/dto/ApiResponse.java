@@ -1,16 +1,19 @@
 package com.aahar.dto;
 
-import java.time.LocalDateTime;
-
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+
 @Getter
 @Setter
+@AllArgsConstructor
 public class ApiResponse {
- private LocalDateTime date;
- private String msg;
- public ApiResponse(String msg){
-	 this.msg=msg;
-	 this.date =LocalDateTime.now();
- }
+    private boolean success;
+    private String message;
+    private Object data;
+
+    public ApiResponse(boolean success, String message) {
+        this.success = success;
+        this.message = message;
+    }
 }

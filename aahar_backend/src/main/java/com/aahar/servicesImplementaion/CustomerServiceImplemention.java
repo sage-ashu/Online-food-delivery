@@ -37,10 +37,10 @@ public class CustomerServiceImplemention implements CustomerService {
 			Customer cus = customer.get();
 			CustomerAddress AddressEntity = map.map(dto, CustomerAddress.class);
 			cus.addAddress(AddressEntity);
-			return new ApiResponse("Address add successfully.");
+			return new ApiResponse(true,"Address add successfully.");
 		}
 		else
-		return new ApiResponse("customer is not present");
+		return new ApiResponse(false,"customer is not present");
 	}
 	
 	//This API helps us to add the customer
@@ -48,7 +48,7 @@ public class CustomerServiceImplemention implements CustomerService {
 	public ApiResponse addCustomer(CustomerDTO dto) {
 		Customer entity = map.map(dto, Customer.class);
 		customerDao.save(entity);
-		return new ApiResponse("Customer added successfully");
+		return new ApiResponse(true,"Customer added successfully");
 	}
 
 	//This Api is used to fetch the list of all orders placed by customer
