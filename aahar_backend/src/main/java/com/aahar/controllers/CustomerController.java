@@ -34,7 +34,7 @@ public class CustomerController {
 	public ResponseEntity<?> allOrders(@PathVariable Long id){
 		return ResponseEntity.status(HttpStatus.OK).body(customerService.allOrders(id));
 	}
-	//get saved address
+	
 	
 	
 	//Add Address->move to address controller
@@ -43,9 +43,7 @@ public class CustomerController {
 		return ResponseEntity.status(HttpStatus.CREATED)
 				.body(customerService.addAddress(customerId,dto));
 	}
-	//Update Address
 	
-	//Delete Address
 	//1.update Password
 	//2. update details
 	//3. get all details
