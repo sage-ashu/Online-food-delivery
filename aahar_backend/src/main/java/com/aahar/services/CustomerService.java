@@ -6,7 +6,8 @@ import com.aahar.dto.AddressDTO;
 import com.aahar.dto.ApiResponse;
 import com.aahar.dto.CustomerDTO;
 import com.aahar.dto.OrdersDTO;
-import com.aahar.entities.Orders;
+import com.aahar.dto.UpdatePasswordDTO;
+import com.aahar.dto.updateCustomerDTO;
 
 public interface CustomerService {
 
@@ -15,5 +16,13 @@ public interface CustomerService {
 	ApiResponse addCustomer(CustomerDTO dto);
 
 	List<OrdersDTO> allOrders(Long id);
+
+	CustomerDTO customerProfile(Long id);
+
+	ApiResponse deleteCustomer(Long customerId);
+
+	ApiResponse updatePassword(Long id,UpdatePasswordDTO dto);
+
+	ApiResponse updateProfile(Long customerId, updateCustomerDTO dto);
 
 }
