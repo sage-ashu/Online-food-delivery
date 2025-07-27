@@ -3,15 +3,19 @@ package com.aahar.controllers;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aahar.dto.AddressDTO;
 import com.aahar.dto.CustomerDTO;
+import com.aahar.dto.UpdatePasswordDTO;
+import com.aahar.dto.updateCustomerDTO;
 import com.aahar.services.CustomerService;
 
 import lombok.AllArgsConstructor;
@@ -21,6 +25,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @CrossOrigin(origins = "http://localhost:5173")
 public class CustomerController {
+	
 	public final CustomerService customerService;
 	
 	//add customer
@@ -31,8 +36,8 @@ public class CustomerController {
 	
 	//get all orders of user->move to orders controller
 	@GetMapping("/{customerId}/orders")
-	public ResponseEntity<?> allOrders(@PathVariable Long id){
-		return ResponseEntity.status(HttpStatus.OK).body(customerService.allOrders(id));
+	public ResponseEntity<?> allOrders(@PathVariable Long customerId){
+		return ResponseEntity.status(HttpStatus.OK).body(customerService.allOrders(customerId));
 	}
 	
 	
@@ -43,11 +48,26 @@ public class CustomerController {
 		return ResponseEntity.status(HttpStatus.CREATED)
 				.body(customerService.addAddress(customerId,dto));
 	}
+
+	//view customer profile
+	@GetMapping("/{customerId}/profile")
+	public ResponseEntity<?> customerProfile(@PathVariable Long customerId){
+		return ResponseEntity.ok(customerService.customerProfile(customerId));
+	}
+	//delete customer
+	@DeleteMapping("/{customerId}/delete")
+	public ResponseEntity<?> deleteCustomer(@PathVariable Long customerId){
+		return ResponseEntity.ok(customerService.deleteCustomer(customerId));
+	}
+	//change password
+	@PutMapping("/{customerId}/updatePassword")
+	public ResponseEntity<?> updatePassword(@PathVariable Long customerId,@RequestBody UpdatePasswordDTO dto){
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(customerService.updatePassword(customerId,dto));
+	}
+	//update profile
+	@PutMapping("/{customerId}/updateProfile")
+	public ResponseEntity<?> updateProfile(@PathVariable Long customerId,@RequestBody updateCustomerDTO dto){
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(customerService.updateProfile(customerId,dto));
 	
-	//1.update Password
-	//2. update details
-	//3. get all details
-	
-	
-	
+	}
 }
