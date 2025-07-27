@@ -30,7 +30,7 @@ public class Restaurant extends BaseEntity{
 	@Column(length=300)
 	private String restauratDescription;
 	private boolean isVeg;
-	private double AvgCost;
+	private double avgCost;
 	private double ratingSum;
 	private double totalRating;
 	private boolean isOnline;
@@ -50,10 +50,20 @@ public class Restaurant extends BaseEntity{
 		this.restaurantName = restaurantName;
 		this.restauratDescription = restauratDescription;
 		this.isVeg = isVeg;
-		AvgCost = avgCost;
+		this.avgCost = avgCost;
 		this.ratingSum = 0;
 		this.totalRating =0;
 		this.isOnline = isOnline;
+	}
+	
+	public void addDish(Dish dish) {
+		this.dish.add(dish);
+		dish.setMyRestaurant(this);
+	}
+	
+	public void removeDish(Dish dish) {
+		this.dish.remove(dish);
+		dish.setMyRestaurant(null);
 	}
 	
 	
