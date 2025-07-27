@@ -11,7 +11,7 @@ import lombok.AllArgsConstructor;
 @RequestMapping("/orders")
 @AllArgsConstructor
 public class OrdersController {
-	public final OrdersService ordersService;
+	//public final OrdersService ordersService;
 	
 	//1. add Orders by customer id and restaurant id
 	//2. get order by customer id
