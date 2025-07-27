@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
 
 
 @AllArgsConstructor
@@ -45,7 +48,21 @@ public class RestaurantAddressController {
 	        RestaurantAddressDTO saved = restaurantaddressservice.addRestaurantAddress(dto);
 	        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
 	    }
-	
+	    
+//	    @PutMapping("/{id}")
+//	    public String putMethodName(@PathVariable String id, @RequestBody String entity) {
+//	    	//TODO: process PUT request
+//	    	
+//	    	return entity;
+//	    }("/{id}")
+//	    public ResponseEntity<RestaurantAddressDTO> updateRestaurantAddress(
+//	            @PathVariable Long id,
+//	            @RequestBody RestaurantAddressDTO restaurantAddressDTO) {
+//
+//	        RestaurantAddressDTO updated = restaurantaddressService.updateRestaurantAddress(id, restaurantAddressDTO);
+//	        return ResponseEntity.ok(updated);
+//	    }
+//	
 	//1. Add Address
 	
 	
