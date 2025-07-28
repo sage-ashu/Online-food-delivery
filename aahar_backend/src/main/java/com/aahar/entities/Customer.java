@@ -40,7 +40,7 @@ public class Customer extends BaseEntity
 	@OneToMany(mappedBy = "customer", cascade=CascadeType.ALL,orphanRemoval = true)
 	private List<Orders> orders=new ArrayList<>();
 	
-	@OneToMany(mappedBy = "customer", cascade=CascadeType.ALL,orphanRemoval = true, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "customer", cascade=CascadeType.ALL,orphanRemoval = true)
 	private List< CustomerAddress> addresses=new ArrayList<>();
 	
 	
@@ -68,8 +68,7 @@ public class Customer extends BaseEntity
 			address.setCustomer(null);
 		}
 
-		public Customer(Long id, LocalDateTime isCreatedAt, LocalDateTime isUpdatedAt, boolean isDeleted,
-				String firstName, String lastName, String email, String password) {
+		public Customer(String firstName, String lastName, String email, String password) {
 			super();
 			this.firstName = firstName;
 			this.lastName = lastName;
