@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class CustomerAddressDTO {
+public class CustomerAddressEditDTO {
    
     private String phoneNo;
     private String address1;
@@ -19,5 +19,5 @@ public class CustomerAddressDTO {
     private double latitude;
     private double longitude;
 
-    private Long customerId;
+ 
 }
