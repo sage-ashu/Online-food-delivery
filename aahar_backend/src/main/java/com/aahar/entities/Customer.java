@@ -1,5 +1,6 @@
 package com.aahar.entities;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,8 +69,7 @@ public class Customer extends BaseEntity
 			address.setCustomer(null);
 		}
 
-		public Customer(Long id, LocalDateTime isCreatedAt, LocalDateTime isUpdatedAt, boolean isDeleted,
-				String firstName, String lastName, String email, String password) {
+		public Customer(String firstName, String lastName, String email, String password) {
 			super();
 			this.firstName = firstName;
 			this.lastName = lastName;
