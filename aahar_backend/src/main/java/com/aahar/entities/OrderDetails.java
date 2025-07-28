@@ -23,10 +23,10 @@ import lombok.ToString;
 @ToString(callSuper = true)
 
 public class OrderDetails extends BaseEntity {
-	int quantity;
-	int rating;
+	private int quantity;
+	private int rating;
 	@Column(length=200)
-	String review;
+	private String review;
 	@ManyToOne
 	@JoinColumn(name="order_id")
 	private Orders orders;
