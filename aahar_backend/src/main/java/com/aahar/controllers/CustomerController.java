@@ -34,20 +34,20 @@ public class CustomerController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(customerService.addCustomer(dto));
 	}
 	
-	//get all orders of user->move to orders controller
-	@GetMapping("/{customerId}/orders")
-	public ResponseEntity<?> allOrders(@PathVariable Long customerId){
-		return ResponseEntity.status(HttpStatus.OK).body(customerService.allOrders(customerId));
-	}
-	
-	
-	
-	//Add Address->move to address controller
-	@PostMapping("/{customerId}/address")
-	public ResponseEntity<?> addAddress(@PathVariable Long customerId,@RequestBody AddressDTO dto){
-		return ResponseEntity.status(HttpStatus.CREATED)
-				.body(customerService.addAddress(customerId,dto));
-	}
+//	//get all orders of user->move to orders controller
+//	@GetMapping("/{customerId}/orders")
+//	public ResponseEntity<?> allOrders(@PathVariable Long customerId){
+//		return ResponseEntity.status(HttpStatus.OK).body(customerService.allOrders(customerId));
+//	}
+//	
+//	
+//	
+//	//Add Address->move to address controller
+//	@PostMapping("/{customerId}/address")
+//	public ResponseEntity<?> addAddress(@PathVariable Long customerId,@RequestBody AddressDTO dto){
+//		return ResponseEntity.status(HttpStatus.CREATED)
+//				.body(customerService.addAddress(customerId,dto));
+//	}
 
 	//view customer profile
 	@GetMapping("/{customerId}/profile")
