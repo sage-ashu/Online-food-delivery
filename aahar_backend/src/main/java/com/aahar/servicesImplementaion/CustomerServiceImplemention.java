@@ -88,16 +88,20 @@ public class CustomerServiceImplemention implements CustomerService {
 	@Override
 	public ApiResponse updatePassword(Long id, UpdatePasswordDTO dto) {
 		Customer entity = customerDao.findById(id)
-				.orElseThrow(()-> new ResourceNotFoundException("customer not found"));
-		if(entity.getPassword().contains(dto.oldPassword)) {
-			entity.setPassword(dto.getNewPassword());
-			customerDao.save(entity);
-			return new ApiResponse(true, "Password updated successfully");
+				.orElseThrow(()-> new ResourceNotFoundException("User Not Found"));
+		if(!entity.getPassword().equals(dto.getOldPassword())) {
+			return new ApiResponse(false, "Enter correct old Password");
 		}
-		else {
-		return new ApiResponse(false, "Please enter correct password");
+		
+			if(entity.getPassword().equals(dto.getNewPassword())) {
+				return new ApiResponse(false, "New and Old Password can't be same");
+			}
+			
+				entity.setPassword(dto.getNewPassword());
+				customerDao.save(entity);
+				return new ApiResponse(true, "Password Changed Successfully");
+			
 		}
-	}
 
 	@Override
 	public ApiResponse updateProfile(Long customerId, updateCustomerDTO dto) {
