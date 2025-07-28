@@ -18,3 +18,12 @@ mvnw.cmd
 .idea/
 *.iml
 out/
+
+target/
+*.class
+*.log
+*.iml
+.idea/
+*.jar
+*.war
+
