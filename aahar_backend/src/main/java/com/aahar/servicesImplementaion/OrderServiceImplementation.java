@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.aahar.dao.OrdersDao;
 import com.aahar.dto.CustomerOrderResponseDTO;
@@ -11,6 +13,10 @@ import com.aahar.dto.RestaurantOrderResponseDTO;
 import com.aahar.entities.Orders;
 import com.aahar.services.OrdersService;
 
+import lombok.AllArgsConstructor;
+@Service
+@Transactional
+@AllArgsConstructor
 public class OrderServiceImplementation implements OrdersService {
 	private OrdersDao ordersDao;
 	private ModelMapper modelMapper;
