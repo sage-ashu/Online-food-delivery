@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.aahar.dao.OrdersDao;
 import com.aahar.dto.CustomerOrderResponseDTO;
+import com.aahar.dto.AddOrderDTO;
 import com.aahar.dto.RestaurantOrderResponseDTO;
 import com.aahar.entities.Orders;
 import com.aahar.services.OrdersService;
@@ -53,6 +54,13 @@ public class OrderServiceImplementation implements OrdersService {
 			}
 		}
 		return restaurantOrders;
+	}
+
+	@Override
+	public void addOrder(AddOrderDTO orderDTO) {
+		// TODO Auto-generated method stub
+		
+		
 	}
 
 }

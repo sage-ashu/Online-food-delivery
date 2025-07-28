@@ -27,3 +27,4 @@ target/
 *.jar
 *.war
 
+src/main/resources/application.properties
