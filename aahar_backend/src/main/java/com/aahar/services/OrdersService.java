@@ -3,6 +3,7 @@ package com.aahar.services;
 import java.util.List;
 
 import com.aahar.dto.CustomerOrderResponseDTO;
+import com.aahar.dto.AddOrderDTO;
 import com.aahar.dto.RestaurantOrderResponseDTO;
 
 public interface OrdersService {
@@ -10,5 +11,7 @@ public interface OrdersService {
 	List<CustomerOrderResponseDTO> getCustomerOrders(Long customerId);
 
 	List<RestaurantOrderResponseDTO> getRestaurantOrders(Long restaurantId);
+
+	void addOrder(AddOrderDTO orderDTO);
 
 }

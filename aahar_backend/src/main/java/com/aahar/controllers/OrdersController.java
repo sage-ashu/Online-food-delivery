@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aahar.dto.CustomerOrderResponseDTO;
-import com.aahar.dto.OrderDTO;
+import com.aahar.dto.AddOrderDTO;
 import com.aahar.dto.RestaurantOrderResponseDTO;
 import com.aahar.services.OrdersService;
 
@@ -22,11 +22,12 @@ import lombok.AllArgsConstructor;
 public class OrdersController {
 	public final OrdersService ordersService;
 
-//	@PostMapping("")
-	public ResponseEntity<?> addOrder(@RequestBody OrderDTO orderDTO){
-		return null;
-	}
 	//1. add Orders by customer id and restaurant id
+//	@PostMapping("")
+	public ResponseEntity<?> addOrder(@RequestBody AddOrderDTO orderDTO){
+		ordersService.addOrder(orderDTO);
+		return ResponseEntity.ok("order placed");
+	}
 	//2. get order by customer id
 	@GetMapping("/{customerId}")
 	public ResponseEntity<?> getOrderByCustomer(Long customerId){
