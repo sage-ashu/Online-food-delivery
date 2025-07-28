@@ -27,3 +27,4 @@ target/
 *.jar
 *.war
 
+aahar_backend/src/main/resources/application.properties
