@@ -1,7 +1,9 @@
 package com.aahar.servicesImplementaion;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.aahar.dto.ApiResponse;
 import com.aahar.dto.PasswordUpdateDTO;
@@ -11,11 +13,16 @@ import com.aahar.dto.RestaurantOwnerResponseDTO;
 import com.aahar.dto.RestaurantOwnerUpdateDTO;
 import com.aahar.entities.RestaurantOwner;
 import com.aahar.services.RestaurantOwnerService;
+
+import lombok.AllArgsConstructor;
+
+import com.aahar.dao.OrdersDao;
 import com.aahar.dao.RestaurantOwnerDao;
 
 import java.util.Optional;
-
 @Service
+@Transactional
+@AllArgsConstructor
 public class RestaurantOwnerServiceImpl implements RestaurantOwnerService {
 
     @Autowired
