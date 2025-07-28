@@ -7,6 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
+//tanmay bsdk don't touch my dto 
 public class ApiResponse {
     private boolean success;
     private String message;
