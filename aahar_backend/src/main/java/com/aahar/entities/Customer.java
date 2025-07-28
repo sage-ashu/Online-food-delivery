@@ -22,6 +22,7 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class Customer extends BaseEntity
 {
+	
 	@Column(length=50, name="first_name")
 	private String firstName;
 	@Column(length=50, name="last_name")
@@ -29,6 +30,8 @@ public class Customer extends BaseEntity
 	@Column(length=100, unique=true)
 	private String email;
 	private String password;
+	
+	
 	
 	/*
 	 * one customer can place multiple orders,
@@ -65,15 +68,18 @@ public class Customer extends BaseEntity
 			address.setCustomer(null);
 		}
 
-		public Customer(String firstName, String lastName, String email, String password) 
-		{
+		public Customer(Long id, LocalDateTime isCreatedAt, LocalDateTime isUpdatedAt, boolean isDeleted,
+				String firstName, String lastName, String email, String password) {
 			super();
 			this.firstName = firstName;
 			this.lastName = lastName;
 			this.email = email;
 			this.password = password;
-			
 		}
+
+		
+
+		
 	
 	
 
