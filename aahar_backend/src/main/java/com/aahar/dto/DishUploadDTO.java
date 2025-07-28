@@ -9,6 +9,7 @@ import lombok.ToString;
 @ToString
 public class DishUploadDTO {
 	private Long restaurantId;
+	private Long dishId;
 	private String dishName;
 	private double dishPrice;
 	private String description;
