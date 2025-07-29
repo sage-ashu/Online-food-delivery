@@ -55,4 +55,5 @@ public class CustomerAddressConttroller {
 	        List<CustomerAddressDTO> addresses = customerAddressService.getAddressesByCustomerId(customerId);
 	        return ResponseEntity.ok(addresses);
 	    }
+	  
 }

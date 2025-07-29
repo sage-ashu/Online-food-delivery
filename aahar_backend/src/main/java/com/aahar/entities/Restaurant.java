@@ -50,8 +50,8 @@ public class Restaurant extends BaseEntity{
 	private double longitude;
 	@OneToMany(mappedBy = "myRestaurant",cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Dish> dish=new ArrayList<>();
-	
-	
+	@OneToMany(mappedBy = "restaurant",cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Orders> orders=new ArrayList<>();
 	
 	@ManyToOne
 	@JoinColumn(name="restaurantOwner_id")
