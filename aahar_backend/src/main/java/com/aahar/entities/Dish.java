@@ -53,5 +53,10 @@ public class Dish extends BaseEntity{
 		this.isAvailable = isAvailable;
 	}
 	
+	public void addOrderDetail(OrderDetails detail) {
+		this.orderdetails.add(detail);
+		detail.setDish(this);
+	}
+	
 	
 }

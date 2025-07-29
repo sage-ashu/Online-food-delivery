@@ -24,20 +24,20 @@ import lombok.AllArgsConstructor;
 public class OrderDetailsController {
 	private final OrderDetailsService orderDetailsService;
 	//1.Add order details by order id and dish id
-	@PostMapping(("/add/{orderId}/{dishId}"))
-	public ResponseEntity<?> addOrderDetails(@PathVariable Long orderId, @PathVariable Long dishId, @RequestBody OrderDetailsDTO dto){
-		try {
-			return ResponseEntity.status(HttpStatus.CREATED)
-					.body(orderDetailsService.addOrderDetails (orderId, dishId, dto));
-			
-			
-		}catch(Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to add order details: "+e.getMessage());
-		}
-		
-		
-		 
-	} 
+//	@PostMapping(("/add/{orderId}/{dishId}"))
+//	public ResponseEntity<?> addOrderDetails(@PathVariable Long orderId, @PathVariable Long dishId, @RequestBody OrderDetailsDTO dto){
+//		try {
+//			return ResponseEntity.status(HttpStatus.CREATED)
+//					.body(orderDetailsService.addOrderDetails (orderId, dishId, dto));
+//			
+//			
+//		}catch(Exception e) {
+//			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to add order details: "+e.getMessage());
+//		}
+//		
+//		
+//		 
+//	} 
 	
 	//2. get order details list by order id
 }
