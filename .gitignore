@@ -18,3 +18,13 @@ mvnw.cmd
 .idea/
 *.iml
 out/
+
+target/
+*.class
+*.log
+*.iml
+.idea/
+*.jar
+*.war
+
+aahar_backend/src/main/resources/application.properties

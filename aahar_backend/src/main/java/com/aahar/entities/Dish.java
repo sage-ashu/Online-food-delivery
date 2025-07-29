@@ -31,6 +31,7 @@ public class Dish extends BaseEntity{
 	private int orderedTimes;
 	private int ratingSum;
 	private boolean isAvailable;
+	private String imagePath;
 	@OneToMany(mappedBy = "dish", cascade=CascadeType.ALL,orphanRemoval = true)
 	private List<OrderDetails> orderdetails=new ArrayList<>();
 	@ManyToOne

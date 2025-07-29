@@ -1,6 +1,5 @@
 package com.aahar.entities;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +9,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,6 +22,7 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class Customer extends BaseEntity
 {
+	
 	@Column(length=50, name="first_name")
 	private String firstName;
 	@Column(length=50, name="last_name")
@@ -32,6 +31,8 @@ public class Customer extends BaseEntity
 	private String email;
 	private String password;
 	
+	
+	
 	/*
 	 * one customer can place multiple orders,
 	therefore this is one to many relationship
@@ -39,7 +40,9 @@ public class Customer extends BaseEntity
 	@OneToMany(mappedBy = "customer", cascade=CascadeType.ALL,orphanRemoval = true)
 	private List<Orders> orders=new ArrayList<>();
 	
-	@OneToMany(mappedBy = "customer", cascade=CascadeType.ALL,orphanRemoval = true, fetch = FetchType.EAGER)
+
+
+	@OneToMany(mappedBy = "customer", cascade=CascadeType.ALL,orphanRemoval = true)
 	private List< CustomerAddress> addresses=new ArrayList<>();
 	
 	
@@ -67,15 +70,17 @@ public class Customer extends BaseEntity
 			address.setCustomer(null);
 		}
 
-		public Customer(String firstName, String lastName, String email, String password) 
-		{
+		public Customer(String firstName, String lastName, String email, String password) {
 			super();
 			this.firstName = firstName;
 			this.lastName = lastName;
 			this.email = email;
 			this.password = password;
-			
 		}
+
+		
+
+		
 	
 	
 

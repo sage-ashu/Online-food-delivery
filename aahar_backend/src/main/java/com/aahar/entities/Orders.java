@@ -27,6 +27,7 @@ public class Orders extends BaseEntity {
 	private double deliveryDistance;
 	private double deliveryCharge;
 	private double orderTotal;
+	private int rating;
 	
 	 // This is many to one relationship multiple orders can belong to one customer
 	@ManyToOne
@@ -47,6 +48,7 @@ public class Orders extends BaseEntity {
 		this.deliveryDistance = deliveryDistance;
 		this.deliveryCharge = deliveryCharge;
 		this.orderTotal = orderTotal;
+		this.rating = 0;
 	}
 	
 	

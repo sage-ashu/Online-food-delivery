@@ -30,30 +30,62 @@ public class Restaurant extends BaseEntity{
 	@Column(length=300)
 	private String restauratDescription;
 	private boolean isVeg;
-	private double AvgCost;
+	private double avgCost;
 	private double ratingSum;
 	private double totalRating;
 	private boolean isOnline;
+	@Column(length=10)
+	private String phoneNo ;
+	@Column(length=20)
+	private String address1;
+	@Column(length=20)
+	private String address2;
+	@Column(length=20)
+	private String address3;
+	@Column(length=10)
+	private String city;
+	@Column(length=6)
+	private String pinCode;
+	private double latitude;
+	private double longitude;
 	@OneToMany(mappedBy = "myRestaurant",cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Dish> dish=new ArrayList<>();
 	
-	@OneToOne( cascade=CascadeType.ALL)
-	@JoinColumn(name="ResaturantAddress_id")
-	private RestaurantAddress restaurantAddress;
+	
 	
 	@ManyToOne
 	@JoinColumn(name="restaurantOwner_id")
 	private RestaurantOwner restaurantOwner;
 	
-	public Restaurant(String restaurantName, String restauratDescription, boolean isVeg, double avgCost, boolean isOnline) {
+	public void addDish(Dish dish) {
+		this.dish.add(dish);
+		dish.setMyRestaurant(this);
+	}
+	
+	public void removeDish(Dish dish) {
+		this.dish.remove(dish);
+		dish.setMyRestaurant(null);
+	}
+
+	public Restaurant(String restaurantName, String restauratDescription, boolean isVeg, double avgCost,
+			 boolean isOnline, String phoneNo, String address1, String address2, String address3,
+			String city, String pinCode, double latitude, double longitude) {
 		super();
 		this.restaurantName = restaurantName;
 		this.restauratDescription = restauratDescription;
 		this.isVeg = isVeg;
-		AvgCost = avgCost;
+		this.avgCost = avgCost;
 		this.ratingSum = 0;
 		this.totalRating =0;
 		this.isOnline = isOnline;
+		this.phoneNo = phoneNo;
+		this.address1 = address1;
+		this.address2 = address2;
+		this.address3 = address3;
+		this.city = city;
+		this.pinCode = pinCode;
+		this.latitude = latitude;
+		this.longitude = longitude;
 	}
 	
 	

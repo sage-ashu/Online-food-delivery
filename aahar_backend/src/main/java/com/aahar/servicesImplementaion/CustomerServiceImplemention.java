@@ -8,11 +8,14 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.aahar.custom_exception.ResourceNotFoundException;
 import com.aahar.dao.CustomerDao;
 import com.aahar.dto.AddressDTO;
 import com.aahar.dto.ApiResponse;
 import com.aahar.dto.CustomerDTO;
 import com.aahar.dto.OrdersDTO;
+import com.aahar.dto.UpdatePasswordDTO;
+import com.aahar.dto.updateCustomerDTO;
 import com.aahar.entities.Customer;
 import com.aahar.entities.CustomerAddress;
 import com.aahar.entities.Orders;
@@ -37,10 +40,10 @@ public class CustomerServiceImplemention implements CustomerService {
 			Customer cus = customer.get();
 			CustomerAddress AddressEntity = map.map(dto, CustomerAddress.class);
 			cus.addAddress(AddressEntity);
-			return new ApiResponse("Address add successfully.");
+			return new ApiResponse(true,"Address add successfully.");
 		}
 		else
-		return new ApiResponse("customer is not present");
+		return new ApiResponse(false,"customer is not present");
 	}
 	
 	//This API helps us to add the customer
@@ -48,7 +51,7 @@ public class CustomerServiceImplemention implements CustomerService {
 	public ApiResponse addCustomer(CustomerDTO dto) {
 		Customer entity = map.map(dto, Customer.class);
 		customerDao.save(entity);
-		return new ApiResponse("Customer added successfully");
+		return new ApiResponse(true,"Customer added successfully");
 	}
 
 	//This Api is used to fetch the list of all orders placed by customer
@@ -66,5 +69,45 @@ public class CustomerServiceImplemention implements CustomerService {
 		else
 			return new ArrayList<>();
 		}
+
+	@Override
+	public CustomerDTO customerProfile(Long id) {
+		Customer entity =customerDao.findById(id)
+				.orElseThrow(()-> new ResourceNotFoundException("customer not found"));
+		
+			return map.map(entity, CustomerDTO.class);
+		
+	}
+
+	@Override
+	public ApiResponse deleteCustomer(Long customerId) {
+		customerDao.deleteById(customerId);
+		return new ApiResponse(true, "customer deleted successfully");
+	}
+
+	@Override
+	public ApiResponse updatePassword(Long id, UpdatePasswordDTO dto) {
+		Customer entity = customerDao.findById(id)
+				.orElseThrow(()-> new ResourceNotFoundException("customer not found"));
+		if(entity.getPassword().contains(dto.oldPassword)) {
+			entity.setPassword(dto.getNewPassword());
+			customerDao.save(entity);
+			return new ApiResponse(true, "Password updated successfully");
+		}
+		else {
+		return new ApiResponse(false, "Please enter correct password");
+		}
+	}
+
+	@Override
+	public ApiResponse updateProfile(Long customerId, updateCustomerDTO dto) {
+		Customer entity = customerDao.findById(customerId)
+				.orElseThrow(()-> new ResourceNotFoundException("customer not found"));
+		entity.setFirstName(dto.getFirstName());
+		entity.setLastName(dto.getLastName());
+		entity.setEmail(dto.getEmail());
+		customerDao.save(entity);
+		return new ApiResponse(true,"customer details updated successfully");
+	}
 
 }
