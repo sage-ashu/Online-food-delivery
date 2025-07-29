@@ -1,6 +1,5 @@
 package com.aahar.entities;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +9,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -31,6 +29,7 @@ public class Customer extends BaseEntity
 	private String lastName;
 	@Column(length=100, unique=true)
 	private String email;
+	@Column(length=20, nullable = false)
 	private String password;
 	
 	
@@ -70,8 +69,8 @@ public class Customer extends BaseEntity
 			address.setCustomer(null);
 		}
 
-		public Customer(Long id, LocalDateTime isCreatedAt, LocalDateTime isUpdatedAt, boolean isDeleted,
-				String firstName, String lastName, String email, String password) {
+		public Customer(String firstName, String lastName, String email, String password) 
+		{
 			super();
 			this.firstName = firstName;
 			this.lastName = lastName;
