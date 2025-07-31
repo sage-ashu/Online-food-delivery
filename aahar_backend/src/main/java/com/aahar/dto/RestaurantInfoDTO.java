@@ -3,9 +3,11 @@ package com.aahar.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 public class RestaurantInfoDTO {
     private Long restaurantId;
     private String restaurantName;
@@ -19,11 +21,11 @@ public class RestaurantInfoDTO {
     private double totalRating;
 
     // Address info
-    private String address1;
-    private String address2;
-    private String address3;
-    private String city;
-    private String pinCode;
+//    private String address1;
+//    private String address2;
+//    private String address3;
+//    private String city;
+//    private String pinCode;
 //    private String phone;
 
     // Owner basic info

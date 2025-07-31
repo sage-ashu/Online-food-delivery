@@ -1,27 +1,111 @@
-//package com.aahar.servicesImplementaion;
+package com.aahar.servicesImplementaion;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.aahar.custom_exception.ResourceNotFoundException;
+import com.aahar.dao.RestaurantDao;
+import com.aahar.dao.RestaurantOwnerDao;
+import com.aahar.dto.AddRestaurantDTO;
+import com.aahar.dto.ApiResponse;
+import com.aahar.dto.RestaurantInfoDTO;
+import com.aahar.entities.OrderDetails;
+import com.aahar.entities.Restaurant;
+
+import com.aahar.entities.RestaurantOwner;
+import com.aahar.services.RestaurantService;
+
+import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 //
-//import java.util.List;
-//import java.util.Optional;
-//import java.util.stream.Collectors;
+@Service
+@Transactional
+@AllArgsConstructor
+public class RestaurantServiceImplemention implements RestaurantService {
+
+	
+	private RestaurantDao restaurantDao;
+	private RestaurantOwnerDao ownerDao;
+	private ModelMapper modelMapper;
+	@Override
+	public void addRestaurant(AddRestaurantDTO dto) {
+		RestaurantOwner owner= ownerDao.findById(dto.getOwnerId()).orElseThrow(()-> new ResourceNotFoundException("Restaurant owner does not exist"));
+
+		Restaurant restaurant= modelMapper.map(dto, Restaurant.class);
+		restaurant.setRestaurantOwner(owner);
+		owner.addRestaurant(restaurant);
+		
+		
+		
+		
+	}
+	@Override
+	public void updateRestaurantById(RestaurantInfoDTO restaurantDTO) {
+	
+
+		Restaurant restaurant=restaurantDao.findById(restaurantDTO.getRestaurantId()).orElseThrow(()->new ResourceNotFoundException("Restaurant Not Found"));
+//		System.out.println(res);t
+        modelMapper.map(restaurantDTO, restaurant);
+        
+	}
+}
+
+        
+//		 public RestaurantInfoDTO updateRestaurantById(Long ownerId, Long restaurantId, RestaurantInfoDTO dto) {
+//	    Restaurant restaurant = restaurantRepo.findById(restaurantId)
+//	            .orElseThrow(() -> new IllegalArgumentException("Restaurant not found"));
+		
+//	    if (!restaurant.getRestaurantOwner().getId().equals(ownerId)) {
+//	        throw new IllegalArgumentException("Owner does not match the restaurant");
+//	    }
 //
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Service;
+//	    // Update fields
+//	    restaurant.setRestaurantName(dto.getRestaurantName());
+//	    restaurant.setRestauratDescription(dto.getRestauratDescription());
+//	    restaurant.setVeg(dto.isVeg());
+//	    restaurant.setAvgCost(dto.getAvgCost());
+//	    restaurant.setOnline(dto.isOnline());
 //
-//import com.aahar.dao.RestaurantDao;
-//import com.aahar.dao.RestaurantOwnerDao;
-//import com.aahar.dto.AddRestaurantDTO;
-//import com.aahar.dto.ApiResponse;
-//import com.aahar.dto.RestaurantInfoDTO;
-//import com.aahar.entities.Restaurant;
+//	    // Update address if needed
+//	    RestaurantAddress address = restaurant.getRestaurantAddress();
+//	    if (address != null) {
+//	        address.setAddress1(dto.getAddress1());
+//	        address.setAddress2(dto.getAddress2());
+//	        address.setAddress3(dto.getAddress3());
+//	        address.setCity(dto.getCity());
+//	        address.setPinCode(dto.getPinCode());
+//	    }
 //
-//import com.aahar.entities.RestaurantOwner;
-//import com.aahar.services.RestaurantService;
+//	    restaurantRepo.save(restaurant);
 //
-//import jakarta.transaction.Transactional;
+//	    // Prepare and return updated DTO
+//	    RestaurantInfoDTO updatedDTO = new RestaurantInfoDTO();
+//	    updatedDTO.setRestaurantId(restaurant.getId());
+//	    updatedDTO.setOwnerId(ownerId);
+//	    updatedDTO.setRestaurantName(restaurant.getRestaurantName());
+//	    updatedDTO.setRestauratDescription(restaurant.getRestauratDescription());
+//	    updatedDTO.setVeg(restaurant.isVeg());
+//	    updatedDTO.setAvgCost(restaurant.getAvgCost());
+//	    updatedDTO.setOnline(restaurant.isOnline());
 //
-//@Service
-//@Transactional
-//public class RestaurantServiceImplemention implements RestaurantService {
+//	    if (restaurant.getRestaurantAddress() != null) {
+//	        updatedDTO.setAddress1(restaurant.getRestaurantAddress().getAddress1());
+//	        updatedDTO.setAddress2(restaurant.getRestaurantAddress().getAddress2());
+//	        updatedDTO.setAddress3(restaurant.getRestaurantAddress().getAddress3());
+//	        updatedDTO.setCity(restaurant.getRestaurantAddress().getCity());
+//	        updatedDTO.setPinCode(restaurant.getRestaurantAddress().getPinCode());
+//	    }
+//
+//	    return updatedDTO;
+//	}
+// 
+		
 //
 //	
 //	@Autowired
@@ -119,54 +203,7 @@
 //	 }
 //	 
 //	 //Make the restaurant id hidden in frontend form 
-//	 public RestaurantInfoDTO updateRestaurantById(Long ownerId, Long restaurantId, RestaurantInfoDTO dto) {
-//		    Restaurant restaurant = restaurantRepo.findById(restaurantId)
-//		            .orElseThrow(() -> new IllegalArgumentException("Restaurant not found"));
-//
-//		    if (!restaurant.getRestaurantOwner().getId().equals(ownerId)) {
-//		        throw new IllegalArgumentException("Owner does not match the restaurant");
-//		    }
-//
-//		    // Update fields
-//		    restaurant.setRestaurantName(dto.getRestaurantName());
-//		    restaurant.setRestauratDescription(dto.getRestauratDescription());
-//		    restaurant.setVeg(dto.isVeg());
-//		    restaurant.setAvgCost(dto.getAvgCost());
-//		    restaurant.setOnline(dto.isOnline());
-//
-//		    // Update address if needed
-//		    RestaurantAddress address = restaurant.getRestaurantAddress();
-//		    if (address != null) {
-//		        address.setAddress1(dto.getAddress1());
-//		        address.setAddress2(dto.getAddress2());
-//		        address.setAddress3(dto.getAddress3());
-//		        address.setCity(dto.getCity());
-//		        address.setPinCode(dto.getPinCode());
-//		    }
-//
-//		    restaurantRepo.save(restaurant);
-//
-//		    // Prepare and return updated DTO
-//		    RestaurantInfoDTO updatedDTO = new RestaurantInfoDTO();
-//		    updatedDTO.setRestaurantId(restaurant.getId());
-//		    updatedDTO.setOwnerId(ownerId);
-//		    updatedDTO.setRestaurantName(restaurant.getRestaurantName());
-//		    updatedDTO.setRestauratDescription(restaurant.getRestauratDescription());
-//		    updatedDTO.setVeg(restaurant.isVeg());
-//		    updatedDTO.setAvgCost(restaurant.getAvgCost());
-//		    updatedDTO.setOnline(restaurant.isOnline());
-//
-//		    if (restaurant.getRestaurantAddress() != null) {
-//		        updatedDTO.setAddress1(restaurant.getRestaurantAddress().getAddress1());
-//		        updatedDTO.setAddress2(restaurant.getRestaurantAddress().getAddress2());
-//		        updatedDTO.setAddress3(restaurant.getRestaurantAddress().getAddress3());
-//		        updatedDTO.setCity(restaurant.getRestaurantAddress().getCity());
-//		        updatedDTO.setPinCode(restaurant.getRestaurantAddress().getPinCode());
-//		    }
-//
-//		    return updatedDTO;
-//		}
-//	 
+
 //	 @Override
 //	 public void deleteRestaurantById(Long ownerId, Long restaurantId) {
 //	     // Find the restaurant
