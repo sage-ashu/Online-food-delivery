@@ -30,8 +30,8 @@ public class CustomerAddress extends BaseEntity
 	private String city;
 	@Column(length=6)
 	private String pinCode;
-	private double latitude;
-	private double longitude;
+	private double latitude=0.0;
+	private double longitude=0.0;
 	@ManyToOne
 	@JoinColumn(name="customer_id")
 	private Customer customer;

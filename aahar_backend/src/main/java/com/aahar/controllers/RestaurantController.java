@@ -126,3 +126,10 @@ public class RestaurantController {
 //    
 //    
 //}
+// 0. add restaurant by owner
+// 1. get all restaurants in the same city as user
+// 2. get restaurant details for owner
+// 3. get restaurant details for customer
+// 4. update restaurant details for owner
+// 5. update restaurant address for owner
+// 6. delete restaurant
