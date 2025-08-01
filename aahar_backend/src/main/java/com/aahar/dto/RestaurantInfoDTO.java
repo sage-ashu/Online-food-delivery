@@ -9,7 +9,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class RestaurantInfoDTO {
-    private Long restaurantId;
+    private Long Id;
     private String restaurantName;
     private String restauratDescription;
     private boolean isVeg;

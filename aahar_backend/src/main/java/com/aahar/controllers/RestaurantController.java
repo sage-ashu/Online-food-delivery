@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aahar.dto.AddRestaurantDTO;
 import com.aahar.dto.ApiResponse;
+import com.aahar.dto.RestaurantAddressDTO;
 import com.aahar.dto.RestaurantInfoDTO;
 import com.aahar.services.RestaurantService;
 
@@ -49,19 +51,14 @@ public class RestaurantController {
     //2.Update Restaurant by ownerId and RestaurantId
     
   @PutMapping
-  public ResponseEntity<?> updateRestaurantById(@RequestBody RestaurantInfoDTO restaurantDTO) {
+  public ResponseEntity<?> updateRestaurantById(@RequestBody RestaurantInfoDTO restaurantDTO) 
+  {
 
       try {
-          // Make sure the incoming DTO carries the correct owner and restaurant ID
-         // restaurantDTO.setOwnerId(ownerId);
-         // restaurantDTO.setRestaurantId(restaurantId);
-//    	  System.out.println(restaurantDTO.toString());
-          restaurantService.updateRestaurantById(restaurantDTO);
-
-//          ApiResponse response = new ApiResponse(true, "Restaurant updated successfully", updatedRestaurant);
+           restaurantService.updateRestaurantById(restaurantDTO);
           return ResponseEntity.ok("Restaurant updated successfully");
-          
-      } catch (IllegalArgumentException e) {
+          }catch (IllegalArgumentException e) 
+      {
           ApiResponse response = new ApiResponse(false, e.getMessage(), null);
           return ResponseEntity.badRequest().body(response);
           
@@ -70,12 +67,69 @@ public class RestaurantController {
           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
       }
   }
+  
+  //3. update restaurant address for owner
+  @PutMapping("/updateAddress")
+  public ResponseEntity<?> updateRestaurantAddressById(@RequestBody RestaurantAddressDTO addressdto)
+  {
+	  try {
+		  restaurantService.updateRestaurantAddress(addressdto);
+		  return ResponseEntity.ok("Restaurant Address updated successfully");
+	  }catch (IllegalArgumentException e)
+	  {
+		  ApiResponse response = new ApiResponse(false, e.getMessage(), null);
+          return ResponseEntity.badRequest().body(response);
+	  }catch (Exception e)
+	  {
+		  ApiResponse response = new ApiResponse(false, "Internal server error", null);
+          return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+      }
+  }
+  
+  //4. get restaurant details for owner
+   @GetMapping("/{ownerId}")
+   public ResponseEntity<?> restaurantDetailsForOwner(@PathVariable Long ownerId)
+   {
+	   try 
+	   {
+		 ApiResponse  restaurants = restaurantService.getRestaurantsByOwnerId(ownerId);
+		 if (restaurants.isEmpty())
+		 {
+          ApiResponse response = new ApiResponse(false, "No restaurants found for owner ID: " + ownerId);
+          return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+         }
+		 ApiResponse response = new ApiResponse(true, "Restaurants for owner ID " + ownerId, restaurants);
+         return ResponseEntity.ok(response);
+	   }catch (RuntimeException e)
+	   {
+         ApiResponse response = new ApiResponse(false, "Error fetching restaurants: " + e.getMessage());
+         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+       }
+   }
+   
+    //5.Delete Restaurant By Id
+   @DeleteMapping("/{ownerId}/{restaurantId}")
+   public ResponseEntity<?> deleteRestaurant(@PathVariable Long ownerId, @PathVariable Long restaurantId)
+   {
+	   try 
+	   {
+		 restaurantService.deleteRestaurantById(ownerId,restaurantId);
+		 ApiResponse response = new ApiResponse(true, "Restaurant deleted successfully",null);
+		 return ResponseEntity.ok(response);
+	   }catch (IllegalArgumentException e) {
+	    ApiResponse response =new ApiResponse(false, e.getMessage(), null);
+	    return ResponseEntity.badRequest().body(response);
+	   }catch (Exception e) {
+		ApiResponse response = new ApiResponse(false,"Error fetching restaurants"+ e.getMessage());
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+	   }
+	   
+   }
+   
+   //6.Get Restaurant Details for Customer
+   
 }
-//	
-//	
-//	
-//	
-//	
+	
 //    @GetMapping("/{ownerId}")
 //    public ResponseEntity<ApiResponse> getRestaurantsByOwner(@PathVariable Long ownerId) {
 //        try {
@@ -98,34 +152,7 @@ public class RestaurantController {
 //    
 //    
 
-//
-//
-//    
-//    
-//    
-//    @DeleteMapping("/{ownerId}/{restaurantId}")
-//    public ResponseEntity<ApiResponse> deleteRestaurant(
-//            @PathVariable Long ownerId,
-//            @PathVariable Long restaurantId) {
-//        try {
-//            restaurantService.deleteRestaurantById(ownerId, restaurantId);
-//
-//            ApiResponse response = new ApiResponse(true, "Restaurant deleted successfully", null);
-//            return ResponseEntity.ok(response);
-//
-//        } catch (IllegalArgumentException e) {
-//            ApiResponse response = new ApiResponse(false, e.getMessage(), null);
-//            return ResponseEntity.badRequest().body(response);
-//
-//        } catch (Exception e) {
-//            ApiResponse response = new ApiResponse(false, "Internal server error", null);
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-//        }
-//    }
-//
-//    
-//    
-//}
+
 // 0. add restaurant by owner
 // 1. get all restaurants in the same city as user
 // 2. get restaurant details for owner
