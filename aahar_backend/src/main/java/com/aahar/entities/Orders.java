@@ -6,6 +6,8 @@ import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -28,7 +30,8 @@ public class Orders extends BaseEntity {
 	private double deliveryCharge;
 	private double orderTotal;
 	private int rating;
-	
+	@Enumerated(EnumType.STRING)
+	private OrderStatus status;
 	 // This is many to one relationship multiple orders can belong to one customer
 	@ManyToOne
 	@JoinColumn(name="customer_id")
