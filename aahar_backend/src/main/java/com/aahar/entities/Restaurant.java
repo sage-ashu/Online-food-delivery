@@ -90,7 +90,6 @@ public class Restaurant extends BaseEntity{
 	
 	
 	
-	
 	}
 	
 	

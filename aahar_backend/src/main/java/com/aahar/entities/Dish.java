@@ -28,8 +28,8 @@ public class Dish extends BaseEntity{
 	private boolean isVeg;
 	private int preperationTime;
 	private int noOfServings;
-	private int orderedTimes;
-	private int ratingSum;
+	private double totalRating;
+	private double ratingSum;
 	private boolean isAvailable;
 	private String imagePath;
 	@OneToMany(mappedBy = "dish", cascade=CascadeType.ALL,orphanRemoval = true)
@@ -48,7 +48,7 @@ public class Dish extends BaseEntity{
 		this.isVeg = isVeg;
 		this.preperationTime = preperationTime;
 		this.noOfServings = noOfServings;
-		this.orderedTimes = 0;
+		this.totalRating = 0;
 		this.ratingSum = 0;
 		this.isAvailable = isAvailable;
 	}
