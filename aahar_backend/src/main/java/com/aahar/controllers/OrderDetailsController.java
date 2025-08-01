@@ -9,12 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.aahar.dto.ApiResponse;
 import com.aahar.dto.OrderDetailsDTO;
-import com.aahar.dto.RestaurantInfoDTO;
-import com.aahar.dto.OrderRatingDTO;
 import com.aahar.services.OrderDetailsService;
-//import com.aahar.services.orderDetailsService;
 
 import lombok.AllArgsConstructor;
 

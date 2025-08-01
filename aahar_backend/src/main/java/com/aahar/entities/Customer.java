@@ -30,6 +30,7 @@ public class Customer extends BaseEntity
 	private String lastName;
 	@Column(length=100, unique=true)
 	private String email;
+	@Column(length=20, nullable = false)
 	private String password;
 	
 	
@@ -71,7 +72,10 @@ public class Customer extends BaseEntity
 			address.setCustomer(null);
 		}
 
+		
+
 		public Customer(String firstName, String lastName, String email, String password) {
+
 			super();
 			this.firstName = firstName;
 			this.lastName = lastName;

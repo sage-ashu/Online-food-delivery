@@ -36,22 +36,25 @@ public class Restaurant extends BaseEntity{
 	private boolean isOnline;
 	@Column(length=10)
 	private String phoneNo ;
-	@Column(length=20)
+	@Column(length=100)
 	private String address1;
-	@Column(length=20)
+	@Column(length=100)
 	private String address2;
-	@Column(length=20)
+	@Column(length=100)
 	private String address3;
-	@Column(length=10)
+	@Column(length=50)
 	private String city;
+	@Column(length=50)
+	private String state;
 	@Column(length=6)
 	private String pinCode;
+	
 	private double latitude;
 	private double longitude;
 	@OneToMany(mappedBy = "myRestaurant",cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Dish> dish=new ArrayList<>();
-	
-	
+	@OneToMany(mappedBy = "restaurant",cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Orders> orders=new ArrayList<>();
 	
 	@ManyToOne
 	@JoinColumn(name="restaurantOwner_id")
