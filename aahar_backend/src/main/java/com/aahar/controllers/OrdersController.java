@@ -20,7 +20,7 @@ import com.aahar.servicesImplementaion.DistanceServiceImplementation;
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping("/orders")
+@RequestMapping("/order")
 @AllArgsConstructor
 public class OrdersController {
 
@@ -30,7 +30,7 @@ public class OrdersController {
 
 
 	//1. add Orders by customer id and restaurant id
-//	@PostMapping("")
+	@PostMapping("/add")
 	public ResponseEntity<?> addOrder(@RequestBody AddOrderDTO orderDTO){
 		ordersService.addOrder(orderDTO);
 		return ResponseEntity.ok("order placed");

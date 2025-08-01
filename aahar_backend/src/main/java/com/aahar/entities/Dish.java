@@ -35,7 +35,7 @@ public class Dish extends BaseEntity{
 	@OneToMany(mappedBy = "dish", cascade=CascadeType.ALL,orphanRemoval = true)
 	private List<OrderDetails> orderdetails=new ArrayList<>();
 	@ManyToOne
-	@JoinColumn(name="restaurant",nullable = false)
+	@JoinColumn(name="restaurant_id",nullable = false)
 	private Restaurant myRestaurant;
 	public Dish(String dishName,
 			double dishPrice, String description, boolean isVeg, int preperationTime, int noOfServings,
