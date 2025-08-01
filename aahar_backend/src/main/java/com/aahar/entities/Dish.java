@@ -57,6 +57,10 @@ public class Dish extends BaseEntity{
 		this.orderdetails.add(detail);
 		detail.setDish(this);
 	}
+	public double getAverageRating() {
+	    return orderedTimes == 0 ? 0.0 : (double) ratingSum / orderedTimes;
+	}
+
 	
 	
 }
