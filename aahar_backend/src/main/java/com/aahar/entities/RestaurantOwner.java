@@ -36,4 +36,17 @@ public class RestaurantOwner extends BaseEntity{
 	}
 	@OneToMany(mappedBy = "restaurantOwner" , cascade=CascadeType.ALL,orphanRemoval = true)
 	private List<Restaurant> restaurant = new ArrayList<>();
+	
+
+	public void addRestaurant(Restaurant restaurant) 
+	{
+		this.restaurant.add(restaurant);
+		restaurant.setRestaurantOwner(this);
+	}
+	
+	public void removeRestaurant(Restaurant restaurant)
+	{
+		this.restaurant.remove(restaurant);
+		restaurant.setRestaurantOwner(null);
+	}
 }

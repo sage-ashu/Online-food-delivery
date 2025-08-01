@@ -17,4 +17,9 @@ public class ApiResponse {
         this.success = success;
         this.message = message;
     }
+
+	public boolean isEmpty() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
