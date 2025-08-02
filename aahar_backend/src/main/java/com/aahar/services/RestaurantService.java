@@ -24,6 +24,12 @@ public interface RestaurantService {
 
 	ApiResponse deleteRestaurantById(Long ownerId, Long restaurantId);
 
+	ApiResponse getRestaurantsForCustomer(Long restaurantId);
+
+	ApiResponse getRestaurantInSameCityAsCustomer(Long customerAddressId);
+
+	ApiResponse updateRestaurantStatus(Long restaurantId, boolean status);
+
 	
 
 //	List<RestaurantInfoDTO> getRestaurantsByOwnerId(Long ownerId);

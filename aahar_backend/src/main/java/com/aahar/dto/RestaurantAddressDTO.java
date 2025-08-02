@@ -15,6 +15,7 @@ public class RestaurantAddressDTO {
     private String address2;
     private String address3;
     private String city;
+    private String state;
     private String pinCode;
     private double latitude;
     private double longitude;

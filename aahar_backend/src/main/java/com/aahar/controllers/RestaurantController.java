@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.aahar.custom_exception.ResourceNotFoundException;
 import com.aahar.dto.AddRestaurantDTO;
 import com.aahar.dto.ApiResponse;
 import com.aahar.dto.RestaurantAddressDTO;
@@ -127,30 +128,58 @@ public class RestaurantController {
    }
    
    //6.Get Restaurant Details for Customer
+   @GetMapping("/restaurant/{restaurantId}")
+   public ResponseEntity<?> getRestaurantsForCustomer(@PathVariable Long restaurantId) {
+       try {
+           ApiResponse response = restaurantService.getRestaurantsForCustomer(restaurantId);
+           return ResponseEntity.ok(response);
+       } catch (IllegalArgumentException e) {
+           ApiResponse response = new ApiResponse(false, e.getMessage(), null);
+           return ResponseEntity.badRequest().body(response);
+       } catch (Exception e) {
+           ApiResponse response = new ApiResponse(false, "Error fetching restaurants: " + e.getMessage(), null);
+           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+       }
+   }
+
+//    7.get all restaurants in the same city as user
+   @GetMapping("/restaurant/{customerAddressId}/city")
+   public ResponseEntity<?> getRestaurantsInSameCityAsCustomer(@PathVariable Long customerAddressId)
+   {
+	   try {
+		   ApiResponse response=restaurantService.getRestaurantInSameCityAsCustomer(customerAddressId);
+		   return ResponseEntity.ok(response);
+	   }catch (ResourceNotFoundException e) {
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+	                .body(new ApiResponse(false, e.getMessage(), null));
+	        } catch (Exception e) {
+	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+	                .body(new ApiResponse(false, "Error: " + e.getMessage(), null));
+	        }
+	   
+   }
    
+
+
+//8. update restaurant availability status
+    @PutMapping("/updateStatus/{restaurantId}/{status}")
+    public ResponseEntity<?> updateRestaurantStatus(@PathVariable Long restaurantId, boolean status )
+    {  
+    	try {
+    		ApiResponse response=restaurantService.updateRestaurantStatus(restaurantId,status);
+    		return ResponseEntity.ok(response);
+    	}catch (ResourceNotFoundException e) {
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+	                .body(new ApiResponse(false, e.getMessage(), null));
+	        } catch (Exception e) {
+	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+	                .body(new ApiResponse(false, "Error: " + e.getMessage(), null));
+	        }
+    	
+    }
 }
 	
-//    @GetMapping("/{ownerId}")
-//    public ResponseEntity<ApiResponse> getRestaurantsByOwner(@PathVariable Long ownerId) {
-//        try {
-//            List<RestaurantInfoDTO> restaurants = restaurantService.getRestaurantsByOwnerId(ownerId);
-//
-//            if (restaurants.isEmpty()) {
-//                ApiResponse response = new ApiResponse(false, "No restaurants found for owner ID: " + ownerId);
-//                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-//            }
-//
-//            ApiResponse response = new ApiResponse(true, "Restaurants for owner ID " + ownerId, restaurants);
-//            return ResponseEntity.ok(response);
-//
-//        } catch (RuntimeException e) {
-//            ApiResponse response = new ApiResponse(false, "Error fetching restaurants: " + e.getMessage());
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-//        }
-//    }
-//    
-//    
-//    
+   
 
 
 // 0. add restaurant by owner
@@ -160,3 +189,4 @@ public class RestaurantController {
 // 4. update restaurant details for owner
 // 5. update restaurant address for owner
 // 6. delete restaurant
+// 7. update restaurant availability status
