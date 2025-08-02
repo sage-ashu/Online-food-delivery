@@ -69,6 +69,10 @@ public class Restaurant extends BaseEntity{
 		this.dish.remove(dish);
 		dish.setMyRestaurant(null);
 	}
+	
+	public double getRating() {
+		return this.getRatingSum()/this.getTotalRating();
+	}
 
 	public Restaurant(String restaurantName, String restauratDescription, boolean isVeg, double avgCost,
 			 boolean isOnline, String phoneNo, String address1, String address2, String address3,
