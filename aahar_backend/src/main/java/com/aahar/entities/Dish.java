@@ -28,7 +28,7 @@ public class Dish extends BaseEntity{
 	private boolean isVeg;
 	private int preperationTime;
 	private int noOfServings;
-	private int orderedTimes;
+	private int noOfRatings;
 	private int ratingSum;
 	private boolean isAvailable;
 	private String imagePath;
@@ -48,7 +48,7 @@ public class Dish extends BaseEntity{
 		this.isVeg = isVeg;
 		this.preperationTime = preperationTime;
 		this.noOfServings = noOfServings;
-		this.orderedTimes = 0;
+		this.noOfRatings = 0;
 		this.ratingSum = 0;
 		this.isAvailable = isAvailable;
 		this.myRestaurant = null;
@@ -58,8 +58,8 @@ public class Dish extends BaseEntity{
 		this.orderDetails.add(detail);
 		detail.setDish(this);
 	}
-	public double getAverageRating() {
-	    return orderedTimes == 0 ? 0.0 : (double) ratingSum / orderedTimes;
+	public double getRating() {
+	    return this.noOfRatings == 0 ? 0.0 : (double) this.ratingSum / this.noOfRatings;
 	}
 
 	

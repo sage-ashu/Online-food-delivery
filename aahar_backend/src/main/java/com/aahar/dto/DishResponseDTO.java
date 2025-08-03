@@ -10,10 +10,12 @@ import lombok.ToString;
 @ToString
 public class DishResponseDTO {
 
+	private Long id;
 	private String dishName;
 	private double dishPrice;
 	private String description;
 	private boolean isVeg;
+	private double rating;
 	private int preperationTime;
 	private int noOfServings;
 	private boolean isAvailable;
