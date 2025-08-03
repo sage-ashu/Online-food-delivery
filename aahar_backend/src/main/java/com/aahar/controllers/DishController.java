@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.aahar.dto.DishResponseDTO;
 import com.aahar.dto.DishUpdateDTO;
 import com.aahar.dto.DishUploadDTO;
 import com.aahar.services.DishService;
@@ -65,10 +66,15 @@ public class DishController {
     }
     
 	//4. get dish by dish id
-//	@GetMapping()
-//	public ResponseEntity<?> getDish(){
+//	@GetMapping("/{dishId}")
+//	public ResponseEntity<?> getDish(@PathVariable Long dishId){
+//		return ResponseEntity.ok(dishService.getDish(dishId));
 //		
 //	}
 	
 	//5. get list of dishes by restaurant id
+	@GetMapping("/{restaurantId}")
+	public ResponseEntity<?> getDishListOfRestaurant(Long restaurantId){
+		return ResponseEntity.ok(dishService.getDishByRestaurant(restaurantId)); 
+	}
 }
