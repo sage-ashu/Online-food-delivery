@@ -23,6 +23,7 @@ import com.aahar.entities.OrderStatus;
 import com.aahar.entities.Orders;
 import com.aahar.entities.Restaurant;
 import com.aahar.services.DistanceService;
+import com.aahar.services.OrderDetailsService;
 import com.aahar.services.OrdersService;
 
 import lombok.AllArgsConstructor;
@@ -36,6 +37,7 @@ public class OrderServiceImplementation implements OrdersService {
 	private CustomerAddressDao customerAddressDao;
 	private RestaurantDao restaurantDao;
 	private DishDao dishDao;
+	private OrderDetailsService orderDetailService;
 
 	@Override
 	public List<CustomerOrderResponseDTO> getCustomerOrders(Long customerId) {
@@ -92,6 +94,8 @@ public class OrderServiceImplementation implements OrdersService {
 		order.setOrderAmount(orderAmount);
 		order.setOrderTotal(orderAmount+deliveryCharge);
 		customer.addOrders(order);
+		orderDetailService.addOrderDetails(order.getId(),orderDTO.getDetails());
+		
 	}
 	
 	

@@ -54,6 +54,13 @@ public class Orders extends BaseEntity {
 		this.rating = 0;
 	}
 	
+	public void addOrderDetail(OrderDetails orderDetail) {
+		this.orderdetails.add(orderDetail);
+		orderDetail.setOrders(this);
+	}
+	
+	
+	
 	
 }
 
