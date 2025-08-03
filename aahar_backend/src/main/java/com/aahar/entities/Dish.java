@@ -18,7 +18,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString(callSuper = true)
+@ToString(callSuper = true,exclude = "orderDetails")
 public class Dish extends BaseEntity{
 	@Column(length=40)	
 	private String dishName;
@@ -33,7 +33,7 @@ public class Dish extends BaseEntity{
 	private boolean isAvailable;
 	private String imagePath;
 	@OneToMany(mappedBy = "dish", cascade=CascadeType.ALL,orphanRemoval = true)
-	private List<OrderDetails> orderdetails=new ArrayList<>();
+	private List<OrderDetails> orderDetails=new ArrayList<>();
 	@ManyToOne
 	@JoinColumn(name="restaurant_id",nullable = false)
 	private Restaurant myRestaurant;
@@ -51,10 +51,11 @@ public class Dish extends BaseEntity{
 		this.orderedTimes = 0;
 		this.ratingSum = 0;
 		this.isAvailable = isAvailable;
+		this.myRestaurant = null;
 	}
 	
 	public void addOrderDetail(OrderDetails detail) {
-		this.orderdetails.add(detail);
+		this.orderDetails.add(detail);
 		detail.setDish(this);
 	}
 	public double getAverageRating() {

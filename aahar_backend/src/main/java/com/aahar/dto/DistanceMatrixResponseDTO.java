@@ -1,4 +1,3 @@
-// dto/DistanceMatrixResponse.java
 package com.aahar.dto;
 
 import lombok.Data;
@@ -6,7 +5,10 @@ import java.util.List;
 
 @Data
 public class DistanceMatrixResponseDTO {
+    private List<String> destination_addresses;
+    private List<String> origin_addresses;
     private List<Row> rows;
+    private String status;
 
     @Data
     public static class Row {
@@ -17,6 +19,7 @@ public class DistanceMatrixResponseDTO {
     public static class Element {
         private Distance distance;
         private Duration duration;
+        private String status;
     }
 
     @Data
@@ -31,8 +34,3 @@ public class DistanceMatrixResponseDTO {
         private int value; // time in seconds
     }
 }
-//package com.aahar.dto;
-//
-//public class DistanceMatrixResponseDTO {
-//
-//}
