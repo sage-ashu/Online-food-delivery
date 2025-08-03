@@ -19,6 +19,7 @@ import com.aahar.dto.RestaurantOrderResponseDTO;
 import com.aahar.entities.Customer;
 import com.aahar.entities.CustomerAddress;
 import com.aahar.entities.Dish;
+import com.aahar.entities.OrderStatus;
 import com.aahar.entities.Orders;
 import com.aahar.entities.Restaurant;
 import com.aahar.services.DistanceService;
@@ -96,5 +97,42 @@ public class OrderServiceImplementation implements OrdersService {
 		orderDetailService.addOrderDetails(order.getId(),orderDTO.getDetails());
 		
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//To update status of order this api works with enum
+    public void updateOrderStatus(Long orderId, OrderStatus newStatus) {
+        Orders order = ordersDao.findById(orderId)
+            .orElseThrow(() -> new RuntimeException("Order not found"));
+        order.setStatus(newStatus);
+        ordersDao.save(order);
+    }
 
 }

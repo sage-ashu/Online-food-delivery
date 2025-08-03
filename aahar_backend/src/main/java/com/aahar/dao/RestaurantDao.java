@@ -10,6 +10,6 @@ import com.aahar.entities.Restaurant;
 
 public interface RestaurantDao extends JpaRepository<Restaurant, Long>{
 	List<Restaurant> findByRestaurantOwnerId(Long ownerId);
-
+    List<Restaurant> findByCity(String city);
 	
 }
