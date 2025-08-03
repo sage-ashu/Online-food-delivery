@@ -14,6 +14,9 @@ import com.aahar.dao.CustomerDao;
 import com.aahar.dto.AddressDTO;
 import com.aahar.dto.ApiResponse;
 import com.aahar.dto.CustomerDTO;
+import com.aahar.dto.CustomerLoginDTO;
+import com.aahar.dto.CustomerRegisterDTO;
+import com.aahar.dto.CustomerResponseDTO;
 import com.aahar.dto.OrdersDTO;
 import com.aahar.dto.UpdatePasswordDTO;
 import com.aahar.dto.updateCustomerDTO;
@@ -113,5 +116,37 @@ public class CustomerServiceImplemention implements CustomerService {
 		customerDao.save(entity);
 		return new ApiResponse(true,"customer details updated successfully");
 	}
+	
+	
+	
+	//To register a customer
+	@Override
+	public ApiResponse registerCustomer(CustomerRegisterDTO dto) {
+
+	    Customer found = customerDao.findByEmail(dto.getEmail());
+	    if (found == null) {
+	        Customer c = map.map(dto, Customer.class);
+	        Customer saved = customerDao.save(c);
+	        return new ApiResponse(true, "Customer Registered successfully", saved);
+	    } else {
+	        return new ApiResponse(false, "Email is already registered");
+	    }
+	}
+
+	
+	//To login a customer 
+	@Override
+	public ApiResponse loginCustomer(CustomerLoginDTO dto) {
+
+	    Customer found = customerDao.findByEmail(dto.getEmail());
+	    if (found == null) {
+	        return new ApiResponse(false, "Wrong email or password");
+	    } else {
+	        // Convert to DTO that does not have lazy-loaded fields
+	        CustomerResponseDTO responseDTO = map.map(found, CustomerResponseDTO.class);
+	        return new ApiResponse(true, "Customer logged in successfully", responseDTO);
+	    }
+	}
+
 
 }
