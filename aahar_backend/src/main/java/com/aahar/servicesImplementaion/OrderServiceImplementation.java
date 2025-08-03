@@ -79,9 +79,11 @@ public class OrderServiceImplementation implements OrdersService {
 		CustomerAddress customerAddress = customerAddressDao.findById(orderDTO.getCustomerAddressId()).orElseThrow(()-> new ResourceNotFoundException("Invalid address ID"));
 		Customer customer = customerAddress.getCustomer();
 		Restaurant restaurant = restaurantDao.findById(orderDTO.getReaturantId()).orElseThrow(()->new ResourceNotFoundException("Invalid restauarnt ID"));
+		System.out.println("here");
 		int distanceInMeters = distanceService.getDistanceInMeters(restaurant.getLatitude(), restaurant.getLongitude(), customerAddress.getLatitude(), customerAddress.getLongitude());
 		Orders order = new Orders();
 		order.setCustomer(customer);
+		System.out.println(distanceInMeters);
 		order.setDeliveryDistance(distanceInMeters);
 		Double deliveryCharge = distanceInMeters*0.005;
 		order.setDeliveryCharge(deliveryCharge);

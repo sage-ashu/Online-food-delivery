@@ -23,7 +23,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString(callSuper = true)
+@ToString(callSuper = true,exclude = {"restaurantOwner","dish","orders"})
 public class Restaurant extends BaseEntity{
 	@Column(length=50)	
 	private String restaurantName;
