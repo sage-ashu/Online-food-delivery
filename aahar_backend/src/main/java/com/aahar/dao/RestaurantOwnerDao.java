@@ -8,4 +8,5 @@ import com.aahar.entities.RestaurantOwner;
 public interface RestaurantOwnerDao extends JpaRepository<RestaurantOwner, Long> {
 	boolean existsByEmail(String email);
 	Optional<RestaurantOwner> findByEmail(String email);
+//	Optional<RestaurantOwner> findById(Long id);
 }

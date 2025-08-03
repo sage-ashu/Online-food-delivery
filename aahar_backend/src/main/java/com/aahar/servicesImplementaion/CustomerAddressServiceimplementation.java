@@ -1,6 +1,7 @@
 package com.aahar.servicesImplementaion;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.aahar.dao.CustomerAddressDao;
+import com.aahar.dao.CustomerDao;
 import com.aahar.dto.CustomerAddressDTO;
 import com.aahar.dto.CustomerAddressEditDTO;
 import com.aahar.entities.Customer;
@@ -21,22 +23,27 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class CustomerAddressServiceimplementation implements CustomerAddressService {
 	private CustomerAddressDao customeraddressDao ;
+	private CustomerDao customerDao;
 	private final ModelMapper modelMapper;
 	@Override
 	public CustomerAddressDTO addCustomerAddress(CustomerAddressDTO dto) {
-		 CustomerAddress address = modelMapper.map(dto, CustomerAddress.class);
+	    CustomerAddress address = modelMapper.map(dto, CustomerAddress.class);
 
-	        // Set customer if required
-	        if (dto.getCustomerId() != null) {
-	            Customer customer = new Customer();
-	            customer.setId(dto.getCustomerId());
-	            address.setCustomer(customer);
+	    // Fetch the Customer from DB using findById
+	    if (dto.getCustomerId() != null) {
+	        Optional<Customer> optionalCustomer = customerDao.findById(dto.getCustomerId());
+
+	        if (optionalCustomer.isPresent()) {
+	            address.setCustomer(optionalCustomer.get());
+	        } else {
+	            throw new RuntimeException("Customer with ID " + dto.getCustomerId() + " not found.");
 	        }
+	    }
 
-	        CustomerAddress saved = customeraddressDao.save(address);
-	        return modelMapper.map(saved, CustomerAddressDTO.class);
-	    
+	    CustomerAddress saved = customeraddressDao.save(address);
+	    return modelMapper.map(saved, CustomerAddressDTO.class);
 	}
+
 	@Override
 	 public List<CustomerAddressDTO> getAllCustomerAddresses() {
         return customeraddressDao.findAll()

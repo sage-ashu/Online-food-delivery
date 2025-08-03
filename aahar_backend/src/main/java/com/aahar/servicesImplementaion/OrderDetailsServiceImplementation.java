@@ -19,11 +19,12 @@ import com.aahar.entities.Orders;
 import com.aahar.services.OrderDetailsService;
 
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @Transactional
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class OrderDetailsServiceImplementation implements OrderDetailsService{
 
 	private final OrderDetailsDao orderDetailsDao;
@@ -32,28 +33,14 @@ public class OrderDetailsServiceImplementation implements OrderDetailsService{
 	private final ModelMapper modelMapper;
 	@Override
 	public void addOrderDetails(Long orderId, List<AddOrderDetailsDTO> orderDetails) {
-		
-		Orders order=ordersDao.findById(orderId)
-				.orElseThrow(()-> new RuntimeException("Order not found with ID: "+ orderId));
-		for(AddOrderDetailsDTO orderDetail : orderDetails) {
-			Dish dish = dishDao.findById(orderDetail.getDishId()).orElseThrow(()->new ResourceNotFoundException("Invalid Dish ID"));
-			order.addOrderDetail(modelMapper.map(orderDetail, OrderDetails.class));
-			dish.addOrderDetail(modelMapper.map(orderDetail, OrderDetails.class));
-			
+	
+		Orders order = ordersDao.findById(orderId).orElseThrow(()-> new ResourceNotFoundException("Order ID invalid "));
+		for(AddOrderDetailsDTO dto : orderDetails) {
+			Dish dish = dishDao.findById(dto.getDishId()).orElseThrow(()-> new ResourceNotFoundException("Invalid dish Id"));
+			OrderDetails orderDetail = new OrderDetails(dto.getQuantity());
+			dish.addOrderDetail(orderDetail);
+			order.addOrderDetail(orderDetail);
 		}
-//		Orders order=ordersDao.findById(orderId)
-//				.orElseThrow(()-> new RuntimeException("Order not found with ID: "+ orderId));
-//		
-//		Dish dish =dishDao.findById(dishId)
-//				.orElseThrow(()-> new RuntimeException("Dish not found with ID: "+dishId));
-//		
-//		OrderDetails orderDetails=modelMapper.map(dto, OrderDetails.class);
-//		orderDetails.setOrders(order);
-//		orderDetails.setDish(dish);
-//		orderDetailsDao.save(orderDetails);
-//		
-//		return new ApiResponse(true, "Order details added successfully");
-		
 	}
 
 }
