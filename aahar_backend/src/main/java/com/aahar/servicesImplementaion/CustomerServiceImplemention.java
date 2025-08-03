@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +31,7 @@ public class CustomerServiceImplemention implements CustomerService {
 	//now adding its CTOR DI
 	public final CustomerDao customerDao;
 	public final ModelMapper map;
+	private PasswordEncoder passwordEncoder;
 	
 	//here we are adding address to CustomerAddress table and also mapping it
 	//with the customer (using a helper class written in entities.customer)
@@ -49,7 +51,9 @@ public class CustomerServiceImplemention implements CustomerService {
 	//This API helps us to add the customer
 	@Override
 	public ApiResponse addCustomer(CustomerDTO dto) {
+		String encodedPassword = passwordEncoder.encode(dto.getPassword());
 		Customer entity = map.map(dto, Customer.class);
+		entity.setPassword(encodedPassword);
 		customerDao.save(entity);
 		return new ApiResponse(true,"Customer added successfully");
 	}

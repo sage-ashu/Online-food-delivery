@@ -2,6 +2,7 @@ package com.aahar.servicesImplementaion;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +28,8 @@ public class RestaurantOwnerServiceImpl implements RestaurantOwnerService {
 
     @Autowired
     private RestaurantOwnerDao ownerRepo;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public ApiResponse registerOwner(RestaurantOwnerRegistrationDTO dto) {
@@ -35,12 +38,13 @@ public class RestaurantOwnerServiceImpl implements RestaurantOwnerService {
         if (exists) {
             return new ApiResponse(false, "Email already registered.");
         }
-
+        String encodedPassword = passwordEncoder.encode(dto.getPassword());
+        
         RestaurantOwner owner = new RestaurantOwner(
             dto.getName(),
             dto.getPhoneNumber(),
             dto.getEmail(),
-            dto.getPassword() // You can hash the password here using BCrypt
+            encodedPassword // You can hash the password here using BCrypt
         );
 
         RestaurantOwner saved = ownerRepo.save(owner);
