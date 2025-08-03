@@ -25,7 +25,7 @@ public class RestaurantOwner extends BaseEntity{
 	private String phoneNumber;
 	@Column(length=40)
 	private String email;
-	@Column(length=40)
+	@Column(length=250)
 	private String password;
 	public RestaurantOwner(String name, String phoneNumber, String email, String password) {
 		super();

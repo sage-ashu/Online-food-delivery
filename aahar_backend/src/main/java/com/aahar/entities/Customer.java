@@ -29,7 +29,7 @@ public class Customer extends BaseEntity
 	private String lastName;
 	@Column(length=100, unique=true)
 	private String email;
-	@Column(length=20, nullable = false)
+	@Column(length=250, nullable = false)
 	private String password;
 	
 	
