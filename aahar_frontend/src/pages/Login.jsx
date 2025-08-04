@@ -25,18 +25,24 @@ function Login() {
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const result = login(formData.email, formData.password, role);
-
-    if (result.success) {
-      toast.success("Login successful!");
-      navigate("/menu");
-    } else {
-      toast.error(result.message || "Login failed!");
-    }
-  };
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+    
+      const result = await login(formData.email, formData.password, role);
+    
+      if (result.success) {
+        toast.success("Login successful!");
+        if (role === "restaurant") {
+          navigate("/orders");
+        } else if (role === "customer") {
+          navigate("/menu");
+        }
+      } else {
+        toast.error(result.message || "Login failed!");
+      }
+    };
+    
+    
 
   return (
     <div className="flex flex-col min-h-screen">

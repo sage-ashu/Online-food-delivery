@@ -1,42 +1,44 @@
-import React, { useState } from "react";
+// src/pages/Menu.jsx
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import MenuItemCard from "../components/MenuItemCard";
+import { getAllDishes } from "../services/dishService";
 
 const Menu = () => {
-  const navLinks = [
-    { label: "Home", path: "/" },
-    { label: "Menu", path: "/menu" },   
-    { label: "Cart", path: "/cart" },
-    { label: "Login", path: "/login" },
-    { label: "Register", path: "/register" },
-    { label: "Contact Us", path: "/contact" },
-  ];
-
-  // Dummy data for now
-  const dummyMenuItems = Array.from({ length: 12 }, (_, i) => ({
-    id: i + 1,
-    name: `Dish ${i + 1}`,
-    description: "A delicious and popular choice among food lovers.",
-    price: (150 + i * 10).toFixed(2),
-    image: `https://source.unsplash.com/featured/?food,${i + 1}`,
-  }));
+  const [dishes, setDishes] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const itemsPerPage = 6;
-  const totalPages = Math.ceil(dummyMenuItems.length / itemsPerPage);
 
-  const [currentPage, setCurrentPage] = useState(1);
+  useEffect(() => {
+    const fetchDishes = async () => {
+      try {
+        const res = await getAllDishes();
+        if (res.success) {
+          setDishes(res.data);
+        } else {
+          console.error(res.message);
+        }
+      } catch (err) {
+        console.error("Failed to fetch dishes", err);
+      }
+    };
+
+    fetchDishes();
+  }, []);
+
+  const totalPages = Math.ceil(dishes.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentItems = dishes.slice(startIndex, startIndex + itemsPerPage);
 
   const handleChangePage = (page) => {
     setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: "smooth" }); // Smooth scroll on page change
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
-
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentItems = dummyMenuItems.slice(startIndex, startIndex + itemsPerPage);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 to-white">
-      <Navbar links={navLinks} />
+      <Navbar />
 
       <section className="py-16 px-4 sm:px-8">
         <h1 className="text-4xl font-bold text-orange-700 text-center mb-6">
@@ -46,14 +48,13 @@ const Menu = () => {
           Handpicked dishes just for you!
         </p>
 
-        {/* Grid of Items */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {currentItems.map((item) => (
             <MenuItemCard key={item.id} item={item} />
           ))}
         </div>
 
-        {/* Pagination Controls */}
+        {/* Pagination */}
         <div className="mt-12 flex justify-center gap-3">
           {Array.from({ length: totalPages }, (_, index) => (
             <button
@@ -70,7 +71,6 @@ const Menu = () => {
           ))}
         </div>
 
-        {/* Sticky Info Section */}
         <div className="mt-20 py-12 px-6 bg-gradient-to-tr from-orange-100 to-white text-center rounded-xl shadow-inner animate-fadeInSlow">
           <h3 className="text-2xl font-bold text-orange-700 mb-4">
             Food that keeps you coming back!
@@ -87,3 +87,4 @@ const Menu = () => {
 };
 
 export default Menu;
+  

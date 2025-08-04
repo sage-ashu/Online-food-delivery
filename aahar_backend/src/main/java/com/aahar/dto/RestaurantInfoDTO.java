@@ -11,7 +11,7 @@ import lombok.ToString;
 public class RestaurantInfoDTO {
     private Long Id;
     private String restaurantName;
-    private String restauratDescription;
+    private String restaurantDescription;
     private boolean isVeg;
     private double avgCost;
     private boolean isOnline;
