@@ -14,7 +14,7 @@ import com.aahar.dto.RestaurantInfoDTO;
 //
 public interface RestaurantService {
 
-	ApiResponse addRestaurant(AddRestaurantDTO dto);
+//	ApiResponse addRestaurant(AddRestaurantDTO dto);
 
 	ApiResponse updateRestaurantById(RestaurantInfoDTO restaurantDTO);
 
@@ -29,6 +29,8 @@ public interface RestaurantService {
 	ApiResponse getRestaurantInSameCityAsCustomer(Long customerAddressId);
 
 	ApiResponse updateRestaurantStatus(Long restaurantId, boolean status);
+	
+	ApiResponse saveOrUpdateRestaurant(AddRestaurantDTO dto);
 
 	
 

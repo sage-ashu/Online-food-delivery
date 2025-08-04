@@ -1,22 +1,18 @@
 package com.aahar.dto;
 
-
-
-import jakarta.persistence.Column;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
-public class AddRestaurantDTO {
-    private Long id; // Optional: used for update scenario
-    private Long ownerId;
-
+@ToString
+public class RestaurantInfoForOwnerDTO {
     private String restaurantName;
     private String restaurantDescription;
-    private boolean isVeg;
+    private boolean veg;       // ✅ renamed from isVeg → veg
     private double avgCost;
-    private boolean isOnline;
+    private boolean online;    // ✅ renamed from isOnline → online
     private String phoneNo;
     private String address1;
     private String address2;

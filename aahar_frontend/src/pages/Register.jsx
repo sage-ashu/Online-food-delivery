@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import { registerRestaurant } from "../services/registrationService";
+import { toast } from "react-toastify";
 
 function Register() {
   const navLinks = [
@@ -16,13 +18,10 @@ function Register() {
 
   const [role, setRole] = useState("customer");
   const [formData, setFormData] = useState({
-    // Common fields
     email: "",
     password: "",
-    // Customer fields
     firstName: "",
     lastName: "",
-    // Restaurant owner fields
     name: "",
     phoneNumber: "",
   });
@@ -31,10 +30,35 @@ function Register() {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(`Registering as ${role}:`, formData);
-    // API call logic here
+
+    if (role === "restaurant") {
+      const restaurantData = {
+        name: formData.name,
+        phoneNumber: formData.phoneNumber,
+        email: formData.email,
+        password: formData.password,
+      };
+
+      const result = await registerRestaurant(restaurantData);
+
+      if (result.success) {
+        toast.success("Restaurant registered successfully!", {
+          position: "bottom-right",
+        });
+        navigate("/login");
+      } else {
+        toast.error(result.message || "Registration failed", {
+          position: "bottom-right",
+        });
+      }
+    } else {
+      // You can implement customer registration here if needed later
+      toast.info("Customer registration is not yet implemented.", {
+        position: "bottom-right",
+      });
+    }
   };
 
   return (

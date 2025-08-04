@@ -20,5 +20,6 @@ public class DishResponseDTO {
 	private int noOfServings;
 	private boolean isAvailable;
 	private String imagePath;
+//	private String restuarantName;
 }
 

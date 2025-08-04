@@ -1,51 +1,61 @@
-// src/context/AuthContext.js
-import { createContext, useContext, useState } from "react";
+  // src/context/AuthContext.js
+  import { createContext, useContext, useState } from "react";
+  import { loginRestaurantOwner } from "../services/loginService";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
-const AuthContext = createContext();
+  const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
-  const [authUser, setAuthUser] = useState(null);
+  export const AuthProvider = ({ children }) => {
+    const [authUser, setAuthUser] = useState(null);
+    const navigate = useNavigate();
 
-  const login = (email, password, role) => {
-    // Dummy hardcoded data
-    const dummyUsers = [
-      {
-        email: "customer@example.com",
-        password: "123456",
-        role: "customer",
-      },
-      {
-        email: "restaurant@example.com",
-        password: "abcdef",
-        role: "restaurant",
-      },
-    ];
+    const login = async (email, password, role) => {
+      if (role === "restaurant") {
+        const result = await loginRestaurantOwner(email, password);
 
-    const foundUser = dummyUsers.find(
-      (user) =>
-        user.email === email &&
-        user.password === password &&
-        user.role === role
+        if (result.success) {
+          const userData = {
+            ...result.data, // id, name, email, phoneNumber
+            role: "restaurant",
+          };
+          setAuthUser(userData);
+          return { success: true };
+        } else {
+          return { success: false, message: result.message };
+        }
+      }
+
+      // You can still keep dummy logic for customer (optional)
+      if (role === "customer") {
+        const dummyCustomer = {
+          email: "customer@example.com",
+          password: "123456",
+          role: "customer",
+        };
+
+        if (email === dummyCustomer.email && password === dummyCustomer.password) {
+          setAuthUser(dummyCustomer);
+          return { success: true };
+        } else {
+          return { success: false, message: "Invalid credentials" };
+        }
+      }
+
+      return { success: false, message: "Unknown role" };
+    };
+
+    const logout = () => {
+      setAuthUser(null);
+      navigate("/login")
+      toast.info("Successfully logged out ");
+    };
+
+    return (
+      <AuthContext.Provider value={{ authUser, login, logout }}>
+        {children}
+      </AuthContext.Provider>
     );
-
-    if (foundUser) {
-      setAuthUser(foundUser);
-      return { success: true };
-    } else {
-      return { success: false, message: "Invalid credentials or role" };
-    }
   };
 
-  const logout = () => {
-    setAuthUser(null);
-  };
-
-  return (
-    <AuthContext.Provider value={{ authUser, login, logout }}>
-      {children}
-    </AuthContext.Provider>
-  );
-};
-
-// Custom hook
-export const useAuth = () => useContext(AuthContext);
+  export const useAuth = () => useContext(AuthContext);

@@ -31,26 +31,26 @@ public class RestaurantOwnerServiceImpl implements RestaurantOwnerService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Override
-    public ApiResponse registerOwner(RestaurantOwnerRegistrationDTO dto) {
-        // Check if email already exists (optional enhancement)
-        boolean exists = ownerRepo.existsByEmail(dto.getEmail());
-        if (exists) {
-            return new ApiResponse(false, "Email already registered.");
-        }
-        String encodedPassword = passwordEncoder.encode(dto.getPassword());
-        
-        RestaurantOwner owner = new RestaurantOwner(
-            dto.getName(),
-            dto.getPhoneNumber(),
-            dto.getEmail(),
-            encodedPassword // You can hash the password here using BCrypt
-        );
-
-        RestaurantOwner saved = ownerRepo.save(owner);
-
-        return new ApiResponse(true, "Owner registered successfully", saved);
-    }
+	    @Override
+	    public ApiResponse registerOwner(RestaurantOwnerRegistrationDTO dto) {
+	        // Check if email already exists (optional enhancement)
+	        boolean exists = ownerRepo.existsByEmail(dto.getEmail());
+	        if (exists) {
+	            return new ApiResponse(false, "Email already registered.");
+	        }
+	        String encodedPassword = passwordEncoder.encode(dto.getPassword());
+	        
+	        RestaurantOwner owner = new RestaurantOwner(
+	            dto.getName(),
+	            dto.getPhoneNumber(),
+	            dto.getEmail(),
+	            encodedPassword // You can hash the password here using BCrypt
+	        );
+	
+	        RestaurantOwner saved = ownerRepo.save(owner);
+	
+	        return new ApiResponse(true, "Owner registered successfully", saved);
+	    }
     
     
     @Override
@@ -91,8 +91,8 @@ public class RestaurantOwnerServiceImpl implements RestaurantOwnerService {
 
         RestaurantOwner owner = optionalOwner.get();
 
-        // Plain text comparison (for now, secure hashing can be added later)
-        if (!owner.getPassword().equals(dto.getPassword())) {
+        // Compare encoded password using BCrypt
+        if (!passwordEncoder.matches(dto.getPassword(), owner.getPassword())) {
             return new ApiResponse(false, "Invalid email or password");
         }
 
@@ -105,6 +105,7 @@ public class RestaurantOwnerServiceImpl implements RestaurantOwnerService {
 
         return new ApiResponse(true, "Login successful", responseDTO);
     }
+
     
     @Override
     public ApiResponse updateOwnerPassword(Long ownerId, PasswordUpdateDTO dto) {

@@ -19,6 +19,7 @@ import com.aahar.dto.ApiResponse;
 import com.aahar.dto.RestaurantAddressDTO;
 import com.aahar.dto.RestaurantInfoDTO;
 import com.aahar.dto.RestaurantInfoForCustomerDTO;
+import com.aahar.dto.RestaurantInfoForOwnerDTO;
 import com.aahar.entities.Customer;
 import com.aahar.entities.CustomerAddress;
 import com.aahar.entities.OrderDetails;
@@ -44,14 +45,42 @@ public class RestaurantServiceImplemention implements RestaurantService {
 	private CustomerAddressDao customerAddressDao;
 	
 	@Override
-	public ApiResponse addRestaurant(AddRestaurantDTO dto) {
-		RestaurantOwner owner= ownerDao.findById(dto.getOwnerId()).orElseThrow(()-> new ResourceNotFoundException("Restaurant owner does not exist"));
+	public ApiResponse saveOrUpdateRestaurant(AddRestaurantDTO dto) {
+	    RestaurantOwner owner = ownerDao.findById(dto.getOwnerId())
+	        .orElseThrow(() -> new ResourceNotFoundException("Restaurant owner does not exist"));
 
-		Restaurant restaurant= modelMapper.map(dto, Restaurant.class);
-		restaurant.setRestaurantOwner(owner);
-		owner.addRestaurant(restaurant);
-		return new ApiResponse(true, "Restaurant Added Successfully",null);
-		}
+	    Optional<Restaurant> optionalRestaurant = restaurantDao.findByRestaurantOwnerId(dto.getOwnerId());
+
+	    Restaurant restaurant;
+	    if (optionalRestaurant.isPresent()) {
+	        restaurant = optionalRestaurant.get();
+	        // Update existing restaurant
+	        restaurant.setRestaurantName(dto.getRestaurantName());
+	        restaurant.setRestauratDescription(dto.getRestaurantDescription());
+	        restaurant.setVeg(dto.isVeg());
+	        restaurant.setAvgCost(dto.getAvgCost());
+	        restaurant.setOnline(dto.isOnline());
+	        restaurant.setPhoneNo(dto.getPhoneNo());
+	        restaurant.setAddress1(dto.getAddress1());
+	        restaurant.setAddress2(dto.getAddress2());
+	        restaurant.setAddress3(dto.getAddress3());
+	        restaurant.setCity(dto.getCity());
+	        restaurant.setState(dto.getState());
+	        restaurant.setPinCode(dto.getPinCode());
+	        restaurant.setLatitude(dto.getLatitude());
+	        restaurant.setLongitude(dto.getLongitude());
+
+	        return new ApiResponse(true, "Restaurant updated successfully", null);
+	    } else {
+	        // Create new restaurant
+	        restaurant = modelMapper.map(dto, Restaurant.class);
+	        restaurant.setRestaurantOwner(owner);
+	        owner.addRestaurant(restaurant);
+
+	        return new ApiResponse(true, "Restaurant added successfully", null);
+	    }
+	}
+
 	@Override
 	public ApiResponse updateRestaurantById(RestaurantInfoDTO restaurantDTO) {
 	
@@ -75,22 +104,33 @@ public class RestaurantServiceImplemention implements RestaurantService {
 
 	@Override
 	public ApiResponse getRestaurantsByOwnerId(Long ownerId) {
-	    List<Restaurant> dtoList = restaurantDao.findByRestaurantOwnerId(ownerId);
-//	        .stream()
-//	        .map(restaurant -> modelMapper.map(restaurant, RestaurantInfoDTO.class))
-//	        .toList();
-	    List<RestaurantInfoDTO> resp = new ArrayList<>();
-	    for (Restaurant restaurant : dtoList) {
-			Long ownerID  = restaurant.getRestaurantOwner().getId();
-	    	RestaurantInfoDTO dto = modelMapper.map(restaurant, RestaurantInfoDTO.class);
-	    	dto.setOwnerId(ownerID);
-	    	dto.setOwnerName(restaurant.getRestaurantOwner().getName());
-	    	resp.add(dto);
-	    	
-		}
+	    Optional<Restaurant> optionalRestaurant = restaurantDao.findByRestaurantOwnerId(ownerId);
 
-	    return new ApiResponse(true, "Restaurants fetched successfully", resp);
+	    if (optionalRestaurant.isPresent()) {
+	        Restaurant restaurant = optionalRestaurant.get();
+	        
+	        RestaurantInfoForOwnerDTO dto = new RestaurantInfoForOwnerDTO();
+	        dto.setRestaurantName(restaurant.getRestaurantName());
+	        dto.setRestaurantDescription(restaurant.getRestauratDescription()); // Manual mapping
+	        dto.setVeg(restaurant.isVeg());
+	        dto.setAvgCost(restaurant.getAvgCost());
+	        dto.setOnline(restaurant.isOnline());
+	        dto.setPhoneNo(restaurant.getPhoneNo());
+	        dto.setAddress1(restaurant.getAddress1());
+	        dto.setAddress2(restaurant.getAddress2());
+	        dto.setAddress3(restaurant.getAddress3());
+	        dto.setCity(restaurant.getCity());
+	        dto.setState(restaurant.getState());
+	        dto.setPinCode(restaurant.getPinCode());
+	        dto.setLatitude(restaurant.getLatitude());
+	        dto.setLongitude(restaurant.getLongitude());
+
+	        return new ApiResponse(true, "Restaurant fetched successfully", dto);
+	    } else {
+	        return new ApiResponse(false, "No restaurant found", null);
+	    }
 	}
+
 	
 	
 	@Override
@@ -136,7 +176,12 @@ public class RestaurantServiceImplemention implements RestaurantService {
 		restaurant.setOnline(status);
 		return new ApiResponse(true, status?"Restauarnt ready to take orders":"Restaurant offline", null);
 	}
-	}
+	
+    public Restaurant getRestaurantByOwnerId(Long ownerId) {
+        return restaurantDao.findByRestaurantOwnerId(ownerId)
+                .orElse(null);
+    }
+}
 
 
 

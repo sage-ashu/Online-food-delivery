@@ -29,9 +29,10 @@ const Navbar = () => {
 
     if (authUser.role === "restaurant") {
       return [
-        { label: "Dashboard", path: "/dashboard" },
         { label: "Orders", path: "/orders" },
         { label: "Inventory", path: "/inventory" },
+        { label: "Your", path: "/restaurant-info" },
+        { label: "Reviews", path: "/reviews" },
         { label: "Logout", path: "/", action: logout },
       ];
     }

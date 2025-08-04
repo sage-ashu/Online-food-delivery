@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -33,6 +35,7 @@ public class Dish extends BaseEntity{
 	private boolean isAvailable;
 	private String imagePath;
 	@OneToMany(mappedBy = "dish", cascade=CascadeType.ALL,orphanRemoval = true)
+	@JsonIgnore
 	private List<OrderDetails> orderDetails=new ArrayList<>();
 	@ManyToOne
 	@JoinColumn(name="restaurant_id",nullable = false)
