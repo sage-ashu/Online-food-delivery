@@ -1,15 +1,16 @@
 package com.aahar.dto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
 public class DishUploadDTO {
 	private Long restaurantId;
-	private Long dishId;
 	private String dishName;
 	private double dishPrice;
 	private String description;

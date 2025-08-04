@@ -6,6 +6,8 @@ import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -27,9 +29,14 @@ public class Orders extends BaseEntity {
 	private double deliveryDistance;
 	private double deliveryCharge;
 	private double orderTotal;
+
 	private Double rating;
 	private String review;
 	
+	private int rating;
+	@Enumerated(EnumType.STRING)
+	private OrderStatus status;
+
 	 // This is many to one relationship multiple orders can belong to one customer
 	@ManyToOne
 	@JoinColumn(name="customer_id")
@@ -51,6 +58,13 @@ public class Orders extends BaseEntity {
 		this.orderTotal = orderTotal;
 		this.rating = 0.0;
 	}
+	
+	public void addOrderDetail(OrderDetails orderDetail) {
+		this.orderdetails.add(orderDetail);
+		orderDetail.setOrders(this);
+	}
+	
+	
 	
 	
 }

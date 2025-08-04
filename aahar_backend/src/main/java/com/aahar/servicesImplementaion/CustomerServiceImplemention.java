@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +14,9 @@ import com.aahar.dao.CustomerDao;
 import com.aahar.dto.AddressDTO;
 import com.aahar.dto.ApiResponse;
 import com.aahar.dto.CustomerDTO;
+import com.aahar.dto.CustomerLoginDTO;
+import com.aahar.dto.CustomerRegisterDTO;
+import com.aahar.dto.CustomerResponseDTO;
 import com.aahar.dto.OrdersDTO;
 import com.aahar.dto.UpdatePasswordDTO;
 import com.aahar.dto.updateCustomerDTO;
@@ -30,6 +34,7 @@ public class CustomerServiceImplemention implements CustomerService {
 	//now adding its CTOR DI
 	public final CustomerDao customerDao;
 	public final ModelMapper map;
+	private PasswordEncoder passwordEncoder;
 	
 	//here we are adding address to CustomerAddress table and also mapping it
 	//with the customer (using a helper class written in entities.customer)
@@ -49,7 +54,9 @@ public class CustomerServiceImplemention implements CustomerService {
 	//This API helps us to add the customer
 	@Override
 	public ApiResponse addCustomer(CustomerDTO dto) {
+		String encodedPassword = passwordEncoder.encode(dto.getPassword());
 		Customer entity = map.map(dto, Customer.class);
+		entity.setPassword(encodedPassword);
 		customerDao.save(entity);
 		return new ApiResponse(true,"Customer added successfully");
 	}
@@ -113,5 +120,37 @@ public class CustomerServiceImplemention implements CustomerService {
 		customerDao.save(entity);
 		return new ApiResponse(true,"customer details updated successfully");
 	}
+	
+	
+	
+	//To register a customer
+	@Override
+	public ApiResponse registerCustomer(CustomerRegisterDTO dto) {
+
+	    Customer found = customerDao.findByEmail(dto.getEmail());
+	    if (found == null) {
+	        Customer c = map.map(dto, Customer.class);
+	        Customer saved = customerDao.save(c);
+	        return new ApiResponse(true, "Customer Registered successfully", saved);
+	    } else {
+	        return new ApiResponse(false, "Email is already registered");
+	    }
+	}
+
+	
+	//To login a customer 
+	@Override
+	public ApiResponse loginCustomer(CustomerLoginDTO dto) {
+
+	    Customer found = customerDao.findByEmail(dto.getEmail());
+	    if (found == null) {
+	        return new ApiResponse(false, "Wrong email or password");
+	    } else {
+	        // Convert to DTO that does not have lazy-loaded fields
+	        CustomerResponseDTO responseDTO = map.map(found, CustomerResponseDTO.class);
+	        return new ApiResponse(true, "Customer logged in successfully", responseDTO);
+	    }
+	}
+
 
 }

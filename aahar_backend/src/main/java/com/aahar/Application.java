@@ -22,7 +22,6 @@ public class Application {
 	// rets an object - which has to be managed as a spring bean
 	// manages - life cycle +
 	public ModelMapper modelMapper() {
-		System.out.println("in model mapper creation");
 		ModelMapper mapper = new ModelMapper();
 		mapper.getConfiguration()
 				/*
@@ -37,5 +36,6 @@ public class Application {
 		return mapper;
 
 	}
+
 
 }

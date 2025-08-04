@@ -23,7 +23,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString(callSuper = true)
+@ToString(callSuper = true,exclude = {"restaurantOwner","dish","orders"})
 public class Restaurant extends BaseEntity{
 	@Column(length=50)	
 	private String restaurantName;
@@ -68,6 +68,10 @@ public class Restaurant extends BaseEntity{
 	public void removeDish(Dish dish) {
 		this.dish.remove(dish);
 		dish.setMyRestaurant(null);
+	}
+	
+	public double getRating() {
+		return this.getRatingSum()/this.getTotalRating();
 	}
 
 	public Restaurant(String restaurantName, String restauratDescription, boolean isVeg, double avgCost,

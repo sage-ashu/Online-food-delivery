@@ -12,8 +12,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.aahar.dto.AddressDTO;
-import com.aahar.dto.CustomerDTO;
+//import com.aahar.dto.AddressDTO;
+import com.aahar.dto.ApiResponse;
+//import com.aahar.dto.CustomerDTO;
+import com.aahar.dto.CustomerLoginDTO;
+import com.aahar.dto.CustomerRegisterDTO;
 import com.aahar.dto.UpdatePasswordDTO;
 import com.aahar.dto.updateCustomerDTO;
 import com.aahar.services.CustomerService;
@@ -25,14 +28,24 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @CrossOrigin(origins = "http://localhost:5173")
 public class CustomerController {
-	
+
 	public final CustomerService customerService;
+
+//	// add customer
+//	@PostMapping("/add")
+//	public ResponseEntity<?> addCustomer(@RequestBody CustomerDTO dto) {
+//		return ResponseEntity.status(HttpStatus.CREATED).body(customerService.addCustomer(dto));
+//	}
+
 	
-	//add customer
-	@PostMapping("/add")
-	public ResponseEntity<?> addCustomer(@RequestBody CustomerDTO dto){
-		return ResponseEntity.status(HttpStatus.CREATED).body(customerService.addCustomer(dto));
-	}
+
+	
+//	@PostMapping("/login")
+//	public ResponseEntity<ApiResponse> loginCustomer(@RequestBody CustomerLoginDTO dto){
+//		return ResponseEntity.status(HttpStatus.FOUND).body(customerService.loginCustomer(dto));
+//		
+//	}
+	
 	
 //	//get all orders of user->move to orders controller
 //	@GetMapping("/{customerId}/orders")
@@ -49,25 +62,38 @@ public class CustomerController {
 //				.body(customerService.addAddress(customerId,dto));
 //	}
 
-	//view customer profile
+	// view customer profile
 	@GetMapping("/{customerId}/profile")
-	public ResponseEntity<?> customerProfile(@PathVariable Long customerId){
+	public ResponseEntity<?> customerProfile(@PathVariable Long customerId) {
 		return ResponseEntity.ok(customerService.customerProfile(customerId));
 	}
-	//delete customer
+
+	// delete customer
 	@DeleteMapping("/{customerId}/delete")
-	public ResponseEntity<?> deleteCustomer(@PathVariable Long customerId){
+	public ResponseEntity<?> deleteCustomer(@PathVariable Long customerId) {
 		return ResponseEntity.ok(customerService.deleteCustomer(customerId));
 	}
-	//change password
+
+	// change password
 	@PutMapping("/{customerId}/updatePassword")
-	public ResponseEntity<?> updatePassword(@PathVariable Long customerId,@RequestBody UpdatePasswordDTO dto){
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body(customerService.updatePassword(customerId,dto));
+	public ResponseEntity<?> updatePassword(@PathVariable Long customerId, @RequestBody UpdatePasswordDTO dto) {
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(customerService.updatePassword(customerId, dto));
 	}
-	//update profile
+
+	// update profile
 	@PutMapping("/{customerId}/updateProfile")
-	public ResponseEntity<?> updateProfile(@PathVariable Long customerId,@RequestBody updateCustomerDTO dto){
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body(customerService.updateProfile(customerId,dto));
-	
+	public ResponseEntity<?> updateProfile(@PathVariable Long customerId, @RequestBody updateCustomerDTO dto) {
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(customerService.updateProfile(customerId, dto));
+
 	}
+	
+	
+	
+	
+	//Register user
+	@PostMapping("/register")
+	public ResponseEntity<ApiResponse> registerCustomer(@RequestBody CustomerRegisterDTO dto){
+		return ResponseEntity.status(HttpStatus.CREATED).body(customerService.registerCustomer(dto));
+	}
+	
 }

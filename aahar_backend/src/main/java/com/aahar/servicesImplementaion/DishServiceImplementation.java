@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.UUID;
 
@@ -16,6 +18,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.aahar.custom_exception.ResourceNotFoundException;
 import com.aahar.dao.DishDao;
 import com.aahar.dao.RestaurantDao;
+import com.aahar.dto.DishResponseDTO;
+import com.aahar.dto.DishUpdateDTO;
 import com.aahar.dto.DishUploadDTO;
 import com.aahar.entities.Dish;
 import com.aahar.entities.Restaurant;
@@ -35,14 +39,16 @@ public class DishServiceImplementation implements DishService {
 	
 	@Override
 	public void saveDish(DishUploadDTO dishDTO, MultipartFile imageFile) throws IOException {
-		// TODO Auto-generated method stub
 		
 			Restaurant restaurantEntity =  restaurantDao.findById(dishDTO.getRestaurantId()).orElseThrow(()->new ResourceNotFoundException("Resource not found"));
-			Dish dish =new Dish();
+			System.out.println(restaurantEntity.toString());
+			Dish dish = new Dish();
+			restaurantEntity.addDish(dish);
+			dish.setMyRestaurant(restaurantEntity);
+			modelMapper.map(dishDTO, dish);
 			System.out.println(dish.toString());
-			dish = modelMapper.map(dishDTO, Dish.class);
 			if(imageFile!=null) {
-				
+				System.out.println("image");
 				File dir = new File("uploads/dishes/");
 				if(!dir.exists()) {
 					dir.mkdirs();
@@ -55,14 +61,16 @@ public class DishServiceImplementation implements DishService {
 				dish.setImagePath(filePath.toString());
 			}
 			else {
+				System.out.println("noimage");
 				dish.setImagePath(null);
 			}
-			restaurantEntity.addDish(dish);
+			System.out.println(dish.toString());
+			
 			
 }
 
 	@Override
-	public void updateDish(DishUploadDTO dishDTO, MultipartFile imageFile) throws IOException {
+	public void updateDish(DishUpdateDTO dishDTO, MultipartFile imageFile) throws IOException {
 		// TODO Auto-generated method stub
 		Dish dishEntity = dishDao.findById(dishDTO.getDishId()).orElseThrow(()->new ResourceNotFoundException("invalid dish id"));
 		if(dishEntity.getMyRestaurant().getId()!=dishDTO.getRestaurantId()) {
@@ -111,6 +119,27 @@ public class DishServiceImplementation implements DishService {
 		}
 		Restaurant restaurant = restaurantDao.findById(restaurantId).orElseThrow(()->new ResourceNotFoundException("Restaurant not found"));
 		restaurant.removeDish(dishEntity);
+	}
+
+	@Override
+	public DishResponseDTO getDish(Long dishId) {
+		Dish dish  = dishDao.findById(dishId).orElseThrow(()-> new ResourceNotFoundException("Dish id invalid"));
+		DishResponseDTO dto = modelMapper.map(dish, DishResponseDTO.class);
+		dto.setRating(dish.getRating());
+		return dto;
+	}
+
+	@Override
+	public List<DishResponseDTO> getDishByRestaurant(Long restaurantId) {
+		// TODO Auto-generated method stub
+		List<Dish> dishList = dishDao.findByMyRestaurantId(restaurantId);
+		List<DishResponseDTO> dtoList = new ArrayList<>();
+		for(Dish dish : dishList) {
+			dtoList.add(modelMapper.map(dish, DishResponseDTO.class));
+			double rating = dish.getRating();
+			dtoList.getLast().setRating(rating);
+		}
+		return dtoList;
 	}
 }
 

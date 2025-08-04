@@ -21,9 +21,11 @@ import com.aahar.dto.RestaurantOrderResponseDTO;
 import com.aahar.entities.Customer;
 import com.aahar.entities.CustomerAddress;
 import com.aahar.entities.Dish;
+import com.aahar.entities.OrderStatus;
 import com.aahar.entities.Orders;
 import com.aahar.entities.Restaurant;
 import com.aahar.services.DistanceService;
+import com.aahar.services.OrderDetailsService;
 import com.aahar.services.OrdersService;
 
 import lombok.AllArgsConstructor;
@@ -37,6 +39,7 @@ public class OrderServiceImplementation implements OrdersService {
 	private CustomerAddressDao customerAddressDao;
 	private RestaurantDao restaurantDao;
 	private DishDao dishDao;
+	private OrderDetailsService orderDetailService;
 
 	@Override
 	public List<CustomerOrderResponseDTO> getCustomerOrders(Long customerId) {
@@ -78,9 +81,11 @@ public class OrderServiceImplementation implements OrdersService {
 		CustomerAddress customerAddress = customerAddressDao.findById(orderDTO.getCustomerAddressId()).orElseThrow(()-> new ResourceNotFoundException("Invalid address ID"));
 		Customer customer = customerAddress.getCustomer();
 		Restaurant restaurant = restaurantDao.findById(orderDTO.getReaturantId()).orElseThrow(()->new ResourceNotFoundException("Invalid restauarnt ID"));
+		System.out.println("here");
 		int distanceInMeters = distanceService.getDistanceInMeters(restaurant.getLatitude(), restaurant.getLongitude(), customerAddress.getLatitude(), customerAddress.getLongitude());
 		Orders order = new Orders();
 		order.setCustomer(customer);
+		System.out.println(distanceInMeters);
 		order.setDeliveryDistance(distanceInMeters);
 		Double deliveryCharge = distanceInMeters*0.005;
 		order.setDeliveryCharge(deliveryCharge);
@@ -93,7 +98,46 @@ public class OrderServiceImplementation implements OrdersService {
 		order.setOrderAmount(orderAmount);
 		order.setOrderTotal(orderAmount+deliveryCharge);
 		customer.addOrders(order);
+		orderDetailService.addOrderDetails(order.getId(),orderDTO.getDetails());
+		
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//To update status of order this api works with enum
+    public void updateOrderStatus(Long orderId, OrderStatus newStatus) {
+        Orders order = ordersDao.findById(orderId)
+            .orElseThrow(() -> new RuntimeException("Order not found"));
+        order.setStatus(newStatus);
+        ordersDao.save(order);
+    }
 
 	@Override
 	public ApiResponse addRating(OrderRatingDTO dto) {

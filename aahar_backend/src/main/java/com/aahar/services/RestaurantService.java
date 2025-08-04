@@ -3,6 +3,8 @@ package com.aahar.services;
 import java.util.List;
 
 import com.aahar.dto.AddRestaurantDTO;
+import com.aahar.dto.ApiResponse;
+import com.aahar.dto.RestaurantAddressDTO;
 import com.aahar.dto.RestaurantInfoDTO;
 //
 //import com.aahar.dto.AddRestaurantDTO;
@@ -12,9 +14,23 @@ import com.aahar.dto.RestaurantInfoDTO;
 //
 public interface RestaurantService {
 
-	void addRestaurant(AddRestaurantDTO dto);
+	ApiResponse addRestaurant(AddRestaurantDTO dto);
 
-	void updateRestaurantById(RestaurantInfoDTO restaurantDTO);
+	ApiResponse updateRestaurantById(RestaurantInfoDTO restaurantDTO);
+
+	ApiResponse updateRestaurantAddress(RestaurantAddressDTO addressdto);
+
+	ApiResponse getRestaurantsByOwnerId(Long ownerId) ;
+
+	ApiResponse deleteRestaurantById(Long ownerId, Long restaurantId);
+
+	ApiResponse getRestaurantsForCustomer(Long restaurantId);
+
+	ApiResponse getRestaurantInSameCityAsCustomer(Long customerAddressId);
+
+	ApiResponse updateRestaurantStatus(Long restaurantId, boolean status);
+
+	
 
 //	List<RestaurantInfoDTO> getRestaurantsByOwnerId(Long ownerId);
 //	 RestaurantInfoDTO updateRestaurantById(Long ownerId, Long restaurantId, RestaurantInfoDTO dto);
