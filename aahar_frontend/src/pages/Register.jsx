@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import { registerRestaurant } from "../services/registrationService";
+import { registerRestaurant, registerCustomer } from "../services/registrationService";
 import { toast } from "react-toastify";
 
 function Register() {
@@ -22,8 +22,8 @@ function Register() {
     password: "",
     firstName: "",
     lastName: "",
-    name: "",
-    phoneNumber: "",
+    name: "",           // for restaurant
+    phoneNumber: "",    // for restaurant
   });
 
   const handleChange = (e) => {
@@ -44,20 +44,27 @@ function Register() {
       const result = await registerRestaurant(restaurantData);
 
       if (result.success) {
-        toast.success("Restaurant registered successfully!", {
-          position: "bottom-right",
-        });
+        toast.success("Restaurant registered successfully!", { position: "bottom-right" });
         navigate("/login");
       } else {
-        toast.error(result.message || "Registration failed", {
-          position: "bottom-right",
-        });
+        toast.error(result.message || "Registration failed", { position: "bottom-right" });
       }
     } else {
-      // You can implement customer registration here if needed later
-      toast.info("Customer registration is not yet implemented.", {
-        position: "bottom-right",
-      });
+      const customerData = {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        password: formData.password,
+      };
+
+      const result = await registerCustomer(customerData);
+
+      if (result.success) {
+        toast.success("Customer registered successfully!", { position: "bottom-right" });
+        navigate("/login");
+      } else {
+        toast.error(result.message || "Registration failed", { position: "bottom-right" });
+      }
     }
   };
 
@@ -71,7 +78,7 @@ function Register() {
             Register with Aahar
           </h2>
 
-          {/* Toggle */}
+          {/* Toggle Role */}
           <div className="flex justify-center mb-6">
             <button
               className={`px-4 py-2 rounded-l-xl font-medium transition ${
@@ -97,7 +104,7 @@ function Register() {
 
           {/* Form */}
           <form onSubmit={handleSubmit}>
-            {/* Conditional Fields */}
+            {/* Customer Fields */}
             {role === "customer" ? (
               <>
                 <div className="mb-4">
@@ -125,6 +132,7 @@ function Register() {
               </>
             ) : (
               <>
+                {/* Restaurant Fields */}
                 <div className="mb-4">
                   <label className="block text-orange-700 mb-1">Restaurant Name</label>
                   <input
@@ -150,7 +158,7 @@ function Register() {
               </>
             )}
 
-            {/* Common Fields */}
+            {/* Shared Fields */}
             <div className="mb-4">
               <label className="block text-orange-700 mb-1">Email</label>
               <input
@@ -182,7 +190,6 @@ function Register() {
             </button>
           </form>
 
-          {/* Login Redirect */}
           <div className="mt-6 text-center">
             <span className="text-gray-700">Already have an account? </span>
             <button

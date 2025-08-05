@@ -159,7 +159,14 @@ public class DishServiceImplementation implements DishService {
 	        dto.setAvailable(d.isAvailable());
 	        dto.setImagePath(d.getImagePath());
 	        dto.setRating(d.getRating());
-//	        dto.setRestaurantName(d.getMyRestaurant().getName());
+	        dto.setRestaurantId(d.getMyRestaurant().getId());
+	        dto.setRestaurantName(
+	        	    restaurantDao.findById(d.getMyRestaurant().getId())
+	        	        .orElseThrow(() -> new RuntimeException("Restaurant not found"))
+	        	        .getRestaurantName()
+	        	);
+
+
 	        return dto;
 	    }).collect(Collectors.toList());
 	    

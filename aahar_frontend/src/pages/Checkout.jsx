@@ -1,35 +1,59 @@
-// src/pages/Cart.jsx
 import React from "react";
 import { useCart } from "../context/CartContext";
-import Navbar from "../components/Navbar";
 import { useNavigate } from "react-router-dom";
+import Navbar from "../components/Navbar";
+import { createOrder } from "../services/orderService";
 
-const Cart = () => {
-  const { cartItems, removeFromCart, clearCart } = useCart();
+const Checkout = () => {
+  const { cartItems, clearCart } = useCart();
   const navigate = useNavigate();
+
+  const calculateTotal = () => {
+    return cartItems.reduce(
+      (acc, item) => acc + item.dishPrice * item.quantity,
+      0
+    );
+  };
+
+  const handlePlaceOrder = async () => {
+    try {
+      const orderData = {
+        customerId: currentUser.id,
+        restaurantId: cart.restaurantId,
+        items: cart.items.map(item => ({
+          dishId: item.id,
+          quantity: item.quantity,
+        })),
+        // remove razorpay fields for now
+      };
+  
+      const response = await createOrder(orderData);
+      console.log("Order placed:", response);
+      toast.success("Order placed successfully!");
+      // navigate or clear cart, etc.
+    } catch (error) {
+      console.error("Error placing order:", error);
+      toast.error("Failed to place order.");
+    }
+  };
 
   if (cartItems.length === 0) {
     return (
       <div className="min-h-screen bg-orange-50">
         <Navbar />
         <div className="text-center mt-20 text-gray-500 text-lg">
-          🛒 Your cart is empty.
+          🧾 Nothing to checkout. Your cart is empty.
         </div>
       </div>
     );
   }
-
-  const totalAmount = cartItems.reduce(
-    (sum, item) => sum + item.dishPrice * item.quantity,
-    0
-  );
 
   return (
     <div className="min-h-screen bg-orange-50">
       <Navbar />
       <div className="max-w-3xl mx-auto p-6">
         <h2 className="text-3xl font-bold mb-6 text-orange-700">
-          🛒 Your Cart
+          🧾 Checkout
         </h2>
 
         {cartItems.map((item) => (
@@ -41,16 +65,8 @@ const Cart = () => {
               <h4 className="font-semibold text-lg">{item.dishName}</h4>
               <p className="text-sm text-gray-500">Qty: {item.quantity}</p>
             </div>
-            <div className="flex items-center gap-4">
-              <span className="text-orange-600 font-semibold text-md">
-                ₹{item.dishPrice * item.quantity}
-              </span>
-              <button
-                onClick={() => removeFromCart(item.id)}
-                className="text-red-500 text-sm hover:underline"
-              >
-                Remove
-              </button>
+            <div className="text-orange-600 font-semibold text-md">
+              ₹{item.dishPrice * item.quantity}
             </div>
           </div>
         ))}
@@ -58,22 +74,16 @@ const Cart = () => {
         <div className="mt-6 flex justify-between items-center text-lg font-medium text-gray-700">
           <span>Total:</span>
           <span className="text-orange-700 font-bold text-xl">
-            ₹{totalAmount}
+            ₹{calculateTotal()}
           </span>
         </div>
 
         <div className="text-right mt-8">
           <button
-            onClick={clearCart}
-            className="text-sm text-red-600 underline mr-4"
-          >
-            Clear Cart
-          </button>
-          <button
-            onClick={() => navigate("/checkout")}
+            onClick={handlePlaceOrder}
             className="bg-green-600 text-white px-6 py-2 rounded-full hover:bg-green-700"
           >
-            Checkout
+            Place Order
           </button>
         </div>
       </div>
@@ -81,4 +91,4 @@ const Cart = () => {
   );
 };
 
-export default Cart;
+export default Checkout;

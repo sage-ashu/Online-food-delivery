@@ -2,21 +2,18 @@ package com.aahar.dto;
 
 import java.time.LocalDateTime;
 
+import com.aahar.entities.OrderStatus;
+
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@Getter
-@Setter
-@ToString
+@Data
 public class CustomerOrderResponseDTO {
-	Long orderId;
-	private LocalDateTime orderDateTime;
-//	private double orderAmount;
-//	private double deliveryDistance;
-//	private double deliveryCharge;
-	private double orderTotal;
-	String restaurantName;
-//	Long restaurantId;
-//	Long customerId;
+    private Long orderId;
+    private LocalDateTime orderDateTime;
+    private double orderTotal;
+    private String restaurantName;
+    private OrderStatus status;
 }
