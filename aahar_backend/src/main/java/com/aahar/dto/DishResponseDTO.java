@@ -9,17 +9,20 @@ import lombok.ToString;
 @Setter
 @ToString
 public class DishResponseDTO {
+    private Long id;
+    private String dishName;
+    private double dishPrice;
+    private String description;
+    private boolean isVeg;
+    private double rating;
+    private int preperationTime;
+    private int noOfServings;
+    private boolean isAvailable;
+    private String imagePath;
 
-	private Long id;
-	private String dishName;
-	private double dishPrice;
-	private String description;
-	private boolean isVeg;
-	private double rating;
-	private int preperationTime;
-	private int noOfServings;
-	private boolean isAvailable;
-	private String imagePath;
-//	private String restuarantName;
+    private Long restaurantId;
+    private String restaurantName;
 }
 
+
+    

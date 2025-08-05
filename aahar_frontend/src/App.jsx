@@ -11,6 +11,9 @@ import Orders from './pages/Orders'
 import Inventory from './pages/Inventory'
 import YourRestro from './pages/YourRestro'
 import Reviews from './pages/Reviews'
+import CustomerProfile from './pages/CustomerProfile'
+import Checkout from './pages/Checkout'
+import CustomerOrders from './pages/CustomerOrders'
 
 function App() {
   return (
@@ -27,6 +30,9 @@ function App() {
         <Route path="/inventory" element={<Inventory />} />
         <Route path="/restaurant-info" element={<YourRestro />} />
         <Route path="/reviews" element={<Reviews />} />
+        <Route path="/profile" element={<CustomerProfile />} />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/customer-orders" element={<CustomerOrders />} />
       </Routes>
     </>
   )

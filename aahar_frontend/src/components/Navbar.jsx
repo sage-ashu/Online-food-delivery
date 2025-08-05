@@ -20,8 +20,10 @@ const Navbar = () => {
     if (authUser.role === "customer") {
       return [
         { label: "Home", path: "/" },
+        { label: "Menu", path: "/menu" },
         { label: "Cart", path: "/cart" },
-        { label: "Orders", path: "/orders" },
+        { label: "Orders", path: "/customer-orders" },
+        { label: "Profile", path: "/profile" },
         { label: "About Us", path: "/about" },
         { label: "Logout", path: "/", action: logout },
       ];
@@ -31,7 +33,7 @@ const Navbar = () => {
       return [
         { label: "Orders", path: "/orders" },
         { label: "Inventory", path: "/inventory" },
-        { label: "Your", path: "/restaurant-info" },
+        { label: "Profile", path: "/restaurant-info" },
         { label: "Reviews", path: "/reviews" },
         { label: "Logout", path: "/", action: logout },
       ];
@@ -43,7 +45,7 @@ const Navbar = () => {
   return (
     <nav className="bg-orange-700 text-white shadow-md p-4">
       <div className="container mx-auto flex justify-between items-center">
-        <div className="text-xl font-bold">FoodApp</div>
+        <div className="text-xl font-bold">Aahar</div>
         <div className="flex gap-4">
           {renderLinks().map((link) =>
             link.action ? (

@@ -96,4 +96,9 @@ public class CustomerController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(customerService.registerCustomer(dto));
 	}
 	
+	
+	@PostMapping("/login")
+	public ResponseEntity<ApiResponse> loginCustomer(@RequestBody CustomerLoginDTO dto){
+		return ResponseEntity.status(HttpStatus.FOUND).body(customerService.loginCustomer(dto));
+	}
 }

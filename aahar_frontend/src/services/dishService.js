@@ -6,7 +6,7 @@ const API_BASE = "http://localhost:9090/dish"; // Use your backend base URL
 export const getAllDishes = async () => {
   try {
     const res = await axios.get(`${API_BASE}/get-all-dishes`);
-    console.log(res);
+    // console.log(res);
     return res.data; // assuming { success, message, data }
   } catch (error) {
     console.error("Error fetching dishes:", error);

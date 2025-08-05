@@ -56,6 +56,10 @@ public class Restaurant extends BaseEntity{
 	@OneToMany(mappedBy = "restaurant",cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Orders> orders=new ArrayList<>();
 	
+	@OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Cart> carts = new ArrayList<>();
+
+	
 	@ManyToOne
 	@JoinColumn(name="restaurantOwner_id")
 	private RestaurantOwner restaurantOwner;
