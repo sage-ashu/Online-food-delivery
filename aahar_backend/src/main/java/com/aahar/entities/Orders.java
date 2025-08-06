@@ -30,10 +30,9 @@ public class Orders extends BaseEntity {
 	private double deliveryCharge;
 	private double orderTotal;
 
-	private Double rating;
 	private String review;
 	
-	private int rating;
+	private Double rating;
 	@Enumerated(EnumType.STRING)
 	private OrderStatus status;
 

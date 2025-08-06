@@ -30,9 +30,8 @@ public class Dish extends BaseEntity {
 	private int preperationTime;
 	private int noOfServings;
 	private double totalRating;
-	private double ratingSum;
-	private int noOfRatings;
 	private int ratingSum;
+	private int noOfRatings;
 	private boolean isAvailable;
 	private String imagePath;
 	@OneToMany(mappedBy = "dish", cascade = CascadeType.ALL, orphanRemoval = true)

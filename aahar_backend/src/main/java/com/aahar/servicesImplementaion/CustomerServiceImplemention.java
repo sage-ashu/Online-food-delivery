@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,59 +34,53 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor
 public class CustomerServiceImplemention implements CustomerService {
-	//now adding its CTOR DI
+	// now adding its CTOR DI
 	public final CustomerDao customerDao;
 	public final ModelMapper map;
-	private PasswordEncoder passwordEncoder;
-	
-	//here we are adding address to CustomerAddress table and also mapping it
-	//with the customer (using a helper class written in entities.customer)
+	private final PasswordEncoder passwordEncoder;
+
+	// here we are adding address to CustomerAddress table and also mapping it
+	// with the customer (using a helper class written in entities.customer)
 	@Override
-	public ApiResponse addAddress(Long Id,AddressDTO dto) {
-		Optional<Customer> customer=customerDao.findById(Id);
-		if(customer.isPresent()) {
+	public ApiResponse addAddress(Long Id, AddressDTO dto) {
+		Optional<Customer> customer = customerDao.findById(Id);
+		if (customer.isPresent()) {
 			Customer cus = customer.get();
 			CustomerAddress AddressEntity = map.map(dto, CustomerAddress.class);
 			cus.addAddress(AddressEntity);
-			return new ApiResponse(true,"Address add successfully.");
-		}
-		else
-		return new ApiResponse(false,"customer is not present");
-	}
-	
-	//This API helps us to add the customer
-	@Override
-	public ApiResponse addCustomer(CustomerDTO dto) {
-		String encodedPassword = passwordEncoder.encode(dto.getPassword());
-		Customer entity = map.map(dto, Customer.class);
-		entity.setPassword(encodedPassword);
-		customerDao.save(entity);
-		return new ApiResponse(true,"Customer added successfully");
+			return new ApiResponse(true, "Address add successfully.");
+		} else
+			return new ApiResponse(false, "customer is not present");
 	}
 
-	//This Api is used to fetch the list of all orders placed by customer
+	// This API helps us to add the customer
+	@Override
+	public ApiResponse addCustomer(CustomerDTO dto) {
+		Customer entity = map.map(dto, Customer.class);
+		customerDao.save(entity);
+		return new ApiResponse(true, "Customer added successfully");
+	}
+
+	// This Api is used to fetch the list of all orders placed by customer
 	@Override
 	public List<OrdersDTO> allOrders(Long id) {
-		Optional<Customer> cust =customerDao.findById(id);
-		if(cust.isPresent()) {
-			Customer customer =cust.get();
-		List<Orders> orders=customer.getOrders();
-		List<OrdersDTO> dto= orders.stream()
-				.map(order->map.map(orders, OrdersDTO.class))
-				.toList();
-		return dto;
-	}
-		else
+		Optional<Customer> cust = customerDao.findById(id);
+		if (cust.isPresent()) {
+			Customer customer = cust.get();
+			List<Orders> orders = customer.getOrders();
+			List<OrdersDTO> dto = orders.stream().map(order -> map.map(orders, OrdersDTO.class)).toList();
+			return dto;
+		} else
 			return new ArrayList<>();
-		}
+	}
 
 	@Override
 	public CustomerDTO customerProfile(Long id) {
-		Customer entity =customerDao.findById(id)
-				.orElseThrow(()-> new ResourceNotFoundException("customer not found"));
-		
-			return map.map(entity, CustomerDTO.class);
-		
+		Customer entity = customerDao.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("customer not found"));
+
+		return map.map(entity, CustomerDTO.class);
+
 	}
 
 	@Override
@@ -94,63 +91,58 @@ public class CustomerServiceImplemention implements CustomerService {
 
 	@Override
 	public ApiResponse updatePassword(Long id, UpdatePasswordDTO dto) {
-		Customer entity = customerDao.findById(id)
-				.orElseThrow(()-> new ResourceNotFoundException("User Not Found"));
-		if(!entity.getPassword().equals(dto.getOldPassword())) {
+		Customer entity = customerDao.findById(id).orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
+		if (!passwordEncoder.matches(dto.getOldPassword(), entity.getPassword())) {
 			return new ApiResponse(false, "Enter correct old Password");
 		}
-		
-			if(entity.getPassword().equals(dto.getNewPassword())) {
-				return new ApiResponse(false, "New and Old Password can't be same");
-			}
-			
-				entity.setPassword(dto.getNewPassword());
-				customerDao.save(entity);
-				return new ApiResponse(true, "Password Changed Successfully");
-			
+		if (entity.getPassword().equals(dto.getNewPassword())) {
+			return new ApiResponse(false, "New and Old Password can't be same");
 		}
+
+		entity.setPassword(passwordEncoder.encode(dto.getNewPassword()));
+		customerDao.save(entity);
+		return new ApiResponse(true, "Password Changed Successfully");
+
+	}
 
 	@Override
 	public ApiResponse updateProfile(Long customerId, updateCustomerDTO dto) {
 		Customer entity = customerDao.findById(customerId)
-				.orElseThrow(()-> new ResourceNotFoundException("customer not found"));
+				.orElseThrow(() -> new ResourceNotFoundException("customer not found"));
 		entity.setFirstName(dto.getFirstName());
 		entity.setLastName(dto.getLastName());
 		entity.setEmail(dto.getEmail());
 		customerDao.save(entity);
-		return new ApiResponse(true,"customer details updated successfully");
+		return new ApiResponse(true, "customer details updated successfully");
 	}
-	
-	
-	
-	//To register a customer
+
+	// To register a customer
 	@Override
 	public ApiResponse registerCustomer(CustomerRegisterDTO dto) {
 
-	    Customer found = customerDao.findByEmail(dto.getEmail());
-	    if (found == null) {
-	        Customer c = map.map(dto, Customer.class);
-	        Customer saved = customerDao.save(c);
-	        return new ApiResponse(true, "Customer Registered successfully", saved);
-	    } else {
-	        return new ApiResponse(false, "Email is already registered");
-	    }
+		Customer found = customerDao.findByEmail(dto.getEmail());
+		if (found == null) {
+			Customer c = map.map(dto, Customer.class);
+			c.setPassword(passwordEncoder.encode(dto.getPassword()));
+			Customer saved = customerDao.save(c);
+			return new ApiResponse(true, "Customer Registered successfully", saved);
+		} else {
+			return new ApiResponse(false, "Email is already registered");
+		}
 	}
 
-	
-	//To login a customer 
+	// To login a customer
 	@Override
 	public ApiResponse loginCustomer(CustomerLoginDTO dto) {
 
-	    Customer found = customerDao.findByEmail(dto.getEmail());
-	    if (found == null) {
-	        return new ApiResponse(false, "Wrong email or password");
-	    } else {
-	        // Convert to DTO that does not have lazy-loaded fields
-	        CustomerResponseDTO responseDTO = map.map(found, CustomerResponseDTO.class);
-	        return new ApiResponse(true, "Customer logged in successfully", responseDTO);
-	    }
+		Customer found = customerDao.findByEmail(dto.getEmail());
+		if (found == null) {
+			return new ApiResponse(false, "Wrong email or password");
+		} else {
+			// Convert to DTO that does not have lazy-loaded fields
+			CustomerResponseDTO responseDTO = map.map(found, CustomerResponseDTO.class);
+			return new ApiResponse(true, "Customer logged in successfully", responseDTO);
+		}
 	}
-
 
 }
