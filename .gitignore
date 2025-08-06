@@ -28,3 +28,4 @@ target/
 *.war
 
 aahar_backend/src/main/resources/application.properties
+aahar_backend/bin
