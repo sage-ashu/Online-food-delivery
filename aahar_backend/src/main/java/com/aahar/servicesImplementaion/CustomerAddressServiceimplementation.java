@@ -8,8 +8,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.aahar.custom_exception.ResourceNotFoundException;
 import com.aahar.dao.CustomerAddressDao;
 import com.aahar.dao.CustomerDao;
+import com.aahar.dto.ApiResponse;
 import com.aahar.dto.CustomerAddressDTO;
 import com.aahar.dto.CustomerAddressEditDTO;
 import com.aahar.entities.Customer;
@@ -26,22 +28,13 @@ public class CustomerAddressServiceimplementation implements CustomerAddressServ
 	private CustomerDao customerDao;
 	private final ModelMapper modelMapper;
 	@Override
-	public CustomerAddressDTO addCustomerAddress(CustomerAddressDTO dto) {
+	public ApiResponse addCustomerAddress(Long customerId,CustomerAddressDTO dto) {
 	    CustomerAddress address = modelMapper.map(dto, CustomerAddress.class);
+	    Customer customer = customerDao.findById(customerId)
+	    		.orElseThrow(()-> new ResourceNotFoundException("Customer does not exist"));
 
-	    // Fetch the Customer from DB using findById
-	    if (dto.getCustomerId() != null) {
-	        Optional<Customer> optionalCustomer = customerDao.findById(dto.getCustomerId());
-
-	        if (optionalCustomer.isPresent()) {
-	            address.setCustomer(optionalCustomer.get());
-	        } else {
-	            throw new RuntimeException("Customer with ID " + dto.getCustomerId() + " not found.");
-	        }
-	    }
-
-	    CustomerAddress saved = customeraddressDao.save(address);
-	    return modelMapper.map(saved, CustomerAddressDTO.class);
+	    customer.addAddress(address);
+	    return new ApiResponse(true, "Address added successfully");
 	}
 
 	@Override

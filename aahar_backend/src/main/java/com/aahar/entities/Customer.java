@@ -1,7 +1,12 @@
 package com.aahar.entities;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -20,10 +25,14 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @Table(name="customers")
+
 @ToString(callSuper = true,exclude={"orders","addresses","cart"})
-public class Customer extends BaseEntity
+public class Customer extends BaseEntity implements UserDetails
+
+
 {
 	
+	private String role ="Customer";
 	@Column(length=50, name="first_name")
 	private String firstName;
 	@Column(length=50, name="last_name")
@@ -91,6 +100,17 @@ public class Customer extends BaseEntity
 			this.lastName = lastName;
 			this.email = email;
 			this.password = password;
+		}
+
+		@Override
+		public Collection<? extends GrantedAuthority> getAuthorities() {
+			List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(this.role);
+			return authorities;
+		}
+
+		@Override
+		public String getUsername() {
+			return this.email;
 		}
 
 		

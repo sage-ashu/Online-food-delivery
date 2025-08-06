@@ -31,8 +31,8 @@ public class Restaurant extends BaseEntity{
 	private String restauratDescription;
 	private boolean isVeg;
 	private double avgCost;
-	private int ratingSum;
-	private int noOfRatings;
+	private double ratingSum;
+	private double noOfRatings;
 	private boolean isOnline;
 	@Column(length=10)
 	private String phoneNo ;
@@ -102,7 +102,6 @@ public class Restaurant extends BaseEntity{
 		this.latitude = latitude;
 		this.longitude = longitude;
 	}
-	
 	
 	
 	

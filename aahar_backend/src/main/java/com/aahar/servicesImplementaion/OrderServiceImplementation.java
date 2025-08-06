@@ -13,9 +13,11 @@ import com.aahar.dao.DishDao;
 import com.aahar.dao.OrdersDao;
 import com.aahar.dao.RestaurantDao;
 import com.aahar.dto.CustomerOrderResponseDTO;
+import com.aahar.dto.OrderRatingDTO;
 import com.aahar.dto.RatingDTO;
 import com.aahar.dto.AddOrderDTO;
 import com.aahar.dto.AddOrderDetailsDTO;
+import com.aahar.dto.ApiResponse;
 import com.aahar.dto.RestaurantOrderResponseDTO;
 import com.aahar.entities.Customer;
 import com.aahar.entities.CustomerAddress;
@@ -104,35 +106,6 @@ public class OrderServiceImplementation implements OrdersService {
 		
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	//To update status of order this api works with enum
     public void updateOrderStatus(Long orderId, OrderStatus newStatus) {
         Orders order = ordersDao.findById(orderId)
@@ -142,6 +115,26 @@ public class OrderServiceImplementation implements OrdersService {
     }
 
 	@Override
+	public ApiResponse addRating(OrderRatingDTO dto) {
+		Orders order=ordersDao.findById(dto.getOrderId())
+				.orElseThrow(()-> new ResourceNotFoundException("Order not found"));
+		if(order.getRating()!=null) {
+			return new ApiResponse(false, "Already rated");
+		}
+		
+		order.setRating(dto.getRatings());
+		order.setReview(dto.getReview());
+		ordersDao.save(order);
+		
+		Restaurant restaurant = order.getRestaurant();
+			
+			restaurant.setNoOfRatings(restaurant.getRating()+1);
+			restaurant.setRatingSum(restaurant.getRatingSum()+order.getRating());
+			restaurantDao.save(restaurant);
+			return new ApiResponse(true, "Rating submitted successfully. Thank you!");
+	}
+		
+		
 	public void updateRating(RatingDTO ratingDTO) {
 		// TODO Auto-generated method stub
 		Orders order = ordersDao.findById(ratingDTO.getOrderId())
@@ -149,6 +142,7 @@ public class OrderServiceImplementation implements OrdersService {
 		order.setRating(order.getRating()+ratingDTO.getRating());
 		order.getRestaurant().setRatingSum(order.getRestaurant().getRatingSum()+ratingDTO.getRating());
 		order.getRestaurant().increaseNoOfRatings();
+
 	}
 
 }

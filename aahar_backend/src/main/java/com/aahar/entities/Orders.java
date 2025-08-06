@@ -29,9 +29,13 @@ public class Orders extends BaseEntity {
 	private double deliveryDistance;
 	private double deliveryCharge;
 	private double orderTotal;
-	private int rating;
+
+	private String review;
+	
+	private Double rating;
 	@Enumerated(EnumType.STRING)
 	private OrderStatus status;
+
 	 // This is many to one relationship multiple orders can belong to one customer
 	@ManyToOne
 	@JoinColumn(name="customer_id")
@@ -51,7 +55,7 @@ public class Orders extends BaseEntity {
 		this.deliveryDistance = deliveryDistance;
 		this.deliveryCharge = deliveryCharge;
 		this.orderTotal = orderTotal;
-		this.rating = 0;
+		this.rating = 0.0;
 	}
 	
 	public void addOrderDetail(OrderDetails orderDetail) {

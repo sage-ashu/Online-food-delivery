@@ -18,11 +18,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.aahar.config.JwtUtil;
 //import com.aahar.dto.DishResponseDTO;
 import com.aahar.dto.DishUpdateDTO;
 import com.aahar.dto.DishUploadDTO;
 import com.aahar.services.DishService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 
 @CrossOrigin(origins = "http://localhost:5173")
@@ -30,21 +32,8 @@ import lombok.AllArgsConstructor;
 @RequestMapping("/dish")
 @AllArgsConstructor
 public class DishController {
-	
-	private DishService dishService;
-//	//1. Add dish by restaurant id
-//    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE,path = "/add-dish")
-//	public ResponseEntity<?> addDish(@ModelAttribute DishUploadDTO dishDTO, @RequestParam(value="image",required=false) MultipartFile imageFile){
-//    	System.out.println(dishDTO.toString());
-//    	System.out.println(imageFile.isEmpty());
-//    	try {
-//			dishService.saveDish(dishDTO,imageFile);
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//    	return ResponseEntity.ok("Dish saved");
-//    }
+	private final DishService dishService;
+	private final JwtUtil jwtUtil;
     
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, path = "/add-dish")
     public ResponseEntity<?> addDish(
@@ -80,22 +69,21 @@ public class DishController {
     }
     
     //3. Delete dish by restaurant id and dish id
-    @DeleteMapping("/{restaurantId}/{dishId}")
-    public ResponseEntity<?> deleteDish(@PathVariable Long restaurantId,@PathVariable Long dishId){
+    @DeleteMapping("/{dishId}")
+    public ResponseEntity<?> deleteDish(HttpServletRequest request,@PathVariable Long dishId){
+    	String token = jwtUtil.extractTokenFromRequest(request);
+		Long restaurantId = (Long) jwtUtil.extractId(token);
     	dishService.deleteDish(restaurantId,dishId);
     	return ResponseEntity.ok("Dish deleted");
     }
     
-	//4. get dish by dish id
-//	@GetMapping("/{dishId}")
-//	public ResponseEntity<?> getDish(@PathVariable Long dishId){
-//		return ResponseEntity.ok(dishService.getDish(dishId));
-//		
-//	}
+	
 	
 	//5. get list of dishes by restaurant id
-    @GetMapping("/{restaurantId}")
-    public ResponseEntity<?> getDishListOfRestaurant(@PathVariable Long restaurantId) {
+    @GetMapping("/all-items")
+    public ResponseEntity<?> getDishListOfRestaurant(HttpServletRequest request) {
+    	String token = jwtUtil.extractTokenFromRequest(request);
+		Long restaurantId = (Long) jwtUtil.extractId(token);
         return ResponseEntity.ok(dishService.getDishByRestaurant(restaurantId));
     }
 
