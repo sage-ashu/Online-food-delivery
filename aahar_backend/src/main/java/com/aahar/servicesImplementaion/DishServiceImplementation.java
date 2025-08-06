@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.aahar.custom_exception.ResourceNotFoundException;
 import com.aahar.dao.DishDao;
 import com.aahar.dao.RestaurantDao;
+import com.aahar.dto.ApiResponse;
 import com.aahar.dto.DishResponseDTO;
 import com.aahar.dto.DishUpdateDTO;
 import com.aahar.dto.DishUploadDTO;
@@ -141,5 +143,36 @@ public class DishServiceImplementation implements DishService {
 		}
 		return dtoList;
 	}
+	
+	
+	public ApiResponse getAllDishesForHomePage() {
+	    List<Dish> dishes = dishDao.findAll();
+	    List<DishResponseDTO> list = dishes.stream().map(d -> {
+	        DishResponseDTO dto = new DishResponseDTO();
+	        dto.setId(d.getId());
+	        dto.setDishName(d.getDishName());
+	        dto.setDishPrice(d.getDishPrice());
+	        dto.setDescription(d.getDescription());
+	        dto.setVeg(d.isVeg());
+	        dto.setPreperationTime(d.getPreperationTime());
+	        dto.setNoOfServings(d.getNoOfServings());
+	        dto.setAvailable(d.isAvailable());
+	        dto.setImagePath(d.getImagePath());
+	        dto.setRating(d.getRating());
+	        dto.setRestaurantId(d.getMyRestaurant().getId());
+	        dto.setRestaurantName(
+	        	    restaurantDao.findById(d.getMyRestaurant().getId())
+	        	        .orElseThrow(() -> new RuntimeException("Restaurant not found"))
+	        	        .getRestaurantName()
+	        	);
+
+
+	        return dto;
+	    }).collect(Collectors.toList());
+	    
+	    return new ApiResponse(true,"Fetched all Dishes" , list);
+	}
+
+
 }
 

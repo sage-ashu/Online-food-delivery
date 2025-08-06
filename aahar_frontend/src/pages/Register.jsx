@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import { registerRestaurant, registerCustomer } from "../services/registrationService";
+import { toast } from "react-toastify";
 
 function Register() {
   const navLinks = [
@@ -16,25 +18,54 @@ function Register() {
 
   const [role, setRole] = useState("customer");
   const [formData, setFormData] = useState({
-    // Common fields
     email: "",
     password: "",
-    // Customer fields
     firstName: "",
     lastName: "",
-    // Restaurant owner fields
-    name: "",
-    phoneNumber: "",
+    name: "",           // for restaurant
+    phoneNumber: "",    // for restaurant
   });
 
   const handleChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(`Registering as ${role}:`, formData);
-    // API call logic here
+
+    if (role === "restaurant") {
+      const restaurantData = {
+        name: formData.name,
+        phoneNumber: formData.phoneNumber,
+        email: formData.email,
+        password: formData.password,
+      };
+
+      const result = await registerRestaurant(restaurantData);
+
+      if (result.success) {
+        toast.success("Restaurant registered successfully!", { position: "bottom-right" });
+        navigate("/login");
+      } else {
+        toast.error(result.message || "Registration failed", { position: "bottom-right" });
+      }
+    } else {
+      const customerData = {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        password: formData.password,
+      };
+
+      const result = await registerCustomer(customerData);
+
+      if (result.success) {
+        toast.success("Customer registered successfully!", { position: "bottom-right" });
+        navigate("/login");
+      } else {
+        toast.error(result.message || "Registration failed", { position: "bottom-right" });
+      }
+    }
   };
 
   return (
@@ -47,7 +78,7 @@ function Register() {
             Register with Aahar
           </h2>
 
-          {/* Toggle */}
+          {/* Toggle Role */}
           <div className="flex justify-center mb-6">
             <button
               className={`px-4 py-2 rounded-l-xl font-medium transition ${
@@ -73,7 +104,7 @@ function Register() {
 
           {/* Form */}
           <form onSubmit={handleSubmit}>
-            {/* Conditional Fields */}
+            {/* Customer Fields */}
             {role === "customer" ? (
               <>
                 <div className="mb-4">
@@ -101,6 +132,7 @@ function Register() {
               </>
             ) : (
               <>
+                {/* Restaurant Fields */}
                 <div className="mb-4">
                   <label className="block text-orange-700 mb-1">Restaurant Name</label>
                   <input
@@ -126,7 +158,7 @@ function Register() {
               </>
             )}
 
-            {/* Common Fields */}
+            {/* Shared Fields */}
             <div className="mb-4">
               <label className="block text-orange-700 mb-1">Email</label>
               <input
@@ -158,7 +190,6 @@ function Register() {
             </button>
           </form>
 
-          {/* Login Redirect */}
           <div className="mt-6 text-center">
             <span className="text-gray-700">Already have an account? </span>
             <button

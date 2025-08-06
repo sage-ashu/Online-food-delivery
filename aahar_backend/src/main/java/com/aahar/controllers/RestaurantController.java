@@ -21,6 +21,7 @@ import com.aahar.dto.AddRestaurantDTO;
 import com.aahar.dto.ApiResponse;
 import com.aahar.dto.RestaurantAddressDTO;
 import com.aahar.dto.RestaurantInfoDTO;
+import com.aahar.entities.Restaurant;
 import com.aahar.services.RestaurantService;
 
 
@@ -36,24 +37,26 @@ public class RestaurantController {
     private RestaurantService restaurantService;
 
     
-    // 1. Add restaurant by ownerId
-    @PostMapping("/add")
-    public ResponseEntity<?> addRestaurant(@RequestBody AddRestaurantDTO dto) {
+    
+    //This api adds the restaurant info , if already presents then it updates it 
+    @PostMapping("/saveOrUpdate")
+    public ResponseEntity<?> saveOrUpdateRestaurant(@RequestBody AddRestaurantDTO dto) {
         try {
-            restaurantService.addRestaurant(dto);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Restaurant Added");
-
+        	System.out.println(dto.toString());
+            ApiResponse response = restaurantService.saveOrUpdateRestaurant(dto);
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
-            ApiResponse response = new ApiResponse(false, "Failed to add restaurant: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ApiResponse(false, "Failed to save/update restaurant: " + e.getMessage()));
         }
     }
+
     
     //2.Update Restaurant by ownerId and RestaurantId
     
   @PutMapping
   public ResponseEntity<?> updateRestaurantById(@RequestBody RestaurantInfoDTO restaurantDTO) 
-  {
+  {	
 
       try {
            restaurantService.updateRestaurantById(restaurantDTO);
@@ -87,26 +90,20 @@ public class RestaurantController {
       }
   }
   
-  //4. get restaurant details for owner
-   @GetMapping("/{ownerId}")
-   public ResponseEntity<?> restaurantDetailsForOwner(@PathVariable Long ownerId)
-   {
-	   try 
-	   {
-		 ApiResponse  restaurants = restaurantService.getRestaurantsByOwnerId(ownerId);
-		 if (restaurants.isEmpty())
-		 {
-          ApiResponse response = new ApiResponse(false, "No restaurants found for owner ID: " + ownerId);
-          return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-         }
-		 ApiResponse response = new ApiResponse(true, "Restaurants for owner ID " + ownerId, restaurants);
-         return ResponseEntity.ok(response);
-	   }catch (RuntimeException e)
-	   {
-         ApiResponse response = new ApiResponse(false, "Error fetching restaurants: " + e.getMessage());
-         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-       }
-   }
+
+  @GetMapping("/{ownerId}")
+  public ResponseEntity<?> restaurantDetailsForOwner(@PathVariable Long ownerId) {
+      System.out.println("Restaurant owner id is : " + ownerId);
+      try {
+          ApiResponse restaurant = restaurantService.getRestaurantsByOwnerId(ownerId);
+          return ResponseEntity.ok(restaurant); // ✅ FIXED
+      } catch (RuntimeException e) {
+          return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+              .body(new ApiResponse(false, "Error: " + e.getMessage()));
+      }
+  }
+
+
    
     //5.Delete Restaurant By Id
    @DeleteMapping("/{ownerId}/{restaurantId}")

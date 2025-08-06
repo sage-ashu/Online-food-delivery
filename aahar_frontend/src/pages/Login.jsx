@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { useAuth } from "../context/AuthContext";
+import { useCart } from "../context/CartContext";
+import { fetchCart } from "../services/cartService";
 import { toast } from "react-toastify";
 
 function Login() {
@@ -15,7 +17,8 @@ function Login() {
   ];
 
   const navigate = useNavigate();
-  const { login } = useAuth(); // 👈 use context
+  const { login } = useAuth();
+  const { setCartItems, setRestaurantId } = useCart(); // 👈 hook to sync cart
   const [role, setRole] = useState("customer");
   const [formData, setFormData] = useState({
     email: "",
@@ -25,14 +28,45 @@ function Login() {
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const result = login(formData.email, formData.password, role);
+    const result = await login(formData.email, formData.password, role);
 
     if (result.success) {
       toast.success("Login successful!");
-      navigate("/menu");
+
+      if (role === "customer" && result.userData?.id) {
+        try {
+          const cartResponse = await fetchCart(result.userData.id);
+
+          if (cartResponse?.data?.items?.length) {
+            const backendItems = cartResponse.data.items.map((item) => ({
+              id: item.dish.id,
+              restaurantId: cartResponse.data.restaurant.id, // ✅ Correct
+              dishName: item.dish.dishName,
+              dishPrice: item.dish.dishPrice,
+              quantity: item.quantity,
+            }));
+          
+
+            setCartItems(backendItems);
+            setRestaurantId(cartResponse.data.restaurant.id);
+          } else {
+            setCartItems([]);
+            setRestaurantId(null);
+          }
+        } catch (error) {
+          toast.error("Failed to load cart data.");
+          console.error("Cart fetch error:", error);
+        }
+      }
+
+      if (role === "restaurant") {
+        navigate("/orders");
+      } else {
+        navigate("/menu");
+      }
     } else {
       toast.error(result.message || "Login failed!");
     }

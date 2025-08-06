@@ -1,5 +1,6 @@
 package com.aahar.controllers;
 
+import org.apache.catalina.filters.ExpiresFilter.XServletOutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,6 +46,8 @@ public class RestaurantOwnerController {
 	// 0 Login owner
 	   @PostMapping("/login")
 	    public ResponseEntity<?> loginOwner(@RequestBody RestaurantOwnerLoginDTO dto) {
+		   System.out.println("DTO Email: " + dto.getEmail());
+		   System.out.println("DTO Password: " + dto.getPassword());
 	        ApiResponse response = ownerService.loginOwner(dto);
 	        return ResponseEntity.status(response.isSuccess() ? 201 : 400).body(response);
 	    }

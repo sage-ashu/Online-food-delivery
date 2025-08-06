@@ -14,6 +14,7 @@ import com.aahar.dao.OrdersDao;
 import com.aahar.dao.RestaurantDao;
 import com.aahar.dto.CustomerOrderResponseDTO;
 import com.aahar.dto.OrderRatingDTO;
+import com.aahar.dto.RatingDTO;
 import com.aahar.dto.AddOrderDTO;
 import com.aahar.dto.AddOrderDetailsDTO;
 import com.aahar.dto.ApiResponse;
@@ -80,15 +81,18 @@ public class OrderServiceImplementation implements OrdersService {
 		// TODO Auto-generated method stub
 		CustomerAddress customerAddress = customerAddressDao.findById(orderDTO.getCustomerAddressId()).orElseThrow(()-> new ResourceNotFoundException("Invalid address ID"));
 		Customer customer = customerAddress.getCustomer();
-		Restaurant restaurant = restaurantDao.findById(orderDTO.getReaturantId()).orElseThrow(()->new ResourceNotFoundException("Invalid restauarnt ID"));
+		Restaurant restaurant = restaurantDao.findById(orderDTO.getRestaurantId()).orElseThrow(()->new ResourceNotFoundException("Invalid restauarnt ID"));
 		System.out.println("here");
 		int distanceInMeters = distanceService.getDistanceInMeters(restaurant.getLatitude(), restaurant.getLongitude(), customerAddress.getLatitude(), customerAddress.getLongitude());
 		Orders order = new Orders();
 		order.setCustomer(customer);
+		order.setRestaurant(restaurant);
 		System.out.println(distanceInMeters);
 		order.setDeliveryDistance(distanceInMeters);
 		Double deliveryCharge = distanceInMeters*0.005;
 		order.setDeliveryCharge(deliveryCharge);
+		System.out.println(order.toString());
+		ordersDao.save(order);
 		List<AddOrderDetailsDTO> orderDetails = orderDTO.getDetails();
 		double orderAmount = 0;
 		for(AddOrderDetailsDTO detail : orderDetails) {
@@ -101,35 +105,6 @@ public class OrderServiceImplementation implements OrdersService {
 		orderDetailService.addOrderDetails(order.getId(),orderDTO.getDetails());
 		
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	//To update status of order this api works with enum
     public void updateOrderStatus(Long orderId, OrderStatus newStatus) {
@@ -152,13 +127,22 @@ public class OrderServiceImplementation implements OrdersService {
 		ordersDao.save(order);
 		
 		Restaurant restaurant = order.getRestaurant();
-		
-			restaurant.setTotalRating(restaurant.getTotalRating()+1);
+			
+			restaurant.setNoOfRatings(restaurant.getRating()+1);
 			restaurant.setRatingSum(restaurant.getRatingSum()+order.getRating());
 			restaurantDao.save(restaurant);
 			return new ApiResponse(true, "Rating submitted successfully. Thank you!");
+	}
 		
 		
+	public void updateRating(RatingDTO ratingDTO) {
+		// TODO Auto-generated method stub
+		Orders order = ordersDao.findById(ratingDTO.getOrderId())
+	            .orElseThrow(() -> new RuntimeException("Order not found"));
+		order.setRating(order.getRating()+ratingDTO.getRating());
+		order.getRestaurant().setRatingSum(order.getRestaurant().getRatingSum()+ratingDTO.getRating());
+		order.getRestaurant().increaseNoOfRatings();
+
 	}
 
 }

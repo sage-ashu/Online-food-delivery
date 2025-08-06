@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.aahar.dto.ApiResponse;
 import com.aahar.dto.DishResponseDTO;
 import com.aahar.dto.DishUpdateDTO;
 import com.aahar.dto.DishUploadDTO;
@@ -21,4 +22,5 @@ public interface DishService {
 
 	List<DishResponseDTO> getDishByRestaurant(Long restaurantId);
 
+	ApiResponse getAllDishesForHomePage();
 }

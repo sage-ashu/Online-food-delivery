@@ -13,6 +13,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 //import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,8 +25,11 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @Table(name="customers")
-@ToString(callSuper = true)
+
+@ToString(callSuper = true,exclude={"orders","addresses","cart"})
 public class Customer extends BaseEntity implements UserDetails
+
+
 {
 	
 	private String role ="Customer";
@@ -53,6 +57,16 @@ public class Customer extends BaseEntity implements UserDetails
 	private List< CustomerAddress> addresses=new ArrayList<>();
 	
 	
+	@OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+	private Cart cart;
+
+	public void setCart(Cart cart) {
+	    this.cart = cart;
+	    if (cart != null) {
+	        cart.setCustomer(this);
+	    }
+	}
+
 
 	     //helper class to add address
 	
