@@ -56,23 +56,12 @@ public class JwtUtil {
 		Authentication auth = new UsernamePasswordAuthenticationToken(custId, null, authorities);
 		return auth;
 	}
-//	 public Claims extractAllClaims(String token) {
-//	        return Jwts.parserBuilder()
-//	                .setSigningKey(jwtKey)
-//	                .build()
-//	                .parseClaimsJws(token)
-//	                .getBody();
-//	    }
 
 	public Long extractId(String token) {
 		JwtParser parser = Jwts.parserBuilder().setSigningKey(jwtKey).build();
 		Claims claims = parser.parseClaimsJws(token).getBody();
-		Number id = claims.get("id", Number.class); // ✅ fetch custom "id" claim
-	    return (id != null) ? id.longValue() : null;
-//		String roles = claims.getId();
-//		Long id =Long.parseLong(roles);
-//		System.out.println(id);
-//		return  id;
+		Long id = claims.get("id", Long.class);
+	    return id;
 	}
 
 	public String extractTokenFromRequest(HttpServletRequest request) {

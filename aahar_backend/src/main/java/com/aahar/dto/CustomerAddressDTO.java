@@ -19,5 +19,4 @@ public class CustomerAddressDTO {
     private double latitude;
     private double longitude;
 
-    private Long customerId;
 }

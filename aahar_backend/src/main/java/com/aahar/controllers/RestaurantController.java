@@ -1,8 +1,6 @@
 package com.aahar.controllers;
 
-import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -13,29 +11,26 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.aahar.config.JwtUtil;
 import com.aahar.custom_exception.ResourceNotFoundException;
 import com.aahar.dto.AddRestaurantDTO;
 import com.aahar.dto.ApiResponse;
 import com.aahar.dto.RestaurantAddressDTO;
 import com.aahar.dto.RestaurantInfoDTO;
-import com.aahar.entities.Restaurant;
 import com.aahar.services.RestaurantService;
 
-
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.AllArgsConstructor;
 
 @RestController
+@AllArgsConstructor
 @CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/api/owner/restaurant")
 public class RestaurantController {
-	
-	
-	
-    @Autowired
-    private RestaurantService restaurantService;
-
+    private final RestaurantService restaurantService;
+    private final JwtUtil jwtUtil;
     
     
     //This api adds the restaurant info , if already presents then it updates it 
@@ -106,9 +101,9 @@ public class RestaurantController {
 
    
     //5.Delete Restaurant By Id
-   @DeleteMapping("/{ownerId}/{restaurantId}")
-   public ResponseEntity<?> deleteRestaurant(@PathVariable Long ownerId, @PathVariable Long restaurantId)
-   {
+  @DeleteMapping("/{ownerId}/{restaurantId}")
+  public ResponseEntity<?> deleteRestaurant(@PathVariable Long ownerId, @PathVariable Long restaurantId)
+  {
 	   try 
 	   {
 		 restaurantService.deleteRestaurantById(ownerId,restaurantId);
@@ -121,14 +116,15 @@ public class RestaurantController {
 		ApiResponse response = new ApiResponse(false,"Error fetching restaurants"+ e.getMessage());
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 	   }
-	   
-   }
+  }
    
    //6.Get Restaurant Details for Customer
-   @GetMapping("/restaurant/{restaurantId}")
-   public ResponseEntity<?> getRestaurantsForCustomer(@PathVariable Long restaurantId) {
+   @GetMapping("/restaurant")
+   public ResponseEntity<?> getRestaurantsForCustomer(HttpServletRequest request) {
+	   String token = jwtUtil.extractTokenFromRequest(request);
+	   Long ownerId = jwtUtil.extractId(token);
        try {
-           ApiResponse response = restaurantService.getRestaurantsForCustomer(restaurantId);
+           ApiResponse response = restaurantService.getRestaurantsForCustomer(ownerId);
            return ResponseEntity.ok(response);
        } catch (IllegalArgumentException e) {
            ApiResponse response = new ApiResponse(false, e.getMessage(), null);
@@ -159,11 +155,13 @@ public class RestaurantController {
 
 
 //8. update restaurant availability status
-    @PutMapping("/updateStatus/{restaurantId}/{status}")
-    public ResponseEntity<?> updateRestaurantStatus(@PathVariable Long restaurantId, boolean status )
+    @PutMapping("/updateStatus/{status}")
+    public ResponseEntity<?> updateRestaurantStatus(HttpServletRequest request, boolean status )
     {  
+    	 String token = jwtUtil.extractTokenFromRequest(request);
+  	   Long ownerId = jwtUtil.extractId(token);
     	try {
-    		ApiResponse response=restaurantService.updateRestaurantStatus(restaurantId,status);
+    		ApiResponse response=restaurantService.updateRestaurantStatus(ownerId,status);
     		return ResponseEntity.ok(response);
     	}catch (ResourceNotFoundException e) {
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND)

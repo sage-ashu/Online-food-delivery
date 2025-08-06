@@ -1,7 +1,5 @@
 package com.aahar.servicesImplementaion;
 
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +15,6 @@ import com.aahar.services.RestaurantOwnerService;
 
 import lombok.AllArgsConstructor;
 
-import com.aahar.dao.OrdersDao;
 import com.aahar.dao.RestaurantOwnerDao;
 
 import java.util.Optional;
@@ -26,14 +23,12 @@ import java.util.Optional;
 @AllArgsConstructor
 public class RestaurantOwnerServiceImpl implements RestaurantOwnerService {
 
-    @Autowired
-    private RestaurantOwnerDao ownerRepo;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final RestaurantOwnerDao ownerRepo;
+    private final PasswordEncoder passwordEncoder;
 
 	    @Override
 	    public ApiResponse registerOwner(RestaurantOwnerRegistrationDTO dto) {
-	        // Check if email already exists (optional enhancement)
+	        // Check if email already exists
 	        boolean exists = ownerRepo.existsByEmail(dto.getEmail());
 	        if (exists) {
 	            return new ApiResponse(false, "Email already registered.");
