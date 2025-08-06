@@ -20,7 +20,7 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @Table(name="customers")
-@ToString(callSuper = true)
+@ToString(callSuper = true,exclude={"orders","addresses","cart"})
 public class Customer extends BaseEntity
 {
 	

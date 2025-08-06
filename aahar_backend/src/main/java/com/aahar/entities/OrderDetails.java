@@ -31,7 +31,7 @@ public class OrderDetails extends BaseEntity {
 	@JoinColumn(name="order_id")
 	private Orders orders;
 	@ManyToOne
-	@JoinColumn(name="orderdetails")
+	@JoinColumn(name="dish_id")
 	private Dish dish;
 	
 	

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.aahar.dto.AddOrderDTO;
 import com.aahar.dto.CustomerOrderResponseDTO;
+import com.aahar.dto.RatingDTO;
 import com.aahar.dto.RestaurantOrderResponseDTO;
 import com.aahar.dto.UpdateOrderStatusDTO;
 import com.aahar.services.OrdersService;
@@ -52,5 +53,11 @@ public class OrdersController {
                                                @RequestBody UpdateOrderStatusDTO dto) {
         ordersService.updateOrderStatus(orderId, dto.getStatus());
         return ResponseEntity.ok("Order status updated successfully.");
+    }
+    
+    @PutMapping("/rating")
+    public ResponseEntity<?> rating(@RequestBody RatingDTO ratingDTO){
+    	ordersService.updateRating(ratingDTO);
+    	return ResponseEntity.ok("rating updated");
     }
 }

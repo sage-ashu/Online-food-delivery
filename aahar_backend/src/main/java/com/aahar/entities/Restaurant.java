@@ -23,7 +23,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString(callSuper = true,exclude = {"restaurantOwner","dish","orders"})
+@ToString(callSuper = true,exclude = {"restaurantOwner","dish","orders","carts"})
 public class Restaurant extends BaseEntity{
 	@Column(length=50)	
 	private String restaurantName;
@@ -31,8 +31,8 @@ public class Restaurant extends BaseEntity{
 	private String restauratDescription;
 	private boolean isVeg;
 	private double avgCost;
-	private double ratingSum;
-	private double totalRating;
+	private int ratingSum;
+	private int noOfRatings;
 	private boolean isOnline;
 	@Column(length=10)
 	private String phoneNo ;
@@ -75,8 +75,12 @@ public class Restaurant extends BaseEntity{
 	}
 	
 	public double getRating() {
-		return this.getRatingSum()/this.getTotalRating();
+		return this.getRatingSum()/this.getNoOfRatings();
 	}
+	public void increaseNoOfRatings() {
+		this.noOfRatings += 1;
+	}
+	
 
 	public Restaurant(String restaurantName, String restauratDescription, boolean isVeg, double avgCost,
 			 boolean isOnline, String phoneNo, String address1, String address2, String address3,
@@ -87,7 +91,7 @@ public class Restaurant extends BaseEntity{
 		this.isVeg = isVeg;
 		this.avgCost = avgCost;
 		this.ratingSum = 0;
-		this.totalRating =0;
+		this.noOfRatings =0;
 		this.isOnline = isOnline;
 		this.phoneNo = phoneNo;
 		this.address1 = address1;

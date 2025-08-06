@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class AddOrderDTO {
     private Long customerAddressId;
-    private Long reaturantId;
+    private Long restaurantId;
     private List<AddOrderDetailsDTO> details;
 }
 
