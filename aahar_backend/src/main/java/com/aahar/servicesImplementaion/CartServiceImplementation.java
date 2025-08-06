@@ -111,6 +111,7 @@ public class CartServiceImplementation implements CartService {
 
     @Override
     public ApiResponse syncCart(Long customerId, CartDTO localCart) {
+    	System.out.println(localCart.toString());
         Customer customer = customerDao.findById(customerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
 
@@ -121,8 +122,9 @@ public class CartServiceImplementation implements CartService {
                     return cartDao.save(newCart);
                 });
 
+        
         cart.clearItems();
-
+        localCart.setRestaurantId(1l);
         if (localCart.getRestaurantId() == null) {
             throw new IllegalArgumentException("Restaurant ID must not be null.");
         }
