@@ -1,4 +1,4 @@
-# 🍽️ Food Delivery App
+# 🍽️ Aahar-Food Delivery App
 
 A full-stack food delivery web application built with **React** (frontend) and **Spring Boot** (backend). The app allows customers to browse dishes, manage carts, place orders, and track them. Restaurants can manage their listings, dishes, and reviews. Optional support for delivery partners can also be integrated.
 
