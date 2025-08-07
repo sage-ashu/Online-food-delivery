@@ -29,11 +29,23 @@ export const AuthProvider = ({ children }) => {
       return { success: false, message: "Unknown role" };
     }
   
+    // if (result.success) {
+    //   const userData = {
+    //     ...result.data,
+    //     role,
+    //   };
     if (result.success) {
+      const { user, token } = result.data;
+    
       const userData = {
-        ...result.data,
+        ...user,
+        token,
         role,
       };
+    
+      setAuthUser(userData);
+      localStorage.setItem("authUser", JSON.stringify(userData));
+    
   
       setAuthUser(userData);
       localStorage.setItem("authUser", JSON.stringify(userData));

@@ -1,11 +1,12 @@
-import axios from "axios";
+// import axios from "axios";
+import axiosInstance from "./axiosInstance";
 
 const API_BASE = "http://localhost:9090/dish"; // Use your backend base URL
 
 // ✅ Get all dishes
 export const getAllDishes = async () => {
   try {
-    const res = await axios.get(`${API_BASE}/get-all-dishes`);
+    const res = await axiosInstance.get(`${API_BASE}/get-all-dishes`);
     // console.log(res);
     return res.data; // assuming { success, message, data }
   } catch (error) {
@@ -31,7 +32,7 @@ export const addDish = async (restaurantId, formData) => {
   }
   console.log(formData);
   try {
-    const response = await axios.post(`${API_BASE}/add-dish`, data, {
+    const response = await axiosInstance.post(`${API_BASE}/add-dish`, data, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -46,7 +47,7 @@ export const addDish = async (restaurantId, formData) => {
 // ✅ Get dishes for a restaurant
 export const getDishesByRestaurant = async (restaurantId) => {
   try {
-    const res = await axios.get(`${API_BASE}/${restaurantId}`);
+    const res = await axiosInstance.get(`${API_BASE}/${restaurantId}`);
     return res.data; // returns List<DishResponseDTO>
   } catch (err) {
     console.error("Failed to get dishes for restaurant", err);
@@ -58,7 +59,7 @@ export const getDishesByRestaurant = async (restaurantId) => {
 export const deleteDishById = async (restaurantId, dishId) => {
   console.log(restaurantId,dishId)
   try {
-    await axios.delete(`${API_BASE}/${restaurantId}/${dishId}`);
+    await axiosInstance.delete(`${API_BASE}/${restaurantId}/${dishId}`);
   } catch (err) {
     console.error("Failed to delete dish", err);
     throw err;

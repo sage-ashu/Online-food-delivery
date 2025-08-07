@@ -1,11 +1,13 @@
 // src/services/cartService.js
-import axios from "axios";
+// import axios from "axios";
+import axiosInstance from "./axiosInstance";
+
 
 const API_BASE = "http://localhost:9090/api/cart";
 
 export const fetchCart = async (customerId) => {
   try {
-    const res = await axios.get(`${API_BASE}/${customerId}`);
+    const res = await axiosInstance.get(`${API_BASE}/${customerId}`);
     return res.data;
   } catch (err) {
     console.error("Error fetching cart:", err);
@@ -15,7 +17,7 @@ export const fetchCart = async (customerId) => {
 
 export const syncCart = async (customerId, localCart) => {
   try {
-    const res = await axios.post(`${API_BASE}/sync/${customerId}`, localCart);
+    const res = await axiosInstance.post(`${API_BASE}/sync/${customerId}`, localCart);
     return res.data;
   } catch (err) {
     console.error("Error syncing cart:", err);
@@ -25,7 +27,7 @@ export const syncCart = async (customerId, localCart) => {
 
 export const addItemToCartBackend = async (customerId, dishId, quantity) => {
   try {
-    const res = await axios.post(`${API_BASE}/add/${customerId}`, {
+    const res = await axiosInstance.post(`${API_BASE}/add/${customerId}`, {
       dishId,
       quantity,
     });
@@ -38,7 +40,7 @@ export const addItemToCartBackend = async (customerId, dishId, quantity) => {
 
 export const removeItemFromCartBackend = async (customerId, dishId) => {
   try {
-    const res = await axios.delete(`${API_BASE}/remove/${customerId}/${dishId}`);
+    const res = await axiosInstance.delete(`${API_BASE}/remove/${customerId}/${dishId}`);
     return res.data;
   } catch (err) {
     console.error("Error removing item:", err);
@@ -48,7 +50,7 @@ export const removeItemFromCartBackend = async (customerId, dishId) => {
 
 export const clearCartBackend = async (customerId) => {
   try {
-    const res = await axios.delete(`${API_BASE}/clear/${customerId}`);
+    const res = await axiosInstance.delete(`${API_BASE}/clear/${customerId}`);
     return res.data;
   } catch (err) {
     console.error("Error clearing cart:", err);
